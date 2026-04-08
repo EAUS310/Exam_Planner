@@ -1,0 +1,290 @@
+[
+  {
+    "id": "exam-sample-001",
+    "moduleCode": "AVI101",
+    "moduleName": "Introduction to Aviation",
+    "examName": "Midterm",
+    "semester": "Spring 2026",
+    "date": "2026-04-15",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Ahmed Al-Rashid",
+    "invigilatorName": "Prof. Sarah Johnson",
+    "venueId": "room-101",
+    "students": [
+      {
+        "studentId": "2024001",
+        "studentName": "Ali Hassan Mohammed",
+        "seatAssigned": "A1"
+      },
+      {
+        "studentId": "2024002",
+        "studentName": "Fatima Al-Zahra Ahmed",
+        "seatAssigned": "A2"
+      },
+      {
+        "studentId": "2024003",
+        "studentName": "Mohammed Khalid Ibrahim",
+        "seatAssigned": "A3"
+      },
+      {
+        "studentId": "2024004",
+        "studentName": "Aisha Noor Abdullah",
+        "seatAssigned": "A4"
+      },
+      {
+        "studentId": "2024005",
+        "studentName": "Omar Saeed Al-Mansoori",
+        "seatAssigned": "A5"
+      }
+    ],
+    "createdAt": "2026-04-01T10:00:00.000Z",
+    "program": "EDAE"
+  },
+  {
+    "id": "exam-e62681b4-c369-46f0-91ba-c48d89bf9949",
+    "moduleCode": "MOD8",
+    "moduleName": "Basic Aerodynamics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-04-10",
+    "startTime": "09:00",
+    "endTime": "09:25",
+    "instructorName": "Ajit Yesodharan",
+    "invigilatorName": "",
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [
+      {
+        "studentId": "10317619",
+        "studentName": "Jensen Alexander Van Mullem Abad",
+        "seatAssigned": "A1",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10356355",
+        "studentName": "Marwan Hazem Marwan  Abuswaireh",
+        "seatAssigned": "A2",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10372482",
+        "studentName": "Kareem Alaa A Adham",
+        "seatAssigned": "A3",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10472533",
+        "studentName": "Yasser Ahmed",
+        "seatAssigned": "A4",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10486160",
+        "studentName": "Ghalya Eisa Ali Sabir  Alameeri",
+        "seatAssigned": "A5",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10373209",
+        "studentName": "Shaikha khalid Mohsin Alnakhibi  Alameri",
+        "seatAssigned": "C1",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10290796",
+        "studentName": "Ryan Al Alawi",
+        "seatAssigned": "C2",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10359516",
+        "studentName": "Abdullah Jumah Mohammed Alhanjeri Aldahmani",
+        "seatAssigned": "C3",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10467840",
+        "studentName": "Hazza Ahmed Omar Bakerman  Alhadhrami",
+        "seatAssigned": "C4",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10374426",
+        "studentName": "Hazzaa Ali Saeed Ali Alhamoudi",
+        "seatAssigned": "C5",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10486143",
+        "studentName": "Menatalla Tageldin Abdalla Alhussein",
+        "seatAssigned": "E1",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10408088",
+        "studentName": "FAISAL ABDULLA MOHAMMAD ALI",
+        "seatAssigned": "E2",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10459871",
+        "studentName": "Shahana Shaijeer Shaijeer Poyyakkara Alikunju",
+        "seatAssigned": "E3",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10350365",
+        "studentName": "Shamma Hashem Rashed Alraei Alnaqbi",
+        "seatAssigned": "E4",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10456589",
+        "studentName": "Mohammed Abdulaziz M Alshahrani",
+        "seatAssigned": "E5",
+        "venueId": "G21"
+      },
+      {
+        "studentId": "10209778",
+        "studentName": "Athbah Khalid Bilal Ghanim Alshamsi",
+        "seatAssigned": "A1",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10399704",
+        "studentName": "Nada Mohammed Rajab Mohammed  Al Balushi",
+        "seatAssigned": "A2",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10349529",
+        "studentName": "Mohammad Mahdi Botfarib",
+        "seatAssigned": "A3",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10507329",
+        "studentName": "Mohammadparsa Javad Danaei",
+        "seatAssigned": "A4",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10312218",
+        "studentName": "Abdulrahman Mohamed Hassan Mohamed Moustafa Eid",
+        "seatAssigned": "A5",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10484671",
+        "studentName": "Ibrahim Murad Ibrahim  Hazaileh",
+        "seatAssigned": "C1",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10464174",
+        "studentName": "Herath Mudiyanselage Menuka Methsandu Herath",
+        "seatAssigned": "C2",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10411674",
+        "studentName": "MUBEEN NOOR HUSSAIN",
+        "seatAssigned": "C3",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10171274",
+        "studentName": "Syed Ahmad Hussain",
+        "seatAssigned": "C4",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10467629",
+        "studentName": "Mahra Tariq Mohammad Hassan   Jafar",
+        "seatAssigned": "C5",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10424385",
+        "studentName": "YOGI SAMRAT SAI KAKARALA",
+        "seatAssigned": "E1",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10476784",
+        "studentName": "Hedrah Aref  Kordi",
+        "seatAssigned": "E2",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10505636",
+        "studentName": "Muhammed Thahir Puthanpurakkal Koya",
+        "seatAssigned": "E3",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10479384",
+        "studentName": "Muhammed  Bin Abdul Latheef",
+        "seatAssigned": "E4",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10464999",
+        "studentName": "Hazaa Souhaib Mishmish",
+        "seatAssigned": "E5",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10427155",
+        "studentName": "ABDIRAHMAN MOHAMED",
+        "seatAssigned": "A1",
+        "venueId": "G23"
+      },
+      {
+        "studentId": "10487263",
+        "studentName": "Nima Mohammadkhani",
+        "seatAssigned": "A2",
+        "venueId": "G23"
+      },
+      {
+        "studentId": "10251618",
+        "studentName": "Ahad Badruddin Mohammed",
+        "seatAssigned": "A3",
+        "venueId": "G23"
+      },
+      {
+        "studentId": "10515160",
+        "studentName": "FATHIMAHUSNA ÐœÐžÐÐÐœMAD  PADINHARATH",
+        "seatAssigned": "A4",
+        "venueId": "G23"
+      },
+      {
+        "studentId": "10422145",
+        "studentName": "Subramanya Eswar mayank Ravinutala",
+        "seatAssigned": "A5",
+        "venueId": "G23"
+      },
+      {
+        "studentId": "10514961",
+        "studentName": "Rohaan Rizwan",
+        "seatAssigned": "C1",
+        "venueId": "G23"
+      },
+      {
+        "studentId": "10509372",
+        "studentName": "Ismail Thabish Ahmed Thayyib",
+        "seatAssigned": "C2",
+        "venueId": "G23"
+      }
+    ],
+    "createdAt": "2026-04-08T13:26:33.978Z",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23",
+      "G24",
+      "G25"
+    ]
+  }
+]

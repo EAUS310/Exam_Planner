@@ -1,0 +1,472 @@
+/* ══════════════════════════════════════════════════════════
+   Exam Planning Tool — Student Management (students.html)
+   ══════════════════════════════════════════════════════════ */
+
+'use strict';
+
+// ── State ─────────────────────────────────────────────────
+let exam          = null;
+let allExams      = [];
+let allClassrooms = [];
+let parsedStudents = [];
+
+// ── DOM Refs ──────────────────────────────────────────────
+const examLoadingState  = document.getElementById('examLoadingState');
+const examDetailsCard   = document.getElementById('examDetailsCard');
+const examDetailsHeader = document.getElementById('examDetailsHeader');
+const examInfoGrid      = document.getElementById('examInfoGrid');
+const coExamsAlert      = document.getElementById('coExamsAlert');
+const aiOptimizeSection = document.getElementById('aiOptimizeSection');
+const aiCoExamsList     = document.getElementById('aiCoExamsList');
+const aiOptimizeBtn     = document.getElementById('aiOptimizeBtn');
+const aiResult          = document.getElementById('aiResult');
+
+const studentPaste      = document.getElementById('studentPaste');
+const parseBtn          = document.getElementById('parseBtn');
+const clearPasteBtn     = document.getElementById('clearPasteBtn');
+
+const previewCard       = document.getElementById('previewCard');
+const previewCount      = document.getElementById('previewCount');
+const previewTableBody  = document.getElementById('previewTableBody');
+const saveStudentsBtn   = document.getElementById('saveStudentsBtn');
+const cancelPreviewBtn  = document.getElementById('cancelPreviewBtn');
+
+const studentCountBadge = document.getElementById('studentCount');
+const studentListCont   = document.getElementById('studentListContainer');
+
+// ── Toast ─────────────────────────────────────────────────
+function showToast(message, type = 'default', duration = 3500) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.transition = 'opacity 0.4s';
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 400);
+  }, duration);
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  const [y, m, d] = dateStr.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun',
+                  'Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+}
+
+function formatTime(t) {
+  if (!t) return '';
+  const [h, min] = t.split(':');
+  const hour = parseInt(h);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const h12 = hour % 12 || 12;
+  return `${h12}:${min} ${ampm}`;
+}
+
+function getVenueName(venueId) {
+  const room = allClassrooms.find(c => c.id === venueId);
+  return room ? `${room.name} (${room.totalSeats} seats)` : venueId;
+}
+
+function getExamVenueIds(e) {
+  return e.venueIds && e.venueIds.length > 0 ? e.venueIds : (e.venueId ? [e.venueId] : []);
+}
+
+function getVenueNames(e) {
+  return getExamVenueIds(e).map(id => getVenueName(id)).join(', ') || '—';
+}
+
+function getTotalCapacity(e) {
+  return getExamVenueIds(e).reduce((sum, id) => {
+    const room = allClassrooms.find(c => c.id === id);
+    return sum + (room ? room.totalSeats : 0);
+  }, 0);
+}
+
+function escHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+// ── URL Param ─────────────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const examId = params.get('examId');
+
+if (!examId) {
+  document.body.innerHTML = `
+    <div style="text-align:center; padding:60px; font-family:sans-serif;">
+      <h2>No exam specified</h2>
+      <p>Please go back and select an exam.</p>
+      <a href="index.html" style="color:#1a3a5c;">← Back to Exams</a>
+    </div>`;
+}
+
+// ── Load Data ─────────────────────────────────────────────
+async function loadAll() {
+  try {
+    const [examRes, examsRes, classroomsRes] = await Promise.all([
+      fetch(`/api/exams/${examId}`),
+      fetch('/api/exams'),
+      fetch('/api/classrooms')
+    ]);
+
+    if (!examRes.ok) throw new Error('Exam not found');
+
+    exam          = await examRes.json();
+    allExams      = await examsRes.json();
+    allClassrooms = await classroomsRes.json();
+
+    renderExamDetails();
+    renderCoExamsInfo();
+    renderStudentList();
+
+    examLoadingState.style.display = 'none';
+    examDetailsCard.style.display  = 'block';
+
+  } catch (err) {
+    examLoadingState.querySelector('p').textContent = 'Error: ' + err.message;
+    showToast('Failed to load exam data: ' + err.message, 'error');
+  }
+}
+
+function renderExamDetails() {
+  examDetailsHeader.innerHTML = `
+    📋 ${exam.moduleCode} — ${exam.moduleName}
+    <span class="badge">${exam.examName}</span>
+    <span class="badge">${exam.semester}</span>`;
+
+  examInfoGrid.innerHTML = [
+    { label: 'Module Code',  value: exam.moduleCode },
+    { label: 'Module Name',  value: exam.moduleName },
+    { label: 'Exam Type',    value: exam.examName },
+    { label: 'Semester',     value: exam.semester },
+    { label: 'Date',         value: formatDate(exam.date) },
+    { label: 'Time',         value: `${formatTime(exam.startTime)} – ${formatTime(exam.endTime)}` },
+    { label: 'Venue(s)',      value: getVenueNames(exam) },
+    { label: 'Instructor',   value: exam.instructorName },
+    { label: 'Invigilator',  value: exam.invigilatorName || '—' },
+  ].map(({ label, value }) => `
+    <div class="info-item">
+      <span class="info-label">${label}</span>
+      <span class="info-value">${escHtml(value)}</span>
+    </div>`).join('');
+}
+
+function renderCoExamsInfo() {
+  // Find other exams that share any venue on the same date
+  const myVenueIds = getExamVenueIds(exam);
+  const coExams = allExams.filter(e =>
+    e.id !== exam.id &&
+    e.date === exam.date &&
+    getExamVenueIds(e).some(vid => myVenueIds.includes(vid))
+  );
+
+  if (coExams.length === 0) {
+    coExamsAlert.style.display = 'none';
+    aiOptimizeSection.style.display = 'none';
+    return;
+  }
+
+  // Conflict notice
+  const totalOther = coExams.reduce((s, e) => s + e.students.length, 0);
+  const capacity   = getTotalCapacity(exam);
+  const totalAll   = (exam.students.length) + totalOther;
+
+  coExamsAlert.style.display = 'block';
+  coExamsAlert.innerHTML = `
+    <div class="conflict-warning">
+      ⚠️ <strong>${coExams.length} other exam(s)</strong> share a venue with this exam
+      (<strong>${getVenueNames(exam)}</strong>) on <strong>${formatDate(exam.date)}</strong>:
+      <ul style="margin:8px 0 0 20px; font-size:12px; line-height:1.8;">
+        ${coExams.map(e => `<li><strong>${e.moduleCode}</strong> — ${e.moduleName} (${e.examName}) — ${e.students.length} student(s)</li>`).join('')}
+      </ul>
+      <div style="margin-top:8px; font-size:12px;">
+        Total students across all exams: <strong>${totalAll}</strong> / Venue capacity: <strong>${capacity}</strong>
+        ${totalAll > capacity ? ' <span style="color:#c0392b; font-weight:bold;">⚠️ OVER CAPACITY</span>' : ''}
+      </div>
+    </div>`;
+
+  // AI Section
+  aiOptimizeSection.style.display = 'block';
+  aiCoExamsList.innerHTML = `
+    <div style="font-size:13px; color:#333; margin-bottom:8px;">
+      <strong>Exams that will be optimized together:</strong>
+      <ul style="margin:6px 0 0 18px; line-height:1.8;">
+        <li><strong>${exam.moduleCode}</strong> — ${exam.moduleName} (${exam.examName}) — ${exam.students.length} student(s) <em>(current)</em></li>
+        ${coExams.map(e => `<li><strong>${e.moduleCode}</strong> — ${e.moduleName} (${e.examName}) — ${e.students.length} student(s)</li>`).join('')}
+      </ul>
+    </div>`;
+}
+
+// ── Student List Render ───────────────────────────────────
+function renderStudentList() {
+  const students = exam.students || [];
+  studentCountBadge.textContent = students.length;
+
+  if (students.length === 0) {
+    studentListCont.innerHTML = `
+      <div class="empty-state" style="padding:32px;">
+        <div class="empty-state-icon">👥</div>
+        <h3>No students yet</h3>
+        <p>Paste student data above and click "Parse &amp; Preview" to get started.</p>
+      </div>`;
+    return;
+  }
+
+  const rows = students.map((s, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${escHtml(s.studentId)}</td>
+      <td>${escHtml(s.studentName)}</td>
+      <td style="font-weight:bold; color:#1a3a5c;">${s.seatAssigned || '—'}</td>
+      <td>
+        <button class="btn btn-sm btn-red" onclick="removeStudent('${escHtml(s.studentId)}')">
+          🗑️ Remove
+        </button>
+      </td>
+    </tr>`).join('');
+
+  studentListCont.innerHTML = `
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Student ID</th>
+            <th>Student Name</th>
+            <th>Assigned Seat</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+// ── Parse Student Data ────────────────────────────────────
+parseBtn.addEventListener('click', () => {
+  const raw = studentPaste.value.trim();
+  if (!raw) {
+    showToast('Please paste some student data first.', 'warning');
+    return;
+  }
+
+  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+  parsedStudents = [];
+  const errors = [];
+
+  lines.forEach((line, idx) => {
+    // Split on tab first, then on 2+ spaces
+    let parts = line.split('\t').map(p => p.trim()).filter(Boolean);
+    if (parts.length < 2) {
+      parts = line.split(/\s{2,}/).map(p => p.trim()).filter(Boolean);
+    }
+    if (parts.length < 2) {
+      // Try splitting on first whitespace group after what looks like an ID
+      const match = line.match(/^(\S+)\s+(.+)$/);
+      if (match) {
+        parts = [match[1].trim(), match[2].trim()];
+      }
+    }
+
+    if (parts.length >= 2) {
+      parsedStudents.push({
+        studentId:   parts[0],
+        studentName: parts.slice(1).join(' ')
+      });
+    } else {
+      errors.push(`Line ${idx + 1}: Could not parse — "${line}"`);
+    }
+  });
+
+  // Remove duplicates by studentId
+  const seen = new Set();
+  parsedStudents = parsedStudents.filter(s => {
+    if (seen.has(s.studentId)) return false;
+    seen.add(s.studentId);
+    return true;
+  });
+
+  if (parsedStudents.length === 0) {
+    showToast('No valid students found. Check the format: ID[tab]Name', 'error');
+    return;
+  }
+
+  // Show preview
+  previewCount.textContent = parsedStudents.length;
+  previewTableBody.innerHTML = parsedStudents.map((s, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${escHtml(s.studentId)}</td>
+      <td>${escHtml(s.studentName)}</td>
+      <td><span class="pill pill-green">✓ Valid</span></td>
+    </tr>`).join('') + (errors.length > 0 ? `
+    <tr>
+      <td colspan="4">
+        <div class="alert alert-warning" style="margin:8px 0 0;">
+          ⚠️ ${errors.length} line(s) could not be parsed and were skipped.
+        </div>
+      </td>
+    </tr>` : '');
+
+  previewCard.style.display = 'block';
+  previewCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  if (errors.length > 0) {
+    showToast(`${parsedStudents.length} student(s) parsed, ${errors.length} skipped`, 'warning');
+  } else {
+    showToast(`${parsedStudents.length} student(s) ready for import`, 'success');
+  }
+});
+
+clearPasteBtn.addEventListener('click', () => {
+  studentPaste.value = '';
+  parsedStudents = [];
+  previewCard.style.display = 'none';
+});
+
+cancelPreviewBtn.addEventListener('click', () => {
+  previewCard.style.display = 'none';
+  parsedStudents = [];
+});
+
+// ── Save Students ─────────────────────────────────────────
+saveStudentsBtn.addEventListener('click', async () => {
+  if (parsedStudents.length === 0) {
+    showToast('No students to save.', 'warning');
+    return;
+  }
+
+  saveStudentsBtn.disabled = true;
+  saveStudentsBtn.innerHTML = '<span class="spinner"></span> Saving & Assigning Seats…';
+
+  try {
+    const res = await fetch(`/api/exams/${examId}/students`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ students: parsedStudents })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to save students');
+    }
+
+    exam = await res.json();
+    parsedStudents = [];
+    studentPaste.value = '';
+    previewCard.style.display = 'none';
+    renderStudentList();
+    renderCoExamsInfo();
+    showToast(`✓ ${exam.students.length} student(s) saved and seats assigned`, 'success');
+    studentListCont.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  } catch (err) {
+    showToast('Error: ' + err.message, 'error');
+  } finally {
+    saveStudentsBtn.disabled = false;
+    saveStudentsBtn.innerHTML = '💾 Save Students & Assign Seats';
+  }
+});
+
+// ── Remove Student ────────────────────────────────────────
+async function removeStudent(studentId) {
+  if (!confirm(`Remove student ${studentId} from this exam?`)) return;
+
+  try {
+    const res = await fetch(`/api/exams/${examId}/students/${encodeURIComponent(studentId)}`, {
+      method: 'DELETE'
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to remove student');
+    }
+
+    exam = await res.json();
+    renderStudentList();
+    renderCoExamsInfo();
+    showToast(`Student ${studentId} removed and seats re-assigned`, 'success');
+
+  } catch (err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+// Make removeStudent available globally (called from inline onclick)
+window.removeStudent = removeStudent;
+
+// ── AI Optimize Seating ───────────────────────────────────
+aiOptimizeBtn.addEventListener('click', async () => {
+  const myVenueIds = getExamVenueIds(exam);
+  const coExams = allExams.filter(e =>
+    e.date === exam.date &&
+    getExamVenueIds(e).some(vid => myVenueIds.includes(vid))
+  );
+
+  const totalStudents = coExams.reduce((s, e) => s + e.students.length, 0);
+  if (totalStudents === 0) {
+    showToast('No students to optimize. Please add students to the exams first.', 'warning');
+    return;
+  }
+
+  aiOptimizeBtn.disabled = true;
+  aiOptimizeBtn.innerHTML = '<span class="spinner"></span> AI is thinking…';
+  aiResult.style.display = 'none';
+
+  try {
+    const res = await fetch(`/api/exams/${examId}/optimize-seating`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || 'AI optimization failed');
+    }
+
+    // Show result
+    aiResult.style.display = 'block';
+    aiResult.innerHTML = `
+      <div class="ai-result-box">
+        <div class="ai-result-title">🤖 AI Optimization Complete</div>
+        <p style="font-size:13px; color:#333; margin-bottom:8px;">${data.message}</p>
+        <p style="font-size:12px; color:#555;">
+          ${data.assignments.length} seat assignments applied. Students from different modules are now interleaved.
+        </p>
+      </div>`;
+
+    // Reload current exam data
+    const updatedRes = await fetch(`/api/exams/${examId}`);
+    exam = await updatedRes.json();
+    const updatedAllRes = await fetch('/api/exams');
+    allExams = await updatedAllRes.json();
+
+    renderStudentList();
+    renderCoExamsInfo();
+    showToast('✓ AI seating optimization applied successfully!', 'success');
+
+  } catch (err) {
+    aiResult.style.display = 'block';
+    aiResult.innerHTML = `
+      <div class="alert alert-error">
+        <strong>AI Error:</strong> ${escHtml(err.message)}
+        ${err.message.includes('API key') ?
+          '<br><small>Add your ANTHROPIC_API_KEY to the .env file and restart the server.</small>' : ''}
+      </div>`;
+    showToast('AI optimization failed: ' + err.message, 'error');
+  } finally {
+    aiOptimizeBtn.disabled = false;
+    aiOptimizeBtn.innerHTML = '🤖 AI Optimize Seating for All Exams in This Venue';
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────
+if (examId) {
+  loadAll();
+}
