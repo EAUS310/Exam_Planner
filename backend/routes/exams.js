@@ -236,6 +236,45 @@ router.post('/:id/students', (req, res) => {
   }
 });
 
+// PATCH /api/exams/:id/students/:studentId/seat  — manually update a single student's seat
+router.patch('/:id/students/:studentId/seat', (req, res) => {
+  try {
+    const exams = readExams();
+    const idx = exams.findIndex(e => e.id === req.params.id);
+    if (idx === -1) return res.status(404).json({ error: 'Exam not found' });
+
+    const exam = exams[idx];
+    const studentIdx = exam.students.findIndex(s => s.studentId === req.params.studentId);
+    if (studentIdx === -1) return res.status(404).json({ error: 'Student not found in this exam' });
+
+    const newSeat = (req.body.seat || '').trim().toUpperCase();
+    if (!newSeat) return res.status(400).json({ error: 'Seat value is required' });
+
+    // Check seat is not already taken by another student in this or co-exams at the same venue/date
+    const venueId = exam.students[studentIdx].venueId || getVenueIds(exam)[0];
+    const conflict = exams.find(e => {
+      const eVenueIds = getVenueIds(e);
+      if (!eVenueIds.includes(venueId)) return false;
+      if (e.date !== exam.date) return false;
+      return e.students.some(s => {
+        // Skip the student being edited
+        if (e.id === exam.id && s.studentId === req.params.studentId) return false;
+        return s.seatAssigned === newSeat && s.venueId === venueId;
+      });
+    });
+
+    if (conflict) return res.status(409).json({ error: `Seat ${newSeat} is already assigned to another student` });
+
+    exam.students[studentIdx].seatAssigned = newSeat;
+    exams[idx] = exam;
+    writeExams(exams);
+    res.json(exam);
+
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update seat' });
+  }
+});
+
 // DELETE /api/exams/:id/students/:studentId
 router.delete('/:id/students/:studentId', (req, res) => {
   try {
@@ -266,34 +305,23 @@ router.delete('/:id/students/:studentId', (req, res) => {
   }
 });
 
-// POST /api/exams/:id/optimize-seating  — AI-powered seat optimization
-router.post('/:id/optimize-seating', async (req, res) => {
+// POST /api/exams/:id/optimize-seating  — interleave students from co-exams sharing a venue
+router.post('/:id/optimize-seating', (req, res) => {
   try {
-    const Anthropic = require('@anthropic-ai/sdk');
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-
-    if (!apiKey || apiKey === 'your_anthropic_api_key_here') {
-      return res.status(400).json({
-        error: 'ANTHROPIC_API_KEY is not configured. Please add your API key to the .env file.'
-      });
-    }
-
-    const client = new Anthropic({ apiKey });
-    const exams = readExams();
+    const exams      = readExams();
     const classrooms = readClassrooms();
 
     const examIdx = exams.findIndex(e => e.id === req.params.id);
     if (examIdx === -1) return res.status(404).json({ error: 'Exam not found' });
 
-    const exam = exams[examIdx];
+    const exam           = exams[examIdx];
     const primaryVenueId = getVenueIds(exam)[0];
-    const classroom = classrooms.find(c => c.id === primaryVenueId);
+    const classroom      = classrooms.find(c => c.id === primaryVenueId);
     if (!classroom) return res.status(400).json({ error: 'Venue not found' });
 
-    // Find all exams sharing the primary venue on same date
-    const coExams = exams.filter(e => getVenueIds(e).includes(primaryVenueId) && e.date === exam.date);
-
-    const allSeats = generateAllSeats(classroom);
+    // All exams sharing the primary venue on the same date
+    const coExams       = exams.filter(e => getVenueIds(e).includes(primaryVenueId) && e.date === exam.date);
+    const allSeats      = generateAllSeats(classroom);
     const totalStudents = coExams.reduce((sum, e) => sum + e.students.length, 0);
 
     if (totalStudents > allSeats.length) {
@@ -302,101 +330,78 @@ router.post('/:id/optimize-seating', async (req, res) => {
       });
     }
 
-    // Build prompt
-    const examDescriptions = coExams.map(e =>
-      `  - Exam ID: "${e.id}" | Module: ${e.moduleCode} ${e.moduleName} (${e.examName}) | Students (${e.students.length}): ${e.students.map(s => `${s.studentId} "${s.studentName}"`).join(', ')}`
-    ).join('\n');
+    // Column-alternating interleave:
+    // Each column is assigned to one exam (cycling A→Exam1, B→Exam2, C→Exam1…).
+    // All rows within a column are filled from that exam before moving to the next column.
+    const columns = classroom.columnRows
+      ? Object.keys(classroom.columnRows)
+      : classroom.columns;
 
-    const prompt = `You are an expert exam coordinator. Your task is to assign seats in an exam venue so that students from DIFFERENT modules alternate (to reduce cheating risk). Students from the same module should NOT sit next to each other (horizontally or vertically) if possible.
+    // Sort each exam's students alphabetically by name
+    const queues = coExams.map(e => ({
+      examId: e.id,
+      students: [...e.students].sort((a, b) =>
+        (a.studentName || '').localeCompare(b.studentName || '')
+      )
+    }));
 
-VENUE: ${classroom.name}
-LAYOUT: Columns ${classroom.columns.join(', ')} × Rows ${classroom.rows.join(', ')}
-TOTAL AVAILABLE SEATS: ${allSeats.length}
-SEAT ORDER (column-major): ${allSeats.slice(0, 20).join(', ')}${allSeats.length > 20 ? ` ... (${allSeats.length} total)` : ''}
+    const assignments = [];
 
-EXAMS SHARING THIS VENUE ON ${exam.date}:
-${examDescriptions}
+    for (let colIdx = 0; colIdx < columns.length; colIdx++) {
+      const col  = columns[colIdx];
+      const rows = classroom.columnRows ? classroom.columnRows[col] : classroom.rows;
 
-TOTAL STUDENTS TO SEAT: ${totalStudents}
+      // Primary exam for this column (cycles through exams per column)
+      const primaryQueue = queues[colIdx % queues.length];
 
-Rules:
-1. Every student must get a unique seat from the available seats listed above.
-2. Interleave students from different exams so adjacent seats belong to different modules.
-3. Use only valid seats from the venue layout.
-4. Return ONLY valid JSON, nothing else.
-
-Return this exact JSON structure:
-{
-  "assignments": [
-    {"examId": "exam-id-here", "studentId": "student-id-here", "seat": "A1"},
-    {"examId": "exam-id-here", "studentId": "student-id-here", "seat": "A2"}
-  ]
-}`;
-
-    const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 8096,
-      messages: [{ role: 'user', content: prompt }]
-    });
-
-    const responseText = message.content[0].text;
-
-    // Extract JSON from response
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      return res.status(500).json({ error: 'AI returned an unexpected response format', raw: responseText });
-    }
-
-    let aiResult;
-    try {
-      aiResult = JSON.parse(jsonMatch[0]);
-    } catch (parseErr) {
-      return res.status(500).json({ error: 'Failed to parse AI response as JSON', raw: responseText });
-    }
-
-    // Validate assignments
-    const assignments = aiResult.assignments || [];
-    const validSeatsSet = new Set(allSeats);
-    const usedSeats = new Set();
-    const errors = [];
-
-    for (const a of assignments) {
-      if (!validSeatsSet.has(a.seat)) {
-        errors.push(`Invalid seat: ${a.seat}`);
-      } else if (usedSeats.has(a.seat)) {
-        errors.push(`Duplicate seat: ${a.seat}`);
-      } else {
-        usedSeats.add(a.seat);
+      for (const row of rows) {
+        // Use primary exam's queue; fall back to any exam that still has students
+        let chosen = null;
+        if (primaryQueue.students.length > 0) {
+          chosen = { examId: primaryQueue.examId, student: primaryQueue.students.shift() };
+        } else {
+          for (const q of queues) {
+            if (q.students.length > 0) {
+              chosen = { examId: q.examId, student: q.students.shift() };
+              break;
+            }
+          }
+        }
+        if (!chosen) break;
+        assignments.push({ examId: chosen.examId, studentId: chosen.student.studentId, seat: `${col}${row}` });
       }
     }
 
-    if (errors.length > 0) {
-      return res.status(500).json({ error: 'AI returned invalid assignments', details: errors });
-    }
-
-    // Apply assignments to exams
+    // Apply to exams and sort each exam's students by seat label (A1, A2… B1, B2…)
     for (const e of coExams) {
       const eIdx = exams.findIndex(ex => ex.id === e.id);
-      exams[eIdx].students = exams[eIdx].students.map(student => {
-        const assignment = assignments.find(a => a.examId === e.id && a.studentId === student.studentId);
-        return { ...student, seatAssigned: assignment ? assignment.seat : student.seatAssigned };
-      });
+      exams[eIdx].students = exams[eIdx].students
+        .map(student => {
+          const a = assignments.find(x => x.examId === e.id && x.studentId === student.studentId);
+          return { ...student, seatAssigned: a ? a.seat : student.seatAssigned };
+        })
+        .sort((a, b) => {
+          const sA = a.seatAssigned || '';
+          const sB = b.seatAssigned || '';
+          const colA = sA.charAt(0), colB = sB.charAt(0);
+          const rowA = parseInt(sA.slice(1)) || 0;
+          const rowB = parseInt(sB.slice(1)) || 0;
+          if (colA !== colB) return colA.localeCompare(colB);
+          return rowA - rowB;
+        });
     }
 
     writeExams(exams);
 
     res.json({
       success: true,
-      message: `AI optimized seating for ${coExams.length} exam(s) with ${totalStudents} students`,
+      message: `Seating optimized for ${coExams.length} exam(s) with ${totalStudents} students — modules interleaved`,
       assignments
     });
 
   } catch (err) {
-    console.error('AI optimization error:', err);
-    if (err.status === 401) {
-      return res.status(401).json({ error: 'Invalid Anthropic API key. Please check your .env file.' });
-    }
-    res.status(500).json({ error: 'AI optimization failed: ' + err.message });
+    console.error('Optimize seating error:', err);
+    res.status(500).json({ error: 'Optimize seating failed: ' + err.message });
   }
 });
 

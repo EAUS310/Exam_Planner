@@ -224,6 +224,9 @@ function renderStudentList() {
       <td>${escHtml(s.studentName)}</td>
       <td style="font-weight:bold; color:#1a3a5c;">${s.seatAssigned || '—'}</td>
       <td>
+        <button class="btn btn-sm btn-outline" onclick="openEditSeat('${escHtml(s.studentId)}', '${escHtml(s.studentName)}', '${escHtml(s.seatAssigned || '')}')">
+          ✏️ Edit Seat
+        </button>
         <button class="btn btn-sm btn-red" onclick="removeStudent('${escHtml(s.studentId)}')">
           🗑️ Remove
         </button>
@@ -400,6 +403,85 @@ async function removeStudent(studentId) {
 // Make removeStudent available globally (called from inline onclick)
 window.removeStudent = removeStudent;
 
+// ── Edit Seat ─────────────────────────────────────────────
+let editSeatStudentId = null;
+
+const editSeatModal     = document.getElementById('editSeatModal');
+const editSeatInput     = document.getElementById('editSeatInput');
+const editSeatError     = document.getElementById('editSeatError');
+const editSeatNameEl    = document.getElementById('editSeatStudentName');
+const editSeatIdEl      = document.getElementById('editSeatStudentId');
+const saveEditSeatBtn   = document.getElementById('saveEditSeatBtn');
+const cancelEditSeatBtn = document.getElementById('cancelEditSeatBtn');
+const closeEditSeatBtn  = document.getElementById('closeEditSeatModal');
+
+function openEditSeat(studentId, studentName, currentSeat) {
+  editSeatStudentId = studentId;
+  editSeatNameEl.textContent = studentName;
+  editSeatIdEl.textContent   = studentId;
+  editSeatInput.value        = currentSeat || '';
+  editSeatError.style.display = 'none';
+  editSeatError.textContent   = '';
+  editSeatModal.classList.remove('hidden');
+  editSeatInput.focus();
+  editSeatInput.select();
+}
+
+function closeEditSeat() {
+  editSeatModal.classList.add('hidden');
+  editSeatStudentId = null;
+}
+
+closeEditSeatBtn.addEventListener('click', closeEditSeat);
+cancelEditSeatBtn.addEventListener('click', closeEditSeat);
+editSeatModal.addEventListener('click', e => { if (e.target === editSeatModal) closeEditSeat(); });
+
+editSeatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') saveEditSeatBtn.click();
+  if (e.key === 'Escape') closeEditSeat();
+});
+
+saveEditSeatBtn.addEventListener('click', async () => {
+  const newSeat = editSeatInput.value.trim().toUpperCase();
+  if (!newSeat) {
+    editSeatError.textContent = 'Please enter a seat (e.g. A3).';
+    editSeatError.style.display = 'block';
+    return;
+  }
+
+  saveEditSeatBtn.disabled = true;
+  saveEditSeatBtn.textContent = 'Saving…';
+  editSeatError.style.display = 'none';
+
+  try {
+    const res = await fetch(
+      `/api/exams/${examId}/students/${encodeURIComponent(editSeatStudentId)}/seat`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seat: newSeat })
+      }
+    );
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to update seat');
+
+    exam = data;
+    renderStudentList();
+    closeEditSeat();
+    showToast(`Seat updated to ${newSeat}`, 'success');
+
+  } catch (err) {
+    editSeatError.textContent = err.message;
+    editSeatError.style.display = 'block';
+  } finally {
+    saveEditSeatBtn.disabled = false;
+    saveEditSeatBtn.textContent = '✏️ Update Seat';
+  }
+});
+
+window.openEditSeat = openEditSeat;
+
 // ── AI Optimize Seating ───────────────────────────────────
 aiOptimizeBtn.addEventListener('click', async () => {
   const myVenueIds = getExamVenueIds(exam);
@@ -415,7 +497,7 @@ aiOptimizeBtn.addEventListener('click', async () => {
   }
 
   aiOptimizeBtn.disabled = true;
-  aiOptimizeBtn.innerHTML = '<span class="spinner"></span> AI is thinking…';
+  aiOptimizeBtn.innerHTML = '<span class="spinner"></span> Optimising…';
   aiResult.style.display = 'none';
 
   try {
@@ -427,14 +509,14 @@ aiOptimizeBtn.addEventListener('click', async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || 'AI optimization failed');
+      throw new Error(data.error || 'Optimisation failed');
     }
 
     // Show result
     aiResult.style.display = 'block';
     aiResult.innerHTML = `
       <div class="ai-result-box">
-        <div class="ai-result-title">🤖 AI Optimization Complete</div>
+        <div class="ai-result-title">✅ Seating Optimised</div>
         <p style="font-size:13px; color:#333; margin-bottom:8px;">${data.message}</p>
         <p style="font-size:12px; color:#555;">
           ${data.assignments.length} seat assignments applied. Students from different modules are now interleaved.
@@ -449,7 +531,7 @@ aiOptimizeBtn.addEventListener('click', async () => {
 
     renderStudentList();
     renderCoExamsInfo();
-    showToast('✓ AI seating optimization applied successfully!', 'success');
+    showToast('✓ Seating optimised successfully!', 'success');
 
   } catch (err) {
     aiResult.style.display = 'block';
@@ -459,10 +541,10 @@ aiOptimizeBtn.addEventListener('click', async () => {
         ${err.message.includes('API key') ?
           '<br><small>Add your ANTHROPIC_API_KEY to the .env file and restart the server.</small>' : ''}
       </div>`;
-    showToast('AI optimization failed: ' + err.message, 'error');
+    showToast('Optimisation failed: ' + err.message, 'error');
   } finally {
     aiOptimizeBtn.disabled = false;
-    aiOptimizeBtn.innerHTML = '🤖 AI Optimize Seating for All Exams in This Venue';
+    aiOptimizeBtn.innerHTML = '🔀 Optimise Seating for All Exams in This Venue';
   }
 });
 

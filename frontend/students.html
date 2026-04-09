@@ -27,10 +27,13 @@
     <a href="index.html" class="sidebar-link">
       <span class="nav-icon">📋</span> Exam Module Entry
     </a>
+    <a href="schedule.html" class="sidebar-link">
+      <span class="nav-icon">📅</span> Exam Schedule
+    </a>
   </nav>
 
   <div class="sidebar-footer">
-    EAU Exam Planning Tool<br>Spring 2026
+    &copy; 2026 Mohammed Khateeb
   </div>
 </aside>
 
@@ -117,18 +120,18 @@
       </div>
     </div>
 
-    <!-- ── AI Optimize ───────────────────────────────────── -->
+    <!-- ── Seating Optimisation ──────────────────────────── -->
     <div id="aiOptimizeSection" class="card" style="display:none;">
       <div class="card-header" style="background: linear-gradient(135deg, #1a3a5c, #2c5f8a);">
-        🤖 AI Seating Optimization
+        🔀 Seating Optimisation
       </div>
       <div class="card-body">
         <p style="font-size:13px; color:#555; margin-bottom:14px;">
-          Multiple exams share this venue on the same date. Use AI to interleave students from different modules — reducing the risk of copying.
+          Multiple exams share this venue on the same date. Optimise seating to interleave students from different modules across columns — reducing the risk of copying.
         </p>
         <div id="aiCoExamsList" style="margin-bottom:14px;"></div>
-        <button class="btn btn-ai" id="aiOptimizeBtn">
-          🤖 AI Optimize Seating for All Exams in This Venue
+        <button class="btn btn-primary" id="aiOptimizeBtn">
+          🔀 Optimise Seating for All Exams in This Venue
         </button>
         <div id="aiResult" style="margin-top:14px; display:none;"></div>
       </div>
@@ -151,6 +154,33 @@
 
   </div><!-- /page-container -->
 </div><!-- /main-content -->
+
+<!-- ══════════════════════════════════════════════════════════
+     EDIT SEAT MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="editSeatModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span>✏️ Edit Seat Assignment</span>
+      <button class="modal-close" id="closeEditSeatModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px; color:#555; margin-bottom:16px;">
+        Student: <strong id="editSeatStudentName"></strong><br>
+        ID: <span id="editSeatStudentId" style="font-family:monospace;"></span>
+      </p>
+      <div class="form-group">
+        <label for="editSeatInput">New Seat <span class="label-hint">e.g. A3, B7</span></label>
+        <input type="text" id="editSeatInput" placeholder="e.g. A3" maxlength="10" autocomplete="off">
+      </div>
+      <div id="editSeatError" style="display:none; color:#c0392b; font-size:12px; margin-top:6px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelEditSeatBtn">Cancel</button>
+      <button class="btn btn-primary" id="saveEditSeatBtn">✏️ Update Seat</button>
+    </div>
+  </div>
+</div>
 
 <div id="toast-container"></div>
 <script src="js/students.js"></script>
