@@ -9,7 +9,7 @@
     @media screen {
       body { background: #f0f0f0; padding: 20px; }
       .screen-controls {
-        max-width: 210mm;
+        width: 210mm;
         margin: 0 auto 16px;
         display: flex;
         gap: 10px;
@@ -33,11 +33,24 @@
       }
       .screen-btn-ghost:hover { background: #d6e4f0; }
       .print-wrapper {
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+      }
+      .print-page {
         background: #fff;
-        max-width: 210mm;
-        margin: 0 auto;
         box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         padding: 15mm 18mm;
+        margin-bottom: 20px;
+        width: 210mm;
+        min-height: 297mm;
+        position: relative;
+        flex-shrink: 0;
+      }
+      .print-page:last-child {
+        margin-bottom: 0;
       }
       #loadingMsg {
         text-align: center;
@@ -45,11 +58,14 @@
         font-family: 'Segoe UI', Arial, sans-serif;
         color: #555;
         font-size: 14px;
+        background: #fff;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
       }
     }
     @media print {
       .screen-controls { display: none !important; }
-      .print-wrapper { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
+      .print-wrapper { background: transparent; padding: 0; margin: 0; max-width: 100%; }
+      .print-page { box-shadow: none; padding: 0; margin: 0; min-height: 0; }
       body { background: #fff; padding: 0; }
     }
   </style>
