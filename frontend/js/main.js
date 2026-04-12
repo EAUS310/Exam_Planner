@@ -1,5 +1,6 @@
 /* ══════════════════════════════════════════════════════════
    Exam Planning Tool — Main Page (index.html)
+   All data via storage.js (localStorage + file sync)
    ══════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -101,13 +102,7 @@ function getCheckedVenueIds() {
 }
 
 function getExamTypePillClass(type) {
-  const map = {
-    'Final':   'pill-red',
-    'Midterm': 'pill-blue',
-    'Test':    'pill-gray',
-    'Quiz':    'pill-gray',
-    'Other':   'pill-gray'
-  };
+  const map = { 'Final': 'pill-red', 'Midterm': 'pill-blue', 'Test': 'pill-gray', 'Quiz': 'pill-gray', 'Other': 'pill-gray' };
   return map[type] || 'pill-gray';
 }
 
@@ -117,92 +112,27 @@ function escHtml(str) {
   }[c]));
 }
 
-// ── Add / Edit Exam Modal ─────────────────────────────────
-function openAddExam() {
-  examForm.reset();
-  editExamIdInput.value = '';
-  addExamModalTitle.textContent = '＋ New Exam Entry';
-  submitExamBtn.textContent = '＋ Create Exam';
-  addExamModal.classList.remove('hidden');
-  document.getElementById('moduleCode').focus();
-}
-
-function openEditExam(examId) {
-  const exam = allExams.find(e => e.id === examId);
-  if (!exam) return;
-
-  examForm.reset();
-  editExamIdInput.value = examId;
-  addExamModalTitle.textContent = '✏️ Edit Exam Entry';
-  submitExamBtn.textContent = '💾 Save Changes';
-
-  document.getElementById('moduleCode').value      = exam.moduleCode;
-  document.getElementById('moduleName').value       = exam.moduleName;
-  document.getElementById('examName').value         = exam.examName;
-  document.getElementById('semester').value         = exam.semester;
-  document.getElementById('date').value             = exam.date;
-  document.getElementById('startTime').value        = exam.startTime;
-  document.getElementById('endTime').value          = exam.endTime;
-  document.getElementById('program').value          = exam.program || '';
-  document.getElementById('instructorName').value   = exam.instructorName;
-  document.getElementById('invigilatorName').value  = exam.invigilatorName || '';
-
-  // Check the right venue checkboxes
-  const examVenueIds = exam.venueIds && exam.venueIds.length > 0 ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
-  venueCheckList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-    cb.checked = examVenueIds.includes(cb.value);
-    cb.closest('.venue-check-item').classList.toggle('checked', cb.checked);
+// ── Load classrooms into venue checklist ──────────────────
+function loadClassrooms() {
+  allClassrooms = getClassrooms();
+  venueCheckList.innerHTML = '';
+  allClassrooms.forEach(c => {
+    const label = document.createElement('label');
+    label.className = 'venue-check-item';
+    label.innerHTML = `<input type="checkbox" value="${c.id}"> <span>${c.name} (${c.totalSeats} seats)</span>`;
+    label.querySelector('input').addEventListener('change', function() {
+      label.classList.toggle('checked', this.checked);
+    });
+    venueCheckList.appendChild(label);
   });
 
-  addExamModal.classList.remove('hidden');
-}
-
-function closeAddExam() {
-  addExamModal.classList.add('hidden');
-  examForm.reset();
-  editExamIdInput.value = '';
-  venueCheckList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-    cb.checked = false;
-    cb.closest('.venue-check-item').classList.remove('checked');
+  filterVenue.innerHTML = '<option value="">All Venues</option>';
+  allClassrooms.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.name;
+    filterVenue.appendChild(opt);
   });
-}
-
-openAddExamBtn.addEventListener('click', openAddExam);
-closeAddExamModal.addEventListener('click', closeAddExam);
-cancelAddExamBtn.addEventListener('click', closeAddExam);
-addExamModal.addEventListener('click', (e) => {
-  if (e.target === addExamModal) closeAddExam();
-});
-
-// ── Load classrooms into venue dropdown ───────────────────
-async function loadClassrooms() {
-  try {
-    const res = await fetch('/api/classrooms');
-    allClassrooms = await res.json();
-    // Populate venue checklist in the form
-    venueCheckList.innerHTML = '';
-    allClassrooms.forEach(c => {
-      const label = document.createElement('label');
-      label.className = 'venue-check-item';
-      label.innerHTML = `<input type="checkbox" value="${c.id}"> <span>${c.name} (${c.totalSeats} seats)</span>`;
-      label.querySelector('input').addEventListener('change', function() {
-        label.classList.toggle('checked', this.checked);
-      });
-      venueCheckList.appendChild(label);
-    });
-
-    // Populate filter dropdown
-    filterVenue.innerHTML = '<option value="">All Venues</option>';
-    allClassrooms.forEach(c => {
-      const fOpt = document.createElement('option');
-      fOpt.value = c.id;
-      fOpt.textContent = c.name;
-      filterVenue.appendChild(fOpt);
-    });
-  } catch (err) {
-    venueSelect.innerHTML = '<option value="">Error loading venues</option>';
-    showToast('Could not load venues from server', 'error');
-  }
 }
 
 // ── Filter logic ──────────────────────────────────────────
@@ -224,15 +154,10 @@ function getFilteredExams() {
   });
 }
 
-// ── Load & render exam list ───────────────────────────────
-async function loadExams() {
-  try {
-    const res = await fetch('/api/exams');
-    allExams = await res.json();
-    renderExamList();
-  } catch (err) {
-    examListCont.innerHTML = `<div class="alert alert-error" style="margin:16px;">Failed to load exams: ${err.message}</div>`;
-  }
+// ── Render exam list ──────────────────────────────────────
+function refreshData() {
+  allExams = getExams();
+  renderExamList();
 }
 
 function renderExamList() {
@@ -314,8 +239,62 @@ function renderExamList() {
     </div>`;
 }
 
+// ── Add / Edit Exam Modal ─────────────────────────────────
+function openAddExam() {
+  examForm.reset();
+  editExamIdInput.value = '';
+  addExamModalTitle.textContent = '＋ New Exam Entry';
+  submitExamBtn.textContent = '＋ Create Exam';
+  addExamModal.classList.remove('hidden');
+  document.getElementById('moduleCode').focus();
+}
+
+function openEditExam(examId) {
+  const exam = allExams.find(e => e.id === examId);
+  if (!exam) return;
+
+  examForm.reset();
+  editExamIdInput.value = examId;
+  addExamModalTitle.textContent = '✏️ Edit Exam Entry';
+  submitExamBtn.textContent = '💾 Save Changes';
+
+  document.getElementById('moduleCode').value      = exam.moduleCode;
+  document.getElementById('moduleName').value       = exam.moduleName;
+  document.getElementById('examName').value         = exam.examName;
+  document.getElementById('semester').value         = exam.semester;
+  document.getElementById('date').value             = exam.date;
+  document.getElementById('startTime').value        = exam.startTime;
+  document.getElementById('endTime').value          = exam.endTime;
+  document.getElementById('program').value          = exam.program || '';
+  document.getElementById('instructorName').value   = exam.instructorName;
+  document.getElementById('invigilatorName').value  = exam.invigilatorName || '';
+
+  const examVenueIds = exam.venueIds && exam.venueIds.length > 0 ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
+  venueCheckList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.checked = examVenueIds.includes(cb.value);
+    cb.closest('.venue-check-item').classList.toggle('checked', cb.checked);
+  });
+
+  addExamModal.classList.remove('hidden');
+}
+
+function closeAddExam() {
+  addExamModal.classList.add('hidden');
+  examForm.reset();
+  editExamIdInput.value = '';
+  venueCheckList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('.venue-check-item').classList.remove('checked');
+  });
+}
+
+openAddExamBtn.addEventListener('click', openAddExam);
+closeAddExamModal.addEventListener('click', closeAddExam);
+cancelAddExamBtn.addEventListener('click', closeAddExam);
+addExamModal.addEventListener('click', (e) => { if (e.target === addExamModal) closeAddExam(); });
+
 // ── Create / Update Exam ──────────────────────────────────
-submitExamBtn.addEventListener('click', async () => {
+submitExamBtn.addEventListener('click', () => {
   const required = ['moduleCode','moduleName','examName','semester',
                     'date','startTime','endTime','program','instructorName'];
   for (const f of required) {
@@ -353,27 +332,15 @@ submitExamBtn.addEventListener('click', async () => {
   submitExamBtn.innerHTML = `<span class="spinner"></span> ${isEdit ? 'Saving…' : 'Creating…'}`;
 
   try {
-    const url    = isEdit ? `/api/exams/${editId}` : '/api/exams';
-    const method = isEdit ? 'PUT' : 'POST';
-
-    const res = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || `Failed to ${isEdit ? 'update' : 'create'} exam`);
-    }
-
-    const saved = await res.json();
-
+    let saved;
     if (isEdit) {
+      saved = updateExam(editId, payload);
+      if (!saved) throw new Error('Exam not found');
       const idx = allExams.findIndex(e => e.id === editId);
       if (idx !== -1) allExams[idx] = saved;
       showToast(`✓ Exam updated: ${saved.moduleCode} — ${saved.examName}`, 'success');
     } else {
+      saved = createExam(payload);
       allExams.push(saved);
       showToast(`✓ Exam created: ${saved.moduleCode} — ${saved.examName}`, 'success');
     }
@@ -432,16 +399,15 @@ closeDeleteModal.addEventListener('click', closeDelete);
 cancelDeleteBtn.addEventListener('click', closeDelete);
 deleteModal.addEventListener('click', (e) => { if (e.target === deleteModal) closeDelete(); });
 
-confirmDeleteBtn.addEventListener('click', async () => {
+confirmDeleteBtn.addEventListener('click', () => {
   if (!currentDeleteExamId) return;
 
   confirmDeleteBtn.disabled = true;
   confirmDeleteBtn.innerHTML = '<span class="spinner"></span> Deleting…';
 
   try {
-    const res = await fetch(`/api/exams/${currentDeleteExamId}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error('Delete failed');
-
+    const ok = deleteExam(currentDeleteExamId);
+    if (!ok) throw new Error('Exam not found');
     allExams = allExams.filter(e => e.id !== currentDeleteExamId);
     renderExamList();
     showToast('Exam deleted successfully', 'success');
@@ -460,7 +426,21 @@ window.openDeleteModal = openDeleteModal;
 window.openEditExam    = openEditExam;
 
 // ── Init ──────────────────────────────────────────────────
-(async () => {
-  await loadClassrooms();
-  await loadExams();
+(function init() {
+  setupFileUI(
+    document.getElementById('fileStatusDot'),
+    document.getElementById('fileStatusText'),
+    document.getElementById('connectFileBtn'),
+    document.getElementById('exportFileBtn')
+  );
+
+  // Reload table whenever data is refreshed from file
+  window.addEventListener('examsUpdated', () => {
+    allExams = getExams();
+    renderExamList();
+  });
+
+  loadClassrooms();
+  allExams = getExams();
+  renderExamList();
 })();

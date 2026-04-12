@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shared Modules — FOE Exam Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <style>
+    /* ── Page header bar ── */
+    .page-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: #fff;
+      border-bottom: 1px solid #e8ecf0;
+      gap: 12px;
+    }
+    .page-bar-info {
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* ── Content wrapper ── */
+    .shared-content {
+      padding: 28px 28px 60px;
+    }
+
+    /* ── Table card ── */
+    .shared-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border: 1px solid #d6e4f0;
+    }
+
+    .shared-card-header {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 13px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Table ── */
+    .shared-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .shared-table thead tr {
+      background: #2c5f8a;
+      color: #fff;
+    }
+
+    .shared-table th {
+      padding: 9px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+      border: 1px solid #1a4a72;
+    }
+
+    .shared-table td {
+      padding: 9px 12px;
+      border: 1px solid #dce8f4;
+      vertical-align: middle;
+      color: #1a3a5c;
+    }
+
+    .shared-table .date-cell {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .shared-table .day-cell {
+      font-size: 12px;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .shared-table .module-cell strong {
+      color: #1a3a5c;
+    }
+
+    .shared-table .timing-cell {
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .shared-table .venue-cell {
+      font-weight: 600;
+    }
+
+    .shared-table .instructor-cell {
+      color: #444;
+    }
+
+    /* Date band colours */
+    .band-0 { background: #eef4fb; }
+    .band-1 { background: #fff; }
+    .band-2 { background: #fdf6ec; }
+    .band-3 { background: #f2fbf4; }
+
+    /* ── Empty state ── */
+    .shared-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+      font-size: 14px;
+    }
+    .shared-empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+    /* ── Download button ── */
+    .btn-download-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #1a3a5c;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-download-pdf:hover { background: #2c5f8a; }
+
+    /* ════════════════════════════════════════════════════════
+       PRINT STYLES — A4 Portrait
+    ════════════════════════════════════════════════════════ */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm 14mm;
+      }
+
+      .sidebar, .topbar, .page-bar,
+      .no-print { display: none !important; }
+
+      .main-content { margin-left: 0 !important; }
+
+      .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 8mm;
+      }
+      .print-header-title {
+        font-size: 13pt;
+        font-weight: 800;
+        color: #1a3a5c;
+      }
+      .print-header-sub {
+        font-size: 9pt;
+        color: #555;
+        margin-top: 2mm;
+      }
+
+      .shared-content { padding: 0; }
+
+      .shared-card {
+        box-shadow: none;
+        border: 1px solid #aac4de;
+        border-radius: 4px;
+      }
+
+      .shared-card-header {
+        background: #1a3a5c !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 10pt;
+        padding: 6px 10px;
+      }
+
+      .shared-table { font-size: 9pt; }
+      .shared-table th { font-size: 8pt; padding: 5px 7px; }
+      .shared-table td { padding: 5px 7px; }
+
+      .shared-table thead tr,
+      .band-0, .band-1, .band-2, .band-3 {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .shared-table thead tr { background: #2c5f8a !important; color: #fff !important; }
+      .band-0 { background: #eef4fb !important; }
+      .band-1 { background: #fff !important; }
+      .band-2 { background: #fdf6ec !important; }
+      .band-3 { background: #f2fbf4 !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="../assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
+    <div>
+      <div class="sidebar-uni-name">Emirates Aviation University</div>
+      <div class="sidebar-app-name">FOE Exam Planner</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Main Menu</div>
+
+  <nav class="sidebar-nav">
+    <a href="index.html" class="sidebar-link">
+      <span class="nav-icon">📋</span> Exam Module Entry
+    </a>
+    <a href="schedule.html" class="sidebar-link">
+      <span class="nav-icon">📅</span> Exam Schedule
+    </a>
+    <a href="schedule-invigilators.html" class="sidebar-link">
+      <span class="nav-icon">👁️</span> Schedule (with Invigilators)
+    </a>
+    <a href="shared-modules.html" class="sidebar-link active">
+      <span class="nav-icon">🔗</span> Shared Modules
+    </a>
+    <a href="shared-venues.html" class="sidebar-link">
+      <span class="nav-icon">🏛️</span> Shared Venues
+    </a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Data File</div>
+  <div class="sidebar-file-status">
+    <span class="file-dot" id="fileStatusDot"></span>
+    <span id="fileStatusText" style="font-size:11px; color:rgba(255,255,255,0.5);">Not connected</span>
+  </div>
+  <div class="sidebar-file-btns">
+    <button class="sidebar-file-btn" id="connectFileBtn">📂 Connect exams.json</button>
+    <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
+  </div>
+
+  <div class="sidebar-footer">
+    &copy; 2026 Mohammed Khateeb
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════════════ -->
+<div class="main-content">
+
+  <!-- Top bar -->
+  <div class="topbar no-print">
+    <span class="topbar-title">🔗 Shared Modules</span>
+  </div>
+
+  <!-- Print-only header (hidden on screen) -->
+  <div class="print-header" style="display:none;">
+    <div class="print-header-title">Emirates Aviation University — Faculty of Engineering</div>
+    <div class="print-header-sub">Shared Modules Schedule</div>
+  </div>
+
+  <!-- Page action bar -->
+  <div class="page-bar no-print">
+    <span class="page-bar-info" id="moduleCount"></span>
+    <button class="btn-download-pdf" id="downloadPdfBtn">
+      ⬇️ Download as PDF
+    </button>
+  </div>
+
+  <!-- Table content -->
+  <div class="shared-content">
+    <div class="shared-card">
+      <div class="shared-card-header">Shared Modules Schedule</div>
+      <div style="overflow-x:auto;">
+        <table class="shared-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Day</th>
+              <th>Module</th>
+              <th>Venue</th>
+              <th>Timings</th>
+              <th>Instructor</th>
+            </tr>
+          </thead>
+          <tbody id="sharedTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Empty state (shown when no matching modules) -->
+    <div class="shared-empty" id="sharedEmpty" style="display:none;">
+      <div class="shared-empty-icon">📭</div>
+      <p>No shared modules found.<br>
+         Shared modules include those with "Math" or "Programming" in the name,<br>
+         or whose code starts with MA, GEN, or FDN.</p>
+    </div>
+  </div>
+
+</div><!-- /main-content -->
+
+<script src="js/storage.js"></script>
+<script src="js/shared-modules.js"></script>
+</body>
+</html>

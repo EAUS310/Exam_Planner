@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   FOE Exam Planner — Schedule Page
+   FOE Exam Planner — Schedule (with Invigilators) Page
    All data via storage.js (localStorage + file sync)
    ══════════════════════════════════════════════════════════ */
 
@@ -80,7 +80,8 @@ function buildProgramTable(title, exams, programId) {
     const bandClass = `band-${dateIdx % 4}`;
 
     group.forEach((exam, i) => {
-      const venues = escHtml(getVenueNames(exam));
+      const venues      = escHtml(getVenueNames(exam));
+      const invigilator = escHtml(exam.invigilatorName || '—');
       rowsHtml += `
         <tr class="${bandClass}">
           ${i === 0
@@ -93,6 +94,7 @@ function buildProgramTable(title, exams, programId) {
           </td>
           <td class="venue-cell">${venues}</td>
           <td class="timing-cell">${escHtml(formatTime(exam.startTime))} &ndash; ${escHtml(formatTime(exam.endTime))}</td>
+          <td class="invigilator-cell">${invigilator}</td>
           <td>${escHtml(exam.instructorName)}</td>
         </tr>`;
     });
@@ -112,6 +114,7 @@ function buildProgramTable(title, exams, programId) {
               <th>Module</th>
               <th>Venue</th>
               <th>Timings</th>
+              <th>Invigilator</th>
               <th>Instructor</th>
             </tr>
           </thead>
@@ -133,7 +136,7 @@ function renderSchedule() {
 
   const typeLabel = examType ? examType : 'All Exam Types';
   const semLabel  = semester ? semester : 'All Semesters';
-  printHeaderSub.textContent = `${semLabel} — ${typeLabel} Schedule`;
+  printHeaderSub.textContent = `${semLabel} — ${typeLabel} Schedule (with Invigilators)`;
 
   const typeSuffix = examType ? `${examType} ` : '';
   const semSuffix  = semester ? `${semester} ` : '';
@@ -194,7 +197,6 @@ function populateSemesterFilter() {
 
   window.addEventListener('examsUpdated', () => {
     allExams = getExams();
-    // Rebuild semester filter if new semesters appeared
     const curSem = filterSemester.value;
     filterSemester.innerHTML = '<option value="">All Semesters</option>';
     populateSemesterFilter();

@@ -66,6 +66,7 @@
   <div id="printContent" style="display:none;"></div>
 </div>
 
+<script src="js/storage.js"></script>
 <script>
   function formatDate(dateStr) {
     if (!dateStr) return '';
@@ -87,8 +88,7 @@
     return [...students].sort((a, b) => {
       const sA = a.seatAssigned || '';
       const sB = b.seatAssigned || '';
-      const colA = sA.charAt(0);
-      const colB = sB.charAt(0);
+      const colA = sA.charAt(0), colB = sB.charAt(0);
       const rowA = parseInt(sA.slice(1)) || 0;
       const rowB = parseInt(sB.slice(1)) || 0;
       if (colA !== colB) return colA.localeCompare(colB);
@@ -114,7 +114,7 @@
             ${pageNum > 1 ? `&nbsp;&nbsp;|&nbsp;&nbsp; <em>(Page ${pageNum} of ${totalPages})</em>` : ''}
           </div>
         </div>
-        <img src="/assets/EAU_Group_logo.png" alt="EAU Logo" class="print-logo">
+        <img src="../assets/EAU_Group_logo.png" alt="EAU Logo" class="print-logo">
       </div>`;
 
     let infoBlockHtml = '';
@@ -176,33 +176,29 @@
       </div>`;
   }
 
-  async function loadAndRender() {
-    const params = new URLSearchParams(window.location.search);
-    const examId = params.get('examId');
+  function loadAndRender() {
+    const params  = new URLSearchParams(window.location.search);
+    const examId  = params.get('examId');
     if (!examId) {
       document.getElementById('loadingMsg').textContent = 'Error: No exam ID provided.';
       return;
     }
 
     try {
-      const [examRes, classroomsRes] = await Promise.all([
-        fetch(`/api/exams/${examId}`),
-        fetch('/api/classrooms')
-      ]);
+      const exam       = getExam(examId);
+      const classrooms = getClassrooms();
 
-      if (!examRes.ok) throw new Error('Exam not found');
-      const exam = await examRes.json();
-      const classrooms = await classroomsRes.json();
+      if (!exam) throw new Error('Exam not found');
+
       const classroom = classrooms.find(c => c.id === exam.venueId);
-
-      document.title = `Seating Plan — ${exam.moduleCode} ${exam.examName}`;
+      document.title  = `Seating Plan — ${exam.moduleCode} ${exam.examName}`;
 
       const venueIds = exam.venueIds && exam.venueIds.length > 0 ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
 
       let pagesHtml = '';
       for (const venueId of venueIds) {
         const venueClassroom = classrooms.find(c => c.id === venueId);
-        const venueStudents = venueIds.length > 1
+        const venueStudents  = venueIds.length > 1
           ? exam.students.filter(s => s.venueId === venueId)
           : exam.students;
         const sorted = sortBySeat(venueStudents);
@@ -216,14 +212,15 @@
       document.getElementById('loadingMsg').style.display = 'none';
       const content = document.getElementById('printContent');
       content.style.display = 'block';
-      content.innerHTML = pagesHtml;
+      content.innerHTML = pagesHtml || '<p style="text-align:center;padding:40px;color:#888;">No students assigned to this exam yet.</p>';
 
     } catch (err) {
       document.getElementById('loadingMsg').textContent = 'Error loading exam: ' + err.message;
     }
   }
 
-  loadAndRender();
+  // Wait for storage.js to finish its async init, then render
+  setTimeout(loadAndRender, 50);
 </script>
 </body>
 </html>

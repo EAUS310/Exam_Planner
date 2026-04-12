@@ -14,7 +14,7 @@
 ══════════════════════════════════════════════════════════ -->
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <img src="/assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
+    <img src="../assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
     <div>
       <div class="sidebar-uni-name">Emirates Aviation University</div>
       <div class="sidebar-app-name">FOE Exam Planner</div>
@@ -30,7 +30,21 @@
     <a href="schedule.html" class="sidebar-link">
       <span class="nav-icon">📅</span> Exam Schedule
     </a>
+    <a href="schedule-invigilators.html" class="sidebar-link">
+      <span class="nav-icon">👁️</span> Schedule (with Invigilators)
+    </a>
   </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Data File</div>
+  <div class="sidebar-file-status">
+    <span class="file-dot" id="fileStatusDot"></span>
+    <span id="fileStatusText" style="font-size:11px; color:rgba(255,255,255,0.5);">Not connected</span>
+  </div>
+  <div class="sidebar-file-btns">
+    <button class="sidebar-file-btn" id="connectFileBtn">📂 Connect exams.json</button>
+    <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
+  </div>
 
   <div class="sidebar-footer">
     &copy; 2026 Mohammed Khateeb
@@ -183,6 +197,7 @@
 </div>
 
 <div id="toast-container"></div>
+<script src="js/storage.js"></script>
 <script src="js/students.js"></script>
 </body>
 </html>

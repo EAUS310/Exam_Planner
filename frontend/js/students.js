@@ -1,13 +1,14 @@
 /* ══════════════════════════════════════════════════════════
    Exam Planning Tool — Student Management (students.html)
+   All data via storage.js (localStorage + file sync)
    ══════════════════════════════════════════════════════════ */
 
 'use strict';
 
 // ── State ─────────────────────────────────────────────────
-let exam          = null;
-let allExams      = [];
-let allClassrooms = [];
+let exam           = null;
+let allExams       = [];
+let allClassrooms  = [];
 let parsedStudents = [];
 
 // ── DOM Refs ──────────────────────────────────────────────
@@ -106,19 +107,17 @@ if (!examId) {
 }
 
 // ── Load Data ─────────────────────────────────────────────
-async function loadAll() {
+function loadAll() {
   try {
-    const [examRes, examsRes, classroomsRes] = await Promise.all([
-      fetch(`/api/exams/${examId}`),
-      fetch('/api/exams'),
-      fetch('/api/classrooms')
-    ]);
+    allClassrooms = getClassrooms();
+    allExams      = getExams();
+    exam          = allExams.find(e => e.id === examId) || null;
 
-    if (!examRes.ok) throw new Error('Exam not found');
-
-    exam          = await examRes.json();
-    allExams      = await examsRes.json();
-    allClassrooms = await classroomsRes.json();
+    if (!exam) {
+      examLoadingState.querySelector('p').textContent = 'Error: Exam not found';
+      showToast('Exam not found', 'error');
+      return;
+    }
 
     renderExamDetails();
     renderCoExamsInfo();
@@ -146,7 +145,7 @@ function renderExamDetails() {
     { label: 'Semester',     value: exam.semester },
     { label: 'Date',         value: formatDate(exam.date) },
     { label: 'Time',         value: `${formatTime(exam.startTime)} – ${formatTime(exam.endTime)}` },
-    { label: 'Venue(s)',      value: getVenueNames(exam) },
+    { label: 'Venue(s)',     value: getVenueNames(exam) },
     { label: 'Instructor',   value: exam.instructorName },
     { label: 'Invigilator',  value: exam.invigilatorName || '—' },
   ].map(({ label, value }) => `
@@ -157,7 +156,6 @@ function renderExamDetails() {
 }
 
 function renderCoExamsInfo() {
-  // Find other exams that share any venue on the same date
   const myVenueIds = getExamVenueIds(exam);
   const coExams = allExams.filter(e =>
     e.id !== exam.id &&
@@ -166,12 +164,11 @@ function renderCoExamsInfo() {
   );
 
   if (coExams.length === 0) {
-    coExamsAlert.style.display = 'none';
+    coExamsAlert.style.display    = 'none';
     aiOptimizeSection.style.display = 'none';
     return;
   }
 
-  // Conflict notice
   const totalOther = coExams.reduce((s, e) => s + e.students.length, 0);
   const capacity   = getTotalCapacity(exam);
   const totalAll   = (exam.students.length) + totalOther;
@@ -190,7 +187,6 @@ function renderCoExamsInfo() {
       </div>
     </div>`;
 
-  // AI Section
   aiOptimizeSection.style.display = 'block';
   aiCoExamsList.innerHTML = `
     <div style="font-size:13px; color:#333; margin-bottom:8px;">
@@ -227,7 +223,7 @@ function renderStudentList() {
         <button class="btn btn-sm btn-outline" onclick="openEditSeat('${escHtml(s.studentId)}', '${escHtml(s.studentName)}', '${escHtml(s.seatAssigned || '')}')">
           ✏️ Edit Seat
         </button>
-        <button class="btn btn-sm btn-red" onclick="removeStudent('${escHtml(s.studentId)}')">
+        <button class="btn btn-sm btn-red" onclick="removeStudentClick('${escHtml(s.studentId)}')">
           🗑️ Remove
         </button>
       </td>
@@ -263,30 +259,20 @@ parseBtn.addEventListener('click', () => {
   const errors = [];
 
   lines.forEach((line, idx) => {
-    // Split on tab first, then on 2+ spaces
     let parts = line.split('\t').map(p => p.trim()).filter(Boolean);
+    if (parts.length < 2) parts = line.split(/\s{2,}/).map(p => p.trim()).filter(Boolean);
     if (parts.length < 2) {
-      parts = line.split(/\s{2,}/).map(p => p.trim()).filter(Boolean);
-    }
-    if (parts.length < 2) {
-      // Try splitting on first whitespace group after what looks like an ID
       const match = line.match(/^(\S+)\s+(.+)$/);
-      if (match) {
-        parts = [match[1].trim(), match[2].trim()];
-      }
+      if (match) parts = [match[1].trim(), match[2].trim()];
     }
 
     if (parts.length >= 2) {
-      parsedStudents.push({
-        studentId:   parts[0],
-        studentName: parts.slice(1).join(' ')
-      });
+      parsedStudents.push({ studentId: parts[0], studentName: parts.slice(1).join(' ') });
     } else {
       errors.push(`Line ${idx + 1}: Could not parse — "${line}"`);
     }
   });
 
-  // Remove duplicates by studentId
   const seen = new Set();
   parsedStudents = parsedStudents.filter(s => {
     if (seen.has(s.studentId)) return false;
@@ -299,7 +285,6 @@ parseBtn.addEventListener('click', () => {
     return;
   }
 
-  // Show preview
   previewCount.textContent = parsedStudents.length;
   previewTableBody.innerHTML = parsedStudents.map((s, i) => `
     <tr>
@@ -338,7 +323,7 @@ cancelPreviewBtn.addEventListener('click', () => {
 });
 
 // ── Save Students ─────────────────────────────────────────
-saveStudentsBtn.addEventListener('click', async () => {
+saveStudentsBtn.addEventListener('click', () => {
   if (parsedStudents.length === 0) {
     showToast('No students to save.', 'warning');
     return;
@@ -348,18 +333,11 @@ saveStudentsBtn.addEventListener('click', async () => {
   saveStudentsBtn.innerHTML = '<span class="spinner"></span> Saving & Assigning Seats…';
 
   try {
-    const res = await fetch(`/api/exams/${examId}/students`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ students: parsedStudents })
-    });
+    const updated = saveStudents(examId, parsedStudents);
+    if (!updated) throw new Error('Failed to save students');
 
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Failed to save students');
-    }
-
-    exam = await res.json();
+    exam = updated;
+    allExams = getExams();
     parsedStudents = [];
     studentPaste.value = '';
     previewCard.style.display = 'none';
@@ -377,20 +355,15 @@ saveStudentsBtn.addEventListener('click', async () => {
 });
 
 // ── Remove Student ────────────────────────────────────────
-async function removeStudent(studentId) {
+function removeStudentClick(studentId) {
   if (!confirm(`Remove student ${studentId} from this exam?`)) return;
 
   try {
-    const res = await fetch(`/api/exams/${examId}/students/${encodeURIComponent(studentId)}`, {
-      method: 'DELETE'
-    });
+    const updated = removeStudent(examId, studentId);
+    if (!updated) throw new Error('Student not found');
 
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Failed to remove student');
-    }
-
-    exam = await res.json();
+    exam = updated;
+    allExams = getExams();
     renderStudentList();
     renderCoExamsInfo();
     showToast(`Student ${studentId} removed and seats re-assigned`, 'success');
@@ -400,8 +373,7 @@ async function removeStudent(studentId) {
   }
 }
 
-// Make removeStudent available globally (called from inline onclick)
-window.removeStudent = removeStudent;
+window.removeStudentClick = removeStudentClick;
 
 // ── Edit Seat ─────────────────────────────────────────────
 let editSeatStudentId = null;
@@ -417,9 +389,9 @@ const closeEditSeatBtn  = document.getElementById('closeEditSeatModal');
 
 function openEditSeat(studentId, studentName, currentSeat) {
   editSeatStudentId = studentId;
-  editSeatNameEl.textContent = studentName;
-  editSeatIdEl.textContent   = studentId;
-  editSeatInput.value        = currentSeat || '';
+  editSeatNameEl.textContent  = studentName;
+  editSeatIdEl.textContent    = studentId;
+  editSeatInput.value         = currentSeat || '';
   editSeatError.style.display = 'none';
   editSeatError.textContent   = '';
   editSeatModal.classList.remove('hidden');
@@ -441,7 +413,7 @@ editSeatInput.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeEditSeat();
 });
 
-saveEditSeatBtn.addEventListener('click', async () => {
+saveEditSeatBtn.addEventListener('click', () => {
   const newSeat = editSeatInput.value.trim().toUpperCase();
   if (!newSeat) {
     editSeatError.textContent = 'Please enter a seat (e.g. A3).';
@@ -454,19 +426,12 @@ saveEditSeatBtn.addEventListener('click', async () => {
   editSeatError.style.display = 'none';
 
   try {
-    const res = await fetch(
-      `/api/exams/${examId}/students/${encodeURIComponent(editSeatStudentId)}/seat`,
-      {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ seat: newSeat })
-      }
-    );
+    const result = updateSeat(examId, editSeatStudentId, newSeat);
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Failed to update seat');
+    if (result && result.error) throw new Error(result.error);
 
-    exam = data;
+    exam = result;
+    allExams = getExams();
     renderStudentList();
     closeEditSeat();
     showToast(`Seat updated to ${newSeat}`, 'success');
@@ -482,37 +447,29 @@ saveEditSeatBtn.addEventListener('click', async () => {
 
 window.openEditSeat = openEditSeat;
 
-// ── AI Optimize Seating ───────────────────────────────────
-aiOptimizeBtn.addEventListener('click', async () => {
-  const myVenueIds = getExamVenueIds(exam);
-  const coExams = allExams.filter(e =>
+// ── Seating Optimisation ──────────────────────────────────
+aiOptimizeBtn.addEventListener('click', () => {
+  const myVenueIds = (exam.venueIds && exam.venueIds.length > 0) ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
+  const coExams    = allExams.filter(e =>
     e.date === exam.date &&
-    getExamVenueIds(e).some(vid => myVenueIds.includes(vid))
+    ((e.venueIds && e.venueIds.length > 0) ? e.venueIds : (e.venueId ? [e.venueId] : [])).some(vid => myVenueIds.includes(vid))
   );
-
   const totalStudents = coExams.reduce((s, e) => s + e.students.length, 0);
+
   if (totalStudents === 0) {
-    showToast('No students to optimize. Please add students to the exams first.', 'warning');
+    showToast('No students to optimise. Please add students first.', 'warning');
     return;
   }
 
   aiOptimizeBtn.disabled = true;
   aiOptimizeBtn.innerHTML = '<span class="spinner"></span> Optimising…';
-  aiResult.style.display = 'none';
+  aiResult.style.display  = 'none';
 
   try {
-    const res = await fetch(`/api/exams/${examId}/optimize-seating`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    });
+    const data = optimizeSeating(examId);
 
-    const data = await res.json();
+    if (data.error) throw new Error(data.error);
 
-    if (!res.ok) {
-      throw new Error(data.error || 'Optimisation failed');
-    }
-
-    // Show result
     aiResult.style.display = 'block';
     aiResult.innerHTML = `
       <div class="ai-result-box">
@@ -523,24 +480,15 @@ aiOptimizeBtn.addEventListener('click', async () => {
         </p>
       </div>`;
 
-    // Reload current exam data
-    const updatedRes = await fetch(`/api/exams/${examId}`);
-    exam = await updatedRes.json();
-    const updatedAllRes = await fetch('/api/exams');
-    allExams = await updatedAllRes.json();
-
+    allExams = getExams();
+    exam     = allExams.find(e => e.id === examId);
     renderStudentList();
     renderCoExamsInfo();
     showToast('✓ Seating optimised successfully!', 'success');
 
   } catch (err) {
     aiResult.style.display = 'block';
-    aiResult.innerHTML = `
-      <div class="alert alert-error">
-        <strong>AI Error:</strong> ${escHtml(err.message)}
-        ${err.message.includes('API key') ?
-          '<br><small>Add your ANTHROPIC_API_KEY to the .env file and restart the server.</small>' : ''}
-      </div>`;
+    aiResult.innerHTML = `<div class="alert alert-error"><strong>Error:</strong> ${escHtml(err.message)}</div>`;
     showToast('Optimisation failed: ' + err.message, 'error');
   } finally {
     aiOptimizeBtn.disabled = false;
@@ -550,5 +498,15 @@ aiOptimizeBtn.addEventListener('click', async () => {
 
 // ── Init ──────────────────────────────────────────────────
 if (examId) {
+  setupFileUI(
+    document.getElementById('fileStatusDot'),
+    document.getElementById('fileStatusText'),
+    document.getElementById('connectFileBtn'),
+    document.getElementById('exportFileBtn')
+  );
+
+  // Reload when data is refreshed from file
+  window.addEventListener('examsUpdated', loadAll);
+
   loadAll();
 }
