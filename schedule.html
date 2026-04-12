@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Schedule (with Invigilators) — FOE Exam Planner</title>
+  <title>Exam Schedule — FOE Exam Planner</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/sidebar.css">
   <style>
@@ -46,7 +46,7 @@
 
     /* ── Schedule Card ── */
     .schedule-card {
-      flex: 1 1 540px;
+      flex: 1 1 480px;
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -109,7 +109,6 @@
     .schedule-table .module-cell strong { color: #1a3a5c; }
     .schedule-table .timing-cell { white-space: nowrap; font-size: 12px; }
     .schedule-table .venue-cell  { font-weight: 600; }
-    .schedule-table .invigilator-cell { color: #555; font-style: italic; }
 
     /* Date band colours */
     .band-0 { background: #eef4fb; }
@@ -153,11 +152,11 @@
     .schedule-empty-icon { font-size: 40px; margin-bottom: 12px; }
 
     /* ════════════════════════════════════════════════════════
-       PRINT STYLES — A3 Landscape
+       PRINT STYLES — A3 Portrait
     ════════════════════════════════════════════════════════ */
     @media print {
       @page {
-        size: A3 landscape;
+        size: A3 portrait;
         margin: 10mm 12mm;
       }
 
@@ -183,19 +182,21 @@
       }
 
       .schedule-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5mm;
+        display: block;
         padding: 0;
-        align-items: flex-start;
       }
 
       .schedule-card {
-        flex: 1 1 120mm;
+        width: 100%;
         box-shadow: none;
         border: 1px solid #aac4de;
         border-radius: 4px;
         break-inside: avoid;
+        break-after: page;
+      }
+
+      .schedule-card:last-child {
+        break-after: auto;
       }
 
       .schedule-card-header {
@@ -250,7 +251,7 @@
 ══════════════════════════════════════════════════════════ -->
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <img src="../assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
+    <img src="assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
     <div>
       <div class="sidebar-uni-name">Emirates Aviation University</div>
       <div class="sidebar-app-name">FOE Exam Planner</div>
@@ -263,10 +264,10 @@
     <a href="index.html" class="sidebar-link">
       <span class="nav-icon">📋</span> Exam Module Entry
     </a>
-    <a href="schedule.html" class="sidebar-link">
+    <a href="schedule.html" class="sidebar-link active">
       <span class="nav-icon">📅</span> Exam Schedule
     </a>
-    <a href="schedule-invigilators.html" class="sidebar-link active">
+    <a href="schedule-invigilators.html" class="sidebar-link">
       <span class="nav-icon">👁️</span> Schedule (with Invigilators)
     </a>
     <a href="shared-modules.html" class="sidebar-link">
@@ -300,9 +301,9 @@
 
   <!-- Top bar -->
   <div class="topbar no-print">
-    <span class="topbar-title">👁️ Schedule (with Invigilators)</span>
+    <span class="topbar-title">📅 Exam Schedule</span>
     <button class="btn btn-primary btn-sm" onclick="window.print()">
-      🖨️ Print / Save as A3 PDF
+      🖨️ Print / Save as A3 Portrait PDF
     </button>
   </div>
 
@@ -344,6 +345,6 @@
 </div><!-- /main-content -->
 
 <script src="js/storage.js"></script>
-<script src="js/schedule-invigilators.js"></script>
+<script src="js/schedule.js"></script>
 </body>
 </html>

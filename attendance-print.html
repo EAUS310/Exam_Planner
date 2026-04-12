@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seating Plan — Exam Planner</title>
+  <title>Attendance Sheet — Exam Planner</title>
   <link rel="stylesheet" href="css/print.css">
   <style>
     @media screen {
@@ -96,9 +96,9 @@
     });
   }
 
-  const ROWS_PER_PAGE = 28;
+  const ROWS_PER_PAGE = 22;
 
-  function buildSeatingPage(exam, classroom, students, pageNum, totalPages, startIdx) {
+  function buildAttendancePage(exam, classroom, students, pageNum, totalPages, startIdx) {
     const isFirst = pageNum === 1;
 
     const headerHtml = `
@@ -106,7 +106,7 @@
         <div class="print-header-left">
           <div class="print-uni-name">Emirates Aviation University &mdash; Faculty of Engineering</div>
           <div class="print-doc-title">
-            ${exam.semester} &mdash; ${exam.examName} &mdash; SEATING PLAN
+            ${exam.semester} &mdash; ${exam.examName} &mdash; ATTENDANCE SHEET
           </div>
           <div class="print-module-info">
             <strong>${exam.moduleCode}</strong> &mdash; ${exam.moduleName}
@@ -114,7 +114,7 @@
             ${pageNum > 1 ? `&nbsp;&nbsp;|&nbsp;&nbsp; <em>(Page ${pageNum} of ${totalPages})</em>` : ''}
           </div>
         </div>
-        <img src="../assets/EAU_Group_logo.png" alt="EAU Logo" class="print-logo">
+        <img src="assets/EAU_Group_logo.png" alt="EAU Logo" class="print-logo">
       </div>`;
 
     let infoBlockHtml = '';
@@ -127,13 +127,34 @@
               <tr><td>Exam Type:</td><td>${exam.examName}</td></tr>
               <tr><td>Semester:</td><td>${exam.semester}</td></tr>
               <tr><td>Date:</td><td>${formatDate(exam.date)}</td></tr>
+              <tr><td>Venue:</td><td>${classroom ? classroom.name : exam.venueId}</td></tr>
+              <tr><td>Instructor:</td><td>${exam.instructorName}</td></tr>
+              <tr><td>Timings:</td><td>${formatTime(exam.startTime)} — ${formatTime(exam.endTime)}</td></tr>
+              <tr><td>Total Students:</td><td><strong>${students.length}</strong></td></tr>
             </table>
           </div>
           <div class="print-info-block">
             <table class="print-info-table">
-              <tr><td>Venue:</td><td>${classroom ? classroom.name : exam.venueId}</td></tr>
-              <tr><td>Instructor:</td><td>${exam.instructorName}</td></tr>
-              <tr><td>Timings:</td><td>${formatTime(exam.startTime)} — ${formatTime(exam.endTime)}</td></tr>
+              <tr>
+                <td>No. of Present:</td>
+                <td><span class="signature-line">&nbsp;</span></td>
+              </tr>
+              <tr>
+                <td>No. of Absent:</td>
+                <td><span class="signature-line">&nbsp;</span></td>
+              </tr>
+              <tr>
+                <td>Invigilator:</td>
+                <td>${exam.invigilatorName || '—'}</td>
+              </tr>
+              <tr>
+                <td style="padding-top:16pt;">Invigilator<br>Signature:</td>
+                <td style="padding-top:16pt;"><span class="signature-line" style="width:100pt;">&nbsp;</span></td>
+              </tr>
+              <tr>
+                <td style="padding-top:8pt;">Instructor<br>Signature:</td>
+                <td style="padding-top:8pt;"><span class="signature-line" style="width:100pt;">&nbsp;</span></td>
+              </tr>
             </table>
           </div>
         </div>`;
@@ -144,8 +165,9 @@
       <tr>
         <td class="col-no">${startIdx + i + 1}</td>
         <td class="col-id">${s.studentId}</td>
-        <td class="col-name-wide">${s.studentName}</td>
-        <td class="col-seat" style="font-weight:bold; color:#1a3a5c; font-size:11pt;">${s.seatAssigned || '—'}</td>
+        <td class="col-name">${s.studentName}</td>
+        <td class="col-seat" style="font-weight:bold; color:#1a3a5c;">${s.seatAssigned || '—'}</td>
+        <td class="col-sig">&nbsp;</td>
       </tr>`).join('');
 
     const tableHtml = `
@@ -154,8 +176,9 @@
           <tr>
             <th class="col-no">#</th>
             <th class="col-id">Student ID</th>
-            <th class="col-name-wide">Student Full Name</th>
+            <th class="col-name">Student Full Name</th>
             <th class="col-seat">Seat</th>
+            <th class="col-sig">Signature</th>
           </tr>
         </thead>
         <tbody>${rowsHtml}</tbody>
@@ -163,7 +186,7 @@
 
     const footerHtml = `
       <div class="print-footer">
-        <span>${exam.moduleCode} — ${exam.moduleName} — ${exam.examName} — ${formatDate(exam.date)} — SEATING PLAN</span>
+        <span>${exam.moduleCode} — ${exam.moduleName} — ${exam.examName} — ${formatDate(exam.date)}</span>
         <span>Page ${pageNum} of ${totalPages}</span>
       </div>`;
 
@@ -191,7 +214,7 @@
       if (!exam) throw new Error('Exam not found');
 
       const classroom = classrooms.find(c => c.id === exam.venueId);
-      document.title  = `Seating Plan — ${exam.moduleCode} ${exam.examName}`;
+      document.title  = `Attendance — ${exam.moduleCode} ${exam.examName}`;
 
       const venueIds = exam.venueIds && exam.venueIds.length > 0 ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
 
@@ -205,7 +228,7 @@
         if (sorted.length === 0) continue;
         const totalPages = Math.max(1, Math.ceil(sorted.length / ROWS_PER_PAGE));
         for (let p = 1; p <= totalPages; p++) {
-          pagesHtml += buildSeatingPage(exam, venueClassroom || classroom, sorted, p, totalPages, (p - 1) * ROWS_PER_PAGE);
+          pagesHtml += buildAttendancePage(exam, venueClassroom || classroom, sorted, p, totalPages, (p - 1) * ROWS_PER_PAGE);
         }
       }
 
