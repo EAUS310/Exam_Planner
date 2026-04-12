@@ -1,7 +1,9 @@
 # FOE Exam Planner
 ### Emirates Aviation University — Faculty of Engineering
 
-A full-stack exam scheduling and seat assignment tool built with Node.js/Express and vanilla HTML/CSS/JavaScript.
+A fully static exam scheduling and seat assignment tool built with vanilla HTML/CSS/JavaScript. No server or installation required — runs entirely in the browser.
+
+**Live app:** https://eaus310.github.io/Exam_Planner/
 
 ---
 
@@ -12,11 +14,14 @@ A full-stack exam scheduling and seat assignment tool built with Node.js/Express
 - **Automatic Seat Assignment** — Alphabetical seat allocation across one or more venues, conflict-aware
 - **Manual Seat Editing** — Override any student's assigned seat individually
 - **Seating Optimisation** — Interleaves students from different modules sharing a venue (column-alternating algorithm) to reduce copying risk
+- **Invigilator Scheduling** — Assign and manage invigilators per exam
+- **Shared Modules** — View and manage modules that span multiple exams or venues
+- **Shared Venues** — Track and import venue data, detect scheduling conflicts across exams
 - **Exam Schedule Page** — Program-grouped schedule view with filters and A3 print layout
 - **Print Outputs**:
   - Attendance Sheet (student list with signature column, sorted by seat)
   - Seating Plan (posted outside the venue, grouped by venue)
-- **Multi-venue awareness** — Warns when multiple exams share the same venue and date
+- **Offline-first** — All data is stored in `localStorage`; optional sync to a local `exams.json` file via the File System Access API
 
 ---
 
@@ -24,81 +29,50 @@ A full-stack exam scheduling and seat assignment tool built with Node.js/Express
 
 ```
 exam-planner/
-├── backend/
-│   ├── server.js              # Express server entry point
-│   └── routes/
-│       ├── exams.js           # Exam CRUD + seat assignment + optimisation
-│       └── classrooms.js      # Classroom data API
-├── frontend/
-│   ├── index.html             # Exam entry form + exam list
-│   ├── students.html          # Student management per exam
-│   ├── schedule.html          # Exam schedule view
-│   ├── attendance-print.html  # Printable attendance sheet
-│   ├── seating-print.html     # Printable seating plan
-│   ├── css/
-│   │   ├── style.css          # Screen styles
-│   │   ├── sidebar.css        # Sidebar styles
-│   │   └── print.css          # Print-optimized styles
-│   └── js/
-│       ├── main.js            # Exam list page logic
-│       ├── students.js        # Student management logic
-│       └── schedule.js        # Schedule page logic
+├── index.html                   # Exam entry form + exam list
+├── students.html                # Student management per exam
+├── schedule.html                # Exam schedule view
+├── schedule-invigilators.html   # Invigilator assignment
+├── shared-modules.html          # Shared module management
+├── shared-venues.html           # Venue management + import
+├── attendance-print.html        # Printable attendance sheet
+├── seating-print.html           # Printable seating plan
+├── css/
+│   ├── style.css                # Screen styles
+│   ├── sidebar.css              # Sidebar styles
+│   └── print.css                # Print-optimized styles
+├── js/
+│   ├── storage.js               # Data layer (localStorage + file sync)
+│   ├── main.js                  # Exam list page logic
+│   ├── students.js              # Student management logic
+│   ├── schedule.js              # Schedule page logic
+│   ├── schedule-invigilators.js # Invigilator page logic
+│   ├── shared-modules.js        # Shared modules page logic
+│   └── shared-venues.js         # Shared venues page logic
 ├── data/
-│   ├── classrooms.json        # Venue definitions (edit manually)
-│   └── exams.json             # Exam data (managed via UI)
-├── assets/
-│   └── EAU_Group_logo.png     # University logo
-├── .env                       # Port configuration
-├── .gitignore
-└── package.json
+│   └── exams.json               # Seed data (loaded on first visit if localStorage is empty)
+└── assets/
+    ├── EAU_Logo.png
+    └── EAU_Group_logo.png
 ```
 
 ---
 
-## Setup Instructions
+## Usage
 
-### 1. Prerequisites
-- **Node.js** v16 or newer — [Download](https://nodejs.org/)
+### Opening the App
 
-### 2. Install Dependencies
+**Option A — GitHub Pages (recommended, works on any device):**
+Visit https://eaus310.github.io/Exam_Planner/
 
-Open a terminal in the `exam-planner/` folder and run:
-
-```bash
-npm install
-```
-
-### 3. Configure Environment
-
-The `.env` file only needs a port number:
-
-```env
-PORT=3000
-```
-
-### 4. Start the Server
-
-```bash
-npm start
-```
-
-Or, for auto-restart during development:
-
-```bash
-npm run dev
-```
-
-### 5. Open in Browser
-
-Navigate to: **http://localhost:3000**
+**Option B — Local file:**
+Open `index.html` directly in a modern browser (Chrome or Edge recommended for full file-sync support).
 
 ---
-
-## Usage Guide
 
 ### Creating an Exam
 1. Click **"+ Add Exam Entry"** on the main page
-2. Fill in the exam details (module, date, time, venue, instructor)
+2. Fill in the exam details (module, date, time, instructor)
 3. Select one or more venues using the checklist
 4. Click **"Create Exam"**
 
@@ -123,7 +97,6 @@ Navigate to: **http://localhost:3000**
 - Navigate to the Student Management page for any of the shared exams
 - Click **"🔀 Optimise Seating for All Exams in This Venue"**
 - Students from different modules are interleaved column by column to reduce copying risk
-- No API key required — fully algorithmic
 
 ### Printing
 1. Click **"🖨️ Print"** next to an exam on the main page
@@ -134,14 +107,16 @@ Navigate to: **http://localhost:3000**
 
 ## Data Storage
 
-All data is stored in local JSON files in the `/data` directory:
+All data is stored in **`localStorage`** in the browser — no server required.
 
-- `classrooms.json` — Pre-defined venues (edit manually to add or modify)
-- `exams.json` — Created automatically, modified via the UI
+### Syncing to a File (optional)
+Click **"📂 Connect exams.json"** in the sidebar to link a local `exams.json` file. Once connected, every change is automatically written back to that file via the File System Access API (Chrome/Edge only).
 
-### Adding or Editing Classrooms
+To export a snapshot at any time, click **"⬇️ Download exams.json"**.
 
-Edit `data/classrooms.json` directly. Two layout formats are supported:
+### Venues / Classrooms
+
+Venue definitions are embedded in `js/storage.js` under `getClassrooms()`. To add or modify venues, edit that array directly. Two layout formats are supported:
 
 **Uniform layout** (same number of rows in every column):
 ```json
@@ -178,33 +153,15 @@ Students are sorted **alphabetically by last name** before assignment.
 
 When multiple exams share a venue on the same date:
 - Seats already taken by other exams are automatically skipped
-- The **Optimise Seating** button goes further by assigning entire columns to alternating modules, so adjacent seats always belong to different subjects
-
----
-
-## API Reference
-
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/exams` | List all exams |
-| POST | `/api/exams` | Create new exam |
-| GET | `/api/exams/:id` | Get exam by ID |
-| PUT | `/api/exams/:id` | Update exam |
-| DELETE | `/api/exams/:id` | Delete exam |
-| POST | `/api/exams/:id/students` | Replace student list + auto-assign seats |
-| PATCH | `/api/exams/:id/students/:studentId/seat` | Update a single student's seat |
-| DELETE | `/api/exams/:id/students/:studentId` | Remove one student |
-| POST | `/api/exams/:id/optimize-seating` | Algorithmic column-alternating seat optimisation |
-| GET | `/api/classrooms` | List all classrooms |
-| GET | `/api/classrooms/:id` | Get classroom by ID |
+- The **Optimise Seating** button assigns entire columns to alternating modules so adjacent seats always belong to different subjects
 
 ---
 
 ## Tech Stack
 
-- **Backend**: Node.js, Express.js
 - **Frontend**: Vanilla HTML5, CSS3, JavaScript (ES6+)
-- **Storage**: JSON flat files (no database required)
+- **Storage**: `localStorage` + File System Access API (optional file sync)
+- **Hosting**: GitHub Pages (static, no build step)
 - **Print**: CSS `@media print`, `@page` rules (A3 landscape for schedule)
 
 ---
