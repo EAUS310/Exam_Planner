@@ -166,6 +166,36 @@ When multiple exams share a venue on the same date:
 
 ---
 
+## Pushing Changes to GitHub (without Claude Code)
+
+To save your Claude Code usage, push updates directly from the terminal:
+
+```bash
+# 1. Open a terminal in the project folder (or use VS Code's integrated terminal)
+cd "path/to/exam-planner"
+
+# 2. Stage the files you changed (e.g. data/exams.json)
+git add data/exams.json
+
+# 3. Or stage all changed files at once
+git add .
+
+# 4. Commit with a message
+git commit -m "Your description of what changed"
+
+# 5. Push to GitHub
+git push
+```
+
+**Tip — do it directly from VS Code:**
+1. Open the **Source Control** panel (`Ctrl+Shift+G`)
+2. Stage files with **+**, write a commit message, click **✓ Commit**
+3. Click **Sync Changes** (or the cloud icon) to push
+
+GitHub will update the live site at https://eaus310.github.io/Exam_Planner/ automatically within ~30 seconds after each push.
+
+---
+
 ## License
 
 Internal use — Emirates Aviation University
