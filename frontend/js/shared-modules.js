@@ -8,6 +8,7 @@
 
 let allExams      = [];
 let allClassrooms = [];
+let classroomMap  = new Map();   // id → classroom, built once at init
 
 const tableBody   = document.getElementById('sharedTableBody');
 const emptyState  = document.getElementById('sharedEmpty');
@@ -123,16 +124,17 @@ function renderTable() {
   emptyState.style.display = 'none';
 
   // Group rows by date for band colouring
-  const dates  = [...new Set(merged.map(e => e.date))];
+  const dates        = [...new Set(merged.map(e => e.date))];
+  const dateIndexMap = new Map(dates.map((d, i) => [d, i]));
   let rowsHtml = '';
 
   merged.forEach(entry => {
-    const dateIdx   = dates.indexOf(entry.date);
+    const dateIdx   = dateIndexMap.get(entry.date) ?? 0;
     const bandClass = `band-${dateIdx % 4}`;
 
     // Resolve venue names from the merged set
     const venues = [...entry.venueIdSet].map(id => {
-      const room = allClassrooms.find(c => c.id === id);
+      const room = classroomMap.get(id);
       return room ? room.name : id;
     }).join(', ') || '—';
 
@@ -171,7 +173,7 @@ document.getElementById('downloadPdfBtn').addEventListener('click', () => {
   const headers = ['Date', 'Day', 'Module Code', 'Module Name', 'Venue', 'Start Time', 'End Time', 'Instructor'];
   const rows = merged.map(entry => {
     const venues = [...entry.venueIdSet].map(id => {
-      const room = allClassrooms.find(c => c.id === id);
+      const room = classroomMap.get(id);
       return room ? room.name : id;
     }).join('; ');
     const instructors = [...entry.instructorSet].join('; ');
@@ -215,6 +217,7 @@ document.getElementById('downloadPdfBtn').addEventListener('click', () => {
   });
 
   allClassrooms = getClassrooms();
+  classroomMap  = new Map(allClassrooms.map(c => [c.id, c]));
   allExams      = getExams();
   renderTable();
 })();

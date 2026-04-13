@@ -10,6 +10,8 @@
 
 let allExams      = [];
 let allClassrooms = [];
+let classroomMap  = new Map();   // id → classroom, built once at init
+let labVenueIds   = new Set();   // pre-computed set of lab venue IDs
 
 const tableBody  = document.getElementById('venuesTableBody');
 const emptyState = document.getElementById('venuesEmpty');
@@ -25,11 +27,7 @@ const SHARED_VENUE_IDS = new Set([
 ]);
 
 function isSharedVenueId(id) {
-  if (SHARED_VENUE_IDS.has(id)) return true;
-  // Any Lab
-  const room = allClassrooms.find(c => c.id === id);
-  if (room && room.name.toLowerCase().includes('lab')) return true;
-  return false;
+  return SHARED_VENUE_IDS.has(id) || labVenueIds.has(id);
 }
 
 function getExamVenueIds(exam) {
@@ -62,7 +60,7 @@ function formatTime(t) {
 }
 
 function getVenueName(id) {
-  const room = allClassrooms.find(c => c.id === id);
+  const room = classroomMap.get(id);
   return room ? room.name : id;
 }
 
@@ -126,11 +124,12 @@ function renderTable() {
 
   emptyState.style.display = 'none';
 
-  const dates = [...new Set(rows.map(r => r.date))];
+  const dates        = [...new Set(rows.map(r => r.date))];
+  const dateIndexMap = new Map(dates.map((d, i) => [d, i]));
   let html = '';
 
   rows.forEach(row => {
-    const dateIdx = dates.indexOf(row.date);
+    const dateIdx = dateIndexMap.get(row.date) ?? 0;
     const band    = `band-${dateIdx % 4}`;
     const time    = row.startTime
       ? `${escHtml(formatTime(row.startTime))} &ndash; ${escHtml(formatTime(row.endTime))}`
@@ -203,6 +202,8 @@ document.getElementById('downloadExcelBtn').addEventListener('click', () => {
   });
 
   allClassrooms = getClassrooms();
+  classroomMap  = new Map(allClassrooms.map(c => [c.id, c]));
+  labVenueIds   = new Set(allClassrooms.filter(c => c.name.toLowerCase().includes('lab')).map(c => c.id));
   allExams      = getExams();
   renderTable();
 })();

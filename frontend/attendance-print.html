@@ -84,6 +84,12 @@
 
 <script src="js/storage.js"></script>
 <script>
+  function escHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
   function formatDate(dateStr) {
     if (!dateStr) return '';
     const [y, m, d] = dateStr.split('-');
@@ -122,11 +128,11 @@
         <div class="print-header-left">
           <div class="print-uni-name">Emirates Aviation University &mdash; Faculty of Engineering</div>
           <div class="print-doc-title">
-            ${exam.semester} &mdash; ${exam.examName} &mdash; ATTENDANCE SHEET
+            ${escHtml(exam.semester)} &mdash; ${escHtml(exam.examName)} &mdash; ATTENDANCE SHEET
           </div>
           <div class="print-module-info">
-            <strong>${exam.moduleCode}</strong> &mdash; ${exam.moduleName}
-            &nbsp;&nbsp;|&nbsp;&nbsp; Instructor: ${exam.instructorName}
+            <strong>${escHtml(exam.moduleCode)}</strong> &mdash; ${escHtml(exam.moduleName)}
+            &nbsp;&nbsp;|&nbsp;&nbsp; Instructor: ${escHtml(exam.instructorName)}
             ${pageNum > 1 ? `&nbsp;&nbsp;|&nbsp;&nbsp; <em>(Page ${pageNum} of ${totalPages})</em>` : ''}
           </div>
         </div>
@@ -139,13 +145,13 @@
         <div class="print-info-row">
           <div class="print-info-block">
             <table class="print-info-table">
-              <tr><td>Module:</td><td>${exam.moduleCode} — ${exam.moduleName}</td></tr>
-              <tr><td>Exam Type:</td><td>${exam.examName}</td></tr>
-              <tr><td>Semester:</td><td>${exam.semester}</td></tr>
-              <tr><td>Date:</td><td>${formatDate(exam.date)}</td></tr>
-              <tr><td>Venue:</td><td>${classroom ? classroom.name : exam.venueId}</td></tr>
-              <tr><td>Instructor:</td><td>${exam.instructorName}</td></tr>
-              <tr><td>Timings:</td><td>${formatTime(exam.startTime)} — ${formatTime(exam.endTime)}</td></tr>
+              <tr><td>Module:</td><td>${escHtml(exam.moduleCode)} — ${escHtml(exam.moduleName)}</td></tr>
+              <tr><td>Exam Type:</td><td>${escHtml(exam.examName)}</td></tr>
+              <tr><td>Semester:</td><td>${escHtml(exam.semester)}</td></tr>
+              <tr><td>Date:</td><td>${escHtml(formatDate(exam.date))}</td></tr>
+              <tr><td>Venue:</td><td>${escHtml(classroom ? classroom.name : exam.venueId)}</td></tr>
+              <tr><td>Instructor:</td><td>${escHtml(exam.instructorName)}</td></tr>
+              <tr><td>Timings:</td><td>${escHtml(formatTime(exam.startTime))} — ${escHtml(formatTime(exam.endTime))}</td></tr>
               <tr><td>Total Students:</td><td><strong>${students.length}</strong></td></tr>
             </table>
           </div>
@@ -161,7 +167,7 @@
               </tr>
               <tr>
                 <td>Invigilator:</td>
-                <td>${exam.invigilatorName || '—'}</td>
+                <td>${escHtml(exam.invigilatorName || '—')}</td>
               </tr>
               <tr>
                 <td style="padding-top:16pt;">Invigilator<br>Signature:</td>
@@ -180,9 +186,9 @@
     const rowsHtml = pageStudents.map((s, i) => `
       <tr>
         <td class="col-no">${startIdx + i + 1}</td>
-        <td class="col-id">${s.studentId}</td>
-        <td class="col-name">${s.studentName}</td>
-        <td class="col-seat" style="font-weight:bold; color:#1a3a5c;">${s.seatAssigned || '—'}</td>
+        <td class="col-id">${escHtml(s.studentId)}</td>
+        <td class="col-name">${escHtml(s.studentName)}</td>
+        <td class="col-seat" style="font-weight:bold; color:#1a3a5c;">${escHtml(s.seatAssigned || '—')}</td>
         <td class="col-sig">&nbsp;</td>
       </tr>`).join('');
 
@@ -202,7 +208,7 @@
 
     const footerHtml = `
       <div class="print-footer">
-        <span>${exam.moduleCode} — ${exam.moduleName} — ${exam.examName} — ${formatDate(exam.date)}</span>
+        <span>${escHtml(exam.moduleCode)} — ${escHtml(exam.moduleName)} — ${escHtml(exam.examName)} — ${escHtml(formatDate(exam.date))}</span>
         <span>Page ${pageNum} of ${totalPages}</span>
       </div>`;
 

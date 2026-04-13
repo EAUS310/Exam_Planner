@@ -80,6 +80,16 @@ function getVenueNames(e) {
   return getExamVenueIds(e).map(id => getVenueName(id)).join(', ') || '—';
 }
 
+// O(E×V) with Set — replaces two copies of the same O(E×V²) inline filter
+function getCoExams() {
+  const myVenueSet = new Set(getExamVenueIds(exam));
+  return allExams.filter(e =>
+    e.id !== exam.id &&
+    e.date === exam.date &&
+    getExamVenueIds(e).some(vid => myVenueSet.has(vid))
+  );
+}
+
 function getTotalCapacity(e) {
   return getExamVenueIds(e).reduce((sum, id) => {
     const room = allClassrooms.find(c => c.id === id);
@@ -134,9 +144,9 @@ function loadAll() {
 
 function renderExamDetails() {
   examDetailsHeader.innerHTML = `
-    📋 ${exam.moduleCode} — ${exam.moduleName}
-    <span class="badge">${exam.examName}</span>
-    <span class="badge">${exam.semester}</span>`;
+    📋 ${escHtml(exam.moduleCode)} — ${escHtml(exam.moduleName)}
+    <span class="badge">${escHtml(exam.examName)}</span>
+    <span class="badge">${escHtml(exam.semester)}</span>`;
 
   examInfoGrid.innerHTML = [
     { label: 'Module Code',  value: exam.moduleCode },
@@ -156,12 +166,7 @@ function renderExamDetails() {
 }
 
 function renderCoExamsInfo() {
-  const myVenueIds = getExamVenueIds(exam);
-  const coExams = allExams.filter(e =>
-    e.id !== exam.id &&
-    e.date === exam.date &&
-    getExamVenueIds(e).some(vid => myVenueIds.includes(vid))
-  );
+  const coExams = getCoExams();
 
   if (coExams.length === 0) {
     coExamsAlert.style.display    = 'none';
@@ -177,9 +182,9 @@ function renderCoExamsInfo() {
   coExamsAlert.innerHTML = `
     <div class="conflict-warning">
       ⚠️ <strong>${coExams.length} other exam(s)</strong> share a venue with this exam
-      (<strong>${getVenueNames(exam)}</strong>) on <strong>${formatDate(exam.date)}</strong>:
+      (<strong>${escHtml(getVenueNames(exam))}</strong>) on <strong>${escHtml(formatDate(exam.date))}</strong>:
       <ul style="margin:8px 0 0 20px; font-size:12px; line-height:1.8;">
-        ${coExams.map(e => `<li><strong>${e.moduleCode}</strong> — ${e.moduleName} (${e.examName}) — ${e.students.length} student(s)</li>`).join('')}
+        ${coExams.map(e => `<li><strong>${escHtml(e.moduleCode)}</strong> — ${escHtml(e.moduleName)} (${escHtml(e.examName)}) — ${e.students.length} student(s)</li>`).join('')}
       </ul>
       <div style="margin-top:8px; font-size:12px;">
         Total students across all exams: <strong>${totalAll}</strong> / Venue capacity: <strong>${capacity}</strong>
@@ -192,8 +197,8 @@ function renderCoExamsInfo() {
     <div style="font-size:13px; color:#333; margin-bottom:8px;">
       <strong>Exams that will be optimized together:</strong>
       <ul style="margin:6px 0 0 18px; line-height:1.8;">
-        <li><strong>${exam.moduleCode}</strong> — ${exam.moduleName} (${exam.examName}) — ${exam.students.length} student(s) <em>(current)</em></li>
-        ${coExams.map(e => `<li><strong>${e.moduleCode}</strong> — ${e.moduleName} (${e.examName}) — ${e.students.length} student(s)</li>`).join('')}
+        <li><strong>${escHtml(exam.moduleCode)}</strong> — ${escHtml(exam.moduleName)} (${escHtml(exam.examName)}) — ${exam.students.length} student(s) <em>(current)</em></li>
+        ${coExams.map(e => `<li><strong>${escHtml(e.moduleCode)}</strong> — ${escHtml(e.moduleName)} (${escHtml(e.examName)}) — ${e.students.length} student(s)</li>`).join('')}
       </ul>
     </div>`;
 }
@@ -337,12 +342,9 @@ saveStudentsBtn.addEventListener('click', () => {
     if (!updated) throw new Error('Failed to save students');
 
     exam = updated;
-    allExams = getExams();
     parsedStudents = [];
     studentPaste.value = '';
     previewCard.style.display = 'none';
-    renderStudentList();
-    renderCoExamsInfo();
     showToast(`✓ ${exam.students.length} student(s) saved and seats assigned`, 'success');
     studentListCont.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -362,10 +364,6 @@ function removeStudentClick(studentId) {
     const updated = removeStudent(examId, studentId);
     if (!updated) throw new Error('Student not found');
 
-    exam = updated;
-    allExams = getExams();
-    renderStudentList();
-    renderCoExamsInfo();
     showToast(`Student ${studentId} removed and seats re-assigned`, 'success');
 
   } catch (err) {
@@ -430,9 +428,6 @@ saveEditSeatBtn.addEventListener('click', () => {
 
     if (result && result.error) throw new Error(result.error);
 
-    exam = result;
-    allExams = getExams();
-    renderStudentList();
     closeEditSeat();
     showToast(`Seat updated to ${newSeat}`, 'success');
 
@@ -449,11 +444,7 @@ window.openEditSeat = openEditSeat;
 
 // ── Seating Optimisation ──────────────────────────────────
 aiOptimizeBtn.addEventListener('click', () => {
-  const myVenueIds = (exam.venueIds && exam.venueIds.length > 0) ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
-  const coExams    = allExams.filter(e =>
-    e.date === exam.date &&
-    ((e.venueIds && e.venueIds.length > 0) ? e.venueIds : (e.venueId ? [e.venueId] : [])).some(vid => myVenueIds.includes(vid))
-  );
+  const coExams       = getCoExams();
   const totalStudents = coExams.reduce((s, e) => s + e.students.length, 0);
 
   if (totalStudents === 0) {
@@ -480,10 +471,6 @@ aiOptimizeBtn.addEventListener('click', () => {
         </p>
       </div>`;
 
-    allExams = getExams();
-    exam     = allExams.find(e => e.id === examId);
-    renderStudentList();
-    renderCoExamsInfo();
     showToast('✓ Seating optimised successfully!', 'success');
 
   } catch (err) {

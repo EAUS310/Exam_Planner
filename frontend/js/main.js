@@ -8,8 +8,14 @@
 // ── State ─────────────────────────────────────────────────
 let allExams      = [];
 let allClassrooms = [];
+let classroomMap  = new Map();   // id → classroom, built once in loadClassrooms
 let currentPrintExamId  = null;
 let currentDeleteExamId = null;
+
+function debounce(fn, ms) {
+  let timer;
+  return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
+}
 
 // ── DOM Refs ─────────────────────────────────────────────
 const examForm          = document.getElementById('examForm');
@@ -32,8 +38,9 @@ const filterTime    = document.getElementById('filterTime');
 const filterVenue   = document.getElementById('filterVenue');
 const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 
+const debouncedRender = debounce(renderExamList, 150);
 [filterCode, filterDate, filterTime, filterVenue].forEach(el =>
-  el.addEventListener('input', renderExamList)
+  el.addEventListener('input', debouncedRender)
 );
 clearFiltersBtn.addEventListener('click', () => {
   filterCode.value = '';
@@ -88,7 +95,7 @@ function formatTime(t) {
 }
 
 function getVenueName(venueId) {
-  const room = allClassrooms.find(c => c.id === venueId);
+  const room = classroomMap.get(venueId);
   return room ? room.name : venueId;
 }
 
@@ -115,6 +122,7 @@ function escHtml(str) {
 // ── Load classrooms into venue checklist ──────────────────
 function loadClassrooms() {
   allClassrooms = getClassrooms();
+  classroomMap  = new Map(allClassrooms.map(c => [c.id, c]));
   venueCheckList.innerHTML = '';
   allClassrooms.forEach(c => {
     const label = document.createElement('label');
@@ -154,11 +162,6 @@ function getFilteredExams() {
   });
 }
 
-// ── Render exam list ──────────────────────────────────────
-function refreshData() {
-  allExams = getExams();
-  renderExamList();
-}
 
 function renderExamList() {
   const exams = getFilteredExams();

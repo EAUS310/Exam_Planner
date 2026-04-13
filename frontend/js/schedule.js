@@ -14,6 +14,7 @@ const PROGRAM_CONFIG = [
 
 let allExams      = [];
 let allClassrooms = [];
+let classroomMap  = new Map();   // id → classroom, built once at init
 
 const scheduleGrid   = document.getElementById('scheduleGrid');
 const filterExamType = document.getElementById('filterExamType');
@@ -47,7 +48,7 @@ function getVenueNames(exam) {
   const ids = exam.venueIds && exam.venueIds.length > 0
     ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
   return ids.map(id => {
-    const room = allClassrooms.find(c => c.id === id);
+    const room = classroomMap.get(id);
     return room ? room.name : id;
   }).join(', ') || '—';
 }
@@ -72,11 +73,14 @@ function buildProgramTable(title, exams, programId) {
     byDate[e.date].push(e);
   });
 
+  // Sort each date group once here, not on every forEach iteration
+  Object.values(byDate).forEach(g => g.sort((a, b) => a.startTime.localeCompare(b.startTime)));
+
   const sortedDates = Object.keys(byDate).sort();
   let rowsHtml = '';
 
   sortedDates.forEach((date, dateIdx) => {
-    const group     = byDate[date].sort((a, b) => a.startTime.localeCompare(b.startTime));
+    const group     = byDate[date];   // already sorted above
     const bandClass = `band-${dateIdx % 4}`;
 
     group.forEach((exam, i) => {
@@ -203,6 +207,7 @@ function populateSemesterFilter() {
   });
 
   allClassrooms = getClassrooms();
+  classroomMap  = new Map(allClassrooms.map(c => [c.id, c]));
   allExams      = getExams();
   populateSemesterFilter();
   renderSchedule();

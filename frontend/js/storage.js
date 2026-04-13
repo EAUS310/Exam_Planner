@@ -82,6 +82,23 @@ function _assignSeatsMultiVenue(exam, allExams) {
   const classrooms = getClassrooms();
   const venueIds   = _getVenueIds(exam);
 
+  // Single O(E×S) pass to build taken-seat sets for all venues at once.
+  // Previously this was O(V×E×S) — rebuilt inside the venue loop.
+  const takenByVenue = new Map();
+  for (const e of allExams) {
+    if (e.id === exam.id || e.date !== exam.date) continue;
+    for (const s of e.students) {
+      if (!s.seatAssigned) continue;
+      const seatVenueId = s.venueId || e.venueId || null;
+      if (!seatVenueId) continue;
+      if (!takenByVenue.has(seatVenueId)) takenByVenue.set(seatVenueId, new Set());
+      takenByVenue.get(seatVenueId).add(s.seatAssigned);
+    }
+  }
+
+  // O(1) classroom lookup instead of O(C) .find() per venue
+  const classroomMap = new Map(classrooms.map(c => [c.id, c]));
+
   const sorted = [...exam.students].sort((a, b) => {
     const la = (a.studentName || '').trim().split(' ').pop().toLowerCase();
     const lb = (b.studentName || '').trim().split(' ').pop().toLowerCase();
@@ -92,21 +109,10 @@ function _assignSeatsMultiVenue(exam, allExams) {
   const result = [];
 
   for (const venueId of venueIds) {
-    const classroom = classrooms.find(c => c.id === venueId);
+    const classroom = classroomMap.get(venueId);
     if (!classroom) continue;
 
-    const taken = new Set();
-    allExams.forEach(e => {
-      if (e.id === exam.id) return;
-      const evids = _getVenueIds(e);
-      if (evids.includes(venueId) && e.date === exam.date) {
-        e.students.forEach(s => {
-          if (s.seatAssigned && (s.venueId === venueId || (!s.venueId && e.venueId === venueId)))
-            taken.add(s.seatAssigned);
-        });
-      }
-    });
-
+    const taken    = takenByVenue.get(venueId) || new Set();
     const available = _generateAllSeats(classroom).filter(s => !taken.has(s));
     let seati = 0;
     while (si < sorted.length && seati < available.length) {
@@ -512,11 +518,15 @@ function optimizeSeating(examId) {
     }
   }
 
+  // Build O(1) lookup maps instead of O(E) findIndex + O(A) assignments.find per student
+  const examIndexMap  = new Map(exams.map((ex, i) => [ex.id, i]));
+  const assignmentMap = new Map(assignments.map(a => [`${a.examId}::${a.studentId}`, a.seat]));
+
   for (const e of coExams) {
-    const eIdx = exams.findIndex(ex => ex.id === e.id);
+    const eIdx = examIndexMap.get(e.id);
     exams[eIdx].students = exams[eIdx].students.map(student => {
-      const a = assignments.find(x => x.examId === e.id && x.studentId === student.studentId);
-      return { ...student, seatAssigned: a ? a.seat : student.seatAssigned };
+      const seat = assignmentMap.get(`${e.id}::${student.studentId}`);
+      return { ...student, seatAssigned: seat !== undefined ? seat : student.seatAssigned };
     }).sort((a, b) => {
       const sA = a.seatAssigned || '', sB = b.seatAssigned || '';
       const colA = sA.charAt(0), colB = sB.charAt(0);
