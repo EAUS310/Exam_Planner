@@ -1,0 +1,2488 @@
+[
+  {
+    "id": "exam-c4ddb08c-92d2-4324-a7ee-975805fde799",
+    "moduleCode": "EG121",
+    "moduleName": "Computer Aided Design & Manufacturing",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-16",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sameh",
+    "invigilatorName": "",
+    "venueIds": [
+      "Lab_02",
+      "Lab_03"
+    ],
+    "venueId": "Lab_02",
+    "program": "AB/BENG",
+    "students": [
+      {
+        "studentId": "10224092",
+        "studentName": "Issac Rajith Abraham",
+        "seatAssigned": "A1",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10198814",
+        "studentName": "Abdulla Naser Ahmed Saeed  Alawadhi",
+        "seatAssigned": "A2",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10432469",
+        "studentName": "SULTAN MOHAMMAD ABBAS ÐœÐžÐÐÐœMAD ALBLOOSHI",
+        "seatAssigned": "A3",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10187405",
+        "studentName": "Ibrahim Atheer Kefah AlHeshma",
+        "seatAssigned": "A4",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10219234",
+        "studentName": "Mohammad Ayman Taha Alirani",
+        "seatAssigned": "A5",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10182217",
+        "studentName": "Khalifa Khaled Khalifa Khameis Alkaabi",
+        "seatAssigned": "A6",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10291300",
+        "studentName": "Asaad Hussein Khalid AlQassab",
+        "seatAssigned": "C1",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10206728",
+        "studentName": "Fatima Abdulla Ibrahim Mirza  Alrahma",
+        "seatAssigned": "C2",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10350284",
+        "studentName": "Mohamed  Ashmar",
+        "seatAssigned": "C3",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10081933",
+        "studentName": "Hamad Ali Rashed Mohammad Belhal",
+        "seatAssigned": "C4",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10302905",
+        "studentName": "Jasim Mohammad Bidaryamchi",
+        "seatAssigned": "C5",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10218611",
+        "studentName": "Pranav Sathishkumar Deepa",
+        "seatAssigned": "C6",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10078398",
+        "studentName": "Emerald Choi Cortez Domingo",
+        "seatAssigned": "F1",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10292250",
+        "studentName": "Fahad Faiq",
+        "seatAssigned": "F2",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10233709",
+        "studentName": "Zuha Fiaz",
+        "seatAssigned": "F3",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10225706",
+        "studentName": "Ibrahim Moin Haque",
+        "seatAssigned": "F4",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10241060",
+        "studentName": "Arya Joby",
+        "seatAssigned": "F5",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10299785",
+        "studentName": "Merah Ghanim Nasib Ghunaim Jowhar",
+        "seatAssigned": "F6",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10213091",
+        "studentName": "Daniel  Joy",
+        "seatAssigned": "H1",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10278567",
+        "studentName": "Loana  Kayssoun",
+        "seatAssigned": "H2",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10202757",
+        "studentName": "MUHAMMAD ANNAS ASIM  KHAN",
+        "seatAssigned": "H3",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10200215",
+        "studentName": "Oleg Kotin",
+        "seatAssigned": "H4",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10193375",
+        "studentName": "Meera Mouhamad Koudmani",
+        "seatAssigned": "H5",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10283927",
+        "studentName": "Rayan Musaad Suliman Mohamed",
+        "seatAssigned": "H6",
+        "venueId": "Lab_02"
+      },
+      {
+        "studentId": "10317031",
+        "studentName": "Saeed Hossain Narooei",
+        "seatAssigned": "A1",
+        "venueId": "Lab_03"
+      },
+      {
+        "studentId": "10179577",
+        "studentName": "Mariam Juma Ng'oko",
+        "seatAssigned": "A2",
+        "venueId": "Lab_03"
+      },
+      {
+        "studentId": "10226052",
+        "studentName": "Tasnim El Rabbani",
+        "seatAssigned": "A3",
+        "venueId": "Lab_03"
+      },
+      {
+        "studentId": "10239961",
+        "studentName": "Mohammed Aseel Shaik Mujeebur Rahman",
+        "seatAssigned": "A4",
+        "venueId": "Lab_03"
+      },
+      {
+        "studentId": "10223851",
+        "studentName": "Houra Abbas Salari",
+        "seatAssigned": "A5",
+        "venueId": "Lab_03"
+      },
+      {
+        "studentId": "10211888",
+        "studentName": "Evangelina El Sidawi",
+        "seatAssigned": "A6",
+        "venueId": "Lab_03"
+      },
+      {
+        "studentId": "10284966",
+        "studentName": "Muhammad Taha",
+        "seatAssigned": "C1",
+        "venueId": "Lab_03"
+      },
+      {
+        "studentId": "10218891",
+        "studentName": "Iyad Zouinekh",
+        "seatAssigned": "C2",
+        "venueId": "Lab_03"
+      }
+    ],
+    "createdAt": "2026-04-12T10:49:38.140Z"
+  },
+  {
+    "id": "exam-3c7249ec-24a6-4505-8cbb-d4b2fbeeca0e",
+    "moduleCode": "BS101 / 303KM",
+    "moduleName": "Project Management",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-16",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Yasmine",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [
+      {
+        "studentId": "10090444",
+        "studentName": "Abdol Rahman Abdljawad Abdulrahman Khaja",
+        "seatAssigned": "A1",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10078967",
+        "studentName": "Abdulla Adel Abdulla Salem Almehaiza",
+        "seatAssigned": "A2",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10269495",
+        "studentName": "Abdulla Saeed Rashed Ali Alhefeiti",
+        "seatAssigned": "A3",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10088946",
+        "studentName": "Abdulrahman Falah M Al Abawi",
+        "seatAssigned": "A4",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10094024",
+        "studentName": "Aditya Petwal",
+        "seatAssigned": "A5",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10082034",
+        "studentName": "Adwaith Vadassery Dileesh",
+        "seatAssigned": "A6",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10098941",
+        "studentName": "Ahmed L. A. Alhoobi",
+        "seatAssigned": "A7",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10081372",
+        "studentName": "Alhnoof Abdulwahhab Ali Ramkooni Alawadhi",
+        "seatAssigned": "A8",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10391762",
+        "studentName": "Alwin Shijesh Joseph Shijesh",
+        "seatAssigned": "A9",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10058508",
+        "studentName": "Ashvinthan Vasudevan",
+        "seatAssigned": "A10",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10149023",
+        "studentName": "Aysha Nafha",
+        "seatAssigned": "A11",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10012095",
+        "studentName": "Azamat Temirbekov",
+        "seatAssigned": "A12",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "127876",
+        "studentName": "Charmi Das",
+        "seatAssigned": "C1",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10149228",
+        "studentName": "Derric Edwin",
+        "seatAssigned": "C2",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10095659",
+        "studentName": "Faisal Moh'd Ali Salem",
+        "seatAssigned": "C3",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10055126",
+        "studentName": "Fawaz Ghassan Al Shaar",
+        "seatAssigned": "C4",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10082417",
+        "studentName": "Ghezlan Ahmad Sayyah Embarkooh Almheiri",
+        "seatAssigned": "C5",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10065326",
+        "studentName": "Hagin Mathai Jacob",
+        "seatAssigned": "C6",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10098186",
+        "studentName": "Hamda Abdulla Mohammad Abdulla Mohammad",
+        "seatAssigned": "C7",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10033441",
+        "studentName": "Hazaa Sultan Obaid Saleh Al-Rubkhi",
+        "seatAssigned": "C8",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10007385",
+        "studentName": "Ismat Zubeir Ustad",
+        "seatAssigned": "C9",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10137017",
+        "studentName": "Kenan Garry Rebello",
+        "seatAssigned": "C10",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10087036",
+        "studentName": "Khaled Ahmed Yaslam Karama Awadh",
+        "seatAssigned": "C11",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10030042",
+        "studentName": "Lance Quadros",
+        "seatAssigned": "C12",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10108181",
+        "studentName": "Mohamad  Onaisse",
+        "seatAssigned": "D1",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10434194",
+        "studentName": "Mohammed Abdul Majeed Abdul Rahman",
+        "seatAssigned": "D2",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10015914",
+        "studentName": "Muhammad Humaid Khan",
+        "seatAssigned": "D3",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10023224",
+        "studentName": "Nailah Saif Salim Binbader Al-Ali",
+        "seatAssigned": "D4",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10099191",
+        "studentName": "Oren Shane Dsouza",
+        "seatAssigned": "D5",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10085131",
+        "studentName": "Prithvi Ebnezer Vollanky",
+        "seatAssigned": "D6",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10092943",
+        "studentName": "Saeed Sayed Mohammad Sayed Mohyi",
+        "seatAssigned": "D7",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10099760",
+        "studentName": "Sharlize Audrei Ligan Mariano",
+        "seatAssigned": "D8",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10057935",
+        "studentName": "Tony Abi Daoud",
+        "seatAssigned": "D9",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10125647",
+        "studentName": "Yousef Mohammed Abdulhamid Abdulla Saraj",
+        "seatAssigned": "D10",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10025189",
+        "studentName": "Zainab Elsadig Salaheldin Idris",
+        "seatAssigned": "D11",
+        "venueId": "Exam_Hall_2"
+      }
+    ],
+    "createdAt": "2026-04-12T10:50:31.497Z"
+  },
+  {
+    "id": "exam-dbcc746f-fd5d-4256-8d9b-c679c052a4b3",
+    "moduleCode": "BS100",
+    "moduleName": "Business Management Technique for Engineers",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-16",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Nour",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [
+      {
+        "studentId": "10228926",
+        "studentName": "Aisha Ebrahim Saif Alkubaisi  Al Ali",
+        "seatAssigned": "B1",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10277749",
+        "studentName": "Fatma Ahmad Hassan AlDarrai",
+        "seatAssigned": "B2",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10262172",
+        "studentName": "Hajar Mohammad Ghanim Suhrab Ahli",
+        "seatAssigned": "B3",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10331085",
+        "studentName": "Ibrahim Tarek Arnaout",
+        "seatAssigned": "B4",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10285393",
+        "studentName": "Jawad Senjab",
+        "seatAssigned": "B5",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10182632",
+        "studentName": "Malik Hasnain Farooq",
+        "seatAssigned": "B6",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10299726",
+        "studentName": "Mariam Bi Shaikh",
+        "seatAssigned": "B7",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10523014",
+        "studentName": "Mohsen Ali Salah Alhamed Alhashmi",
+        "seatAssigned": "B8",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10486038",
+        "studentName": "Nora Omar Helal Murshed  Alhameli",
+        "seatAssigned": "B9",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10423125",
+        "studentName": "Omar Hamidi",
+        "seatAssigned": "B10",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10266071",
+        "studentName": "Suryansh Shivshankar Akkalwade",
+        "seatAssigned": "B11",
+        "venueId": "Exam_Hall_2"
+      },
+      {
+        "studentId": "10220950",
+        "studentName": "zainab Mohamed  Abdulkarim Alradhi",
+        "seatAssigned": "B12",
+        "venueId": "Exam_Hall_2"
+      }
+    ],
+    "createdAt": "2026-04-12T10:56:30.662Z"
+  },
+  {
+    "id": "exam-1bfc7191-6299-4c29-b5e4-9695d2c91b08",
+    "moduleCode": "GEN1010",
+    "moduleName": "English I",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-16",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Elif",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T10:57:57.859Z"
+  },
+  {
+    "id": "exam-6eb34c97-3a0b-484c-835b-b5a7eca573db",
+    "moduleCode": "GEN1010",
+    "moduleName": "English I",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-16",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Elif",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T10:59:02.696Z"
+  },
+  {
+    "id": "exam-252f4182-bfc4-4cc2-9740-999fc592729a",
+    "moduleCode": "GEN1010",
+    "moduleName": "English I",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-16",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Elif",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T10:59:46.708Z"
+  },
+  {
+    "id": "exam-5702abb5-83ba-49a3-9b9d-a2ed733b1500",
+    "moduleCode": "AE106",
+    "moduleName": "Aircraft Structures",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Afaq",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T11:18:13.902Z"
+  },
+  {
+    "id": "exam-e29a574c-ea0c-4b59-be7b-5583a118b800",
+    "moduleCode": "AV109 / 313SE",
+    "moduleName": "Avionics System II",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Anju",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:16:15.585Z"
+  },
+  {
+    "id": "exam-1a98a867-9c44-4196-9369-9b8bf8048db9",
+    "moduleCode": "EG116",
+    "moduleName": "Aerospace Technology 2",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Khateeb & Dr. Essen",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:17:30.497Z"
+  },
+  {
+    "id": "exam-59c8fdcb-c015-4cf9-86d4-69ba5071a930",
+    "moduleCode": "ME109 / 303MAA",
+    "moduleName": "Mechanical System Modelling",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sameh",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:18:38.886Z"
+  },
+  {
+    "id": "exam-54e1ba0e-d8c3-4cb4-a4c4-a7df03de9023",
+    "moduleCode": "EG105",
+    "moduleName": "Aircraft System Principle & Practices",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Toms",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10",
+      "G_04_06"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:19:57.844Z"
+  },
+  {
+    "id": "exam-8ea52687-9772-4d82-bce2-8ceeaa5cdf48",
+    "moduleCode": "ME102",
+    "moduleName": "Advanced Thermodynamics and Heat Engine",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Yasmine",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:21:46.114Z"
+  },
+  {
+    "id": "exam-75eaeeae-2c69-4f2d-bf07-bc0f9295fd49",
+    "moduleCode": "GEN3020",
+    "moduleName": "Cross Cultural Studies",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wasim",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:22:49.451Z"
+  },
+  {
+    "id": "exam-b68ae9ca-1552-447e-9280-1ce7fbbaf47c",
+    "moduleCode": "GEN3020",
+    "moduleName": "Cross Cultural Studies",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wasim",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T12:23:39.653Z"
+  },
+  {
+    "id": "exam-ccc3b1b2-ddd1-411c-a1f4-41a8521264ca",
+    "moduleCode": "GEN3020",
+    "moduleName": "Cross Cultural Studies",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wasim",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T12:24:36.196Z"
+  },
+  {
+    "id": "exam-005b4a82-d576-4a82-8c04-982ae4ebf6ca",
+    "moduleCode": "EAE4195",
+    "moduleName": "Aircraft Structures II",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sathish",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T12:25:34.352Z"
+  },
+  {
+    "id": "exam-805b48ed-91c5-4fe2-8de3-3c300936413a",
+    "moduleCode": "ENG3330",
+    "moduleName": "Introduction to Mechanical Design",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sameh",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T12:26:27.994Z"
+  },
+  {
+    "id": "exam-32664ce7-6996-4700-80de-4ca4c10f4ab7",
+    "moduleCode": "ENG2150",
+    "moduleName": "Statics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Ajit",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T12:31:18.485Z"
+  },
+  {
+    "id": "exam-bca7f7c1-654c-48e5-81c4-a7e338e41de8",
+    "moduleCode": "EG102",
+    "moduleName": "Statics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Ajit",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:31:57.435Z"
+  },
+  {
+    "id": "exam-32b9e330-e625-4b03-bdc1-693a87ac7b53",
+    "moduleCode": "EAE3365",
+    "moduleName": "Aircraft Propulsion II",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Walid",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T12:32:57.994Z"
+  },
+  {
+    "id": "exam-332a92b1-aba7-46ed-8376-2f999ed6bd82",
+    "moduleCode": "ME103",
+    "moduleName": "Strength of Materials",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Afaq",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:33:47.718Z"
+  },
+  {
+    "id": "exam-ca45697e-95c5-4d1e-b6cc-5a73ed6963e2",
+    "moduleCode": "ENG2230",
+    "moduleName": "Dynamics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sathish",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T12:36:02.050Z"
+  },
+  {
+    "id": "exam-e0a20c0a-7afd-420e-b6c9-70ef4885dd53",
+    "moduleCode": "EG106",
+    "moduleName": "Dynamics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sathish",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:37:13.387Z"
+  },
+  {
+    "id": "exam-f8b5aa18-64c9-4ac4-9a5c-85b5681e9ce9",
+    "moduleCode": "ME111 / 304MAA",
+    "moduleName": "Mechanical Industry and Professional Studies",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sevda",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:39:30.704Z"
+  },
+  {
+    "id": "exam-677eadbf-ce1a-489a-a5e3-4bfce47df89d",
+    "moduleCode": "EAE2310",
+    "moduleName": "Heat Transfer and Combustion",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wenxuan",
+    "invigilatorName": "",
+    "venueIds": [
+      "G15"
+    ],
+    "venueId": "G15",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T12:40:39.359Z"
+  },
+  {
+    "id": "exam-918a7dab-7fb4-4538-8228-ea0469655fa7",
+    "moduleCode": "AE102",
+    "moduleName": "Further Aerodynamics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wenxuan",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:41:34.421Z"
+  },
+  {
+    "id": "exam-826fbdbc-aada-4cc9-b95f-38c0e52f7ce0",
+    "moduleCode": "AV102",
+    "moduleName": "Digital and Analogue Devices and Circuits",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Mahsa",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:44:01.860Z"
+  },
+  {
+    "id": "exam-427df8c5-5197-4e18-984f-76114c4d4130",
+    "moduleCode": "AV105",
+    "moduleName": "Integrated Flight Instrument System",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Ahmad Fayyadh",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:45:17.886Z"
+  },
+  {
+    "id": "exam-a4396b45-413f-496a-a3e1-958ada22d9fb",
+    "moduleCode": "AV101",
+    "moduleName": "Combinational and Sequential Logic",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Shirley",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:46:30.204Z"
+  },
+  {
+    "id": "exam-a6cfdd71-46a5-4858-915a-7b283ee44715",
+    "moduleCode": "ME107",
+    "moduleName": "Application of Machine Tools",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Tarek",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T12:47:21.970Z"
+  },
+  {
+    "id": "exam-1239d68b-42eb-4178-9028-580b20d19552",
+    "moduleCode": "EAE2300",
+    "moduleName": "Engineering Thermodynamics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Khateeb",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T12:49:13.636Z"
+  },
+  {
+    "id": "exam-5cd980b6-fefd-4e4a-90ca-49c0ba3263dd",
+    "moduleCode": "MOD2",
+    "moduleName": "Physics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "09:00",
+    "endTime": "10:05",
+    "instructorName": "Mr. Ahmad Fayyadh",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T12:50:20.621Z"
+  },
+  {
+    "id": "exam-f4c56c6e-3ea3-4eb6-baf9-baf8d9c0b531",
+    "moduleCode": "MOD10M_GCAA",
+    "moduleName": "Aviation Legislation (MCQ - GCAA)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "10:05",
+    "endTime": "10:55",
+    "instructorName": "Mr. Manuel",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T12:51:28.437Z"
+  },
+  {
+    "id": "exam-1d0728ee-891a-4e6b-b955-ddbaaca059fc",
+    "moduleCode": "MOD10M_EASA",
+    "moduleName": "Aviation Legislation (MCQ - EASA)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "11:00",
+    "endTime": "11:50",
+    "instructorName": "Mr. Manuel",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T12:52:36.386Z"
+  },
+  {
+    "id": "exam-c176c427-8715-46ec-a9d7-4fce71bd4dc4",
+    "moduleCode": "MOD10E_GCAA",
+    "moduleName": "Aviation Legislation (ESSAY - GCAA)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "12:00",
+    "endTime": "12:20",
+    "instructorName": "Mr. Manuel",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T12:53:45.787Z"
+  },
+  {
+    "id": "exam-93fef4e2-c3fd-468c-8c87-1d9bd4d46d95",
+    "moduleCode": "MOD10E_EASA",
+    "moduleName": "Aviation Legislation (ESSAY - EASA)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-18",
+    "startTime": "12:30",
+    "endTime": "12:50",
+    "instructorName": "Mr. Manuel",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T12:55:03.932Z"
+  },
+  {
+    "id": "exam-f340a090-ab7c-438a-9c5b-8336897fe3f2",
+    "moduleCode": "ENG2210",
+    "moduleName": "Manufacturing Technology / Processes",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sathish",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T12:59:16.837Z"
+  },
+  {
+    "id": "exam-20b12c20-e518-454b-b567-67d6d9c5edee",
+    "moduleCode": "ME106",
+    "moduleName": "Manufacturing Technology / Processes",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sathish",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:00:11.994Z"
+  },
+  {
+    "id": "exam-78922f32-354d-43ee-9d7b-196b46e37f1c",
+    "moduleCode": "AE103",
+    "moduleName": "Aircraft Gas Turbine Science",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Toms",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:01:04.263Z"
+  },
+  {
+    "id": "exam-0046f0d5-f985-4d33-a230-b7d998f04738",
+    "moduleCode": "ENG3250",
+    "moduleName": "Math III",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Muner",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:01:49.866Z"
+  },
+  {
+    "id": "exam-7fc76749-b930-4b75-bd3f-04e105ad8e06",
+    "moduleCode": "ENG3260",
+    "moduleName": "Math IV",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Muner",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:02:39.243Z"
+  },
+  {
+    "id": "exam-b10a24a1-6b86-4b33-8a9e-8271ee098d38",
+    "moduleCode": "MA100",
+    "moduleName": "Analytical Methods for Engineers",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "12:00",
+    "endTime": "14:00",
+    "instructorName": "Dr. Mohammed & Dr. Rajaa",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:03:45.511Z"
+  },
+  {
+    "id": "exam-d52a0885-8496-4d0e-a07a-0b359761e33c",
+    "moduleCode": "ENG1200",
+    "moduleName": "Math II",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Thomas",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:04:31.224Z"
+  },
+  {
+    "id": "exam-7d39c11f-9609-47c6-8585-919fadde3855",
+    "moduleCode": "MA101",
+    "moduleName": "Further Analytical Methods for Engineers",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "12:00",
+    "endTime": "14:00",
+    "instructorName": "Dr. Abdulkarim",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_1"
+    ],
+    "venueId": "Exam_Hall_1",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:05:25.621Z"
+  },
+  {
+    "id": "exam-f4bdff8e-5d36-459e-a513-17b5617aa480",
+    "moduleCode": "ENG1100",
+    "moduleName": "Math I",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Rajaa",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:06:23.969Z"
+  },
+  {
+    "id": "exam-9d326d8b-2602-4764-92b6-7cbc0c0d4a31",
+    "moduleCode": "MA102",
+    "moduleName": "Advanced Mathematics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "12:00",
+    "endTime": "14:00",
+    "instructorName": "Dr. Abdulkarim",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:07:14.274Z"
+  },
+  {
+    "id": "exam-ebb8cbab-7264-4161-9864-16b7d1c91389",
+    "moduleCode": "MOD1",
+    "moduleName": "Mathematics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "09:00",
+    "endTime": "09:40",
+    "instructorName": "Dr. Theo",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T13:10:47.060Z"
+  },
+  {
+    "id": "exam-fa257a47-2a8b-454c-a3fa-d2688b56be17",
+    "moduleCode": "MOD6",
+    "moduleName": "Materials and Hardware",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "10:00",
+    "endTime": "12:30",
+    "instructorName": "Mr. Thair",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T13:11:37.236Z"
+  },
+  {
+    "id": "exam-a7c8cdd1-1e20-4547-a85f-b91205592b23",
+    "moduleCode": "MOD6M_EASA",
+    "moduleName": "Materials and Hardware (MCQ - EASA)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "10:00",
+    "endTime": "12:35",
+    "instructorName": "Mr. Thair",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T13:12:35.265Z"
+  },
+  {
+    "id": "exam-f493be3a-a471-4aa3-8985-0fcd7e42bd61",
+    "moduleCode": "MOD15",
+    "moduleName": "Gas Turbine Engine",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-19",
+    "startTime": "13:00",
+    "endTime": "15:00",
+    "instructorName": "Mr. Zuhair",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T13:14:10.498Z"
+  },
+  {
+    "id": "exam-7ffba690-07d5-407e-aeb2-337408da488b",
+    "moduleCode": "EAE2400",
+    "moduleName": "Fluid Mechanics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Hossein",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:33:40.340Z"
+  },
+  {
+    "id": "exam-365d9c09-10a6-4fe5-8790-7e47623133ed",
+    "moduleCode": "ME104",
+    "moduleName": "Fluid Mechanics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Hossein",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:34:18.193Z"
+  },
+  {
+    "id": "exam-38d703c6-68ff-4d70-887e-6ff3e7558584",
+    "moduleCode": "EAE4095",
+    "moduleName": "Computational Fluid Mechanics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Walid",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:35:14.476Z"
+  },
+  {
+    "id": "exam-0d278f53-853c-4ef7-90b9-6a57f8d1a6c5",
+    "moduleCode": "AV106",
+    "moduleName": "Automatic Flight Control System",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Tawfik",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:36:05.765Z"
+  },
+  {
+    "id": "exam-39dbfa06-ed4e-4580-acdf-69bece28bb6d",
+    "moduleCode": "EAE4190",
+    "moduleName": "Aircraft Structure I",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sameh",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:37:08.298Z"
+  },
+  {
+    "id": "exam-e9ed0019-adf1-4d7c-af15-19d7915605b8",
+    "moduleCode": "AE105",
+    "moduleName": "Aircraft Propulsion Technology",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Toms",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:37:52.860Z"
+  },
+  {
+    "id": "exam-0009a70d-44fd-4f8a-8735-3881ed24571d",
+    "moduleCode": "ENG2220",
+    "moduleName": "Introduction to Programming",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "12:00",
+    "endTime": "14:00",
+    "instructorName": "Mr. Seyed & Dr. Yacob",
+    "invigilatorName": "",
+    "venueIds": [
+      "Lab_03",
+      "Lab_04",
+      "Lab_05",
+      "Lab_06",
+      "Lab_07"
+    ],
+    "venueId": "Lab_03",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:39:06.498Z"
+  },
+  {
+    "id": "exam-48500397-d12e-4ca6-aa53-95ee6335b334",
+    "moduleCode": "ENG2220",
+    "moduleName": "Introduction to Programming",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "12:00",
+    "endTime": "14:00",
+    "instructorName": "Mr. Seyed & Dr. Yacob",
+    "invigilatorName": "",
+    "venueIds": [
+      "Lab_03",
+      "Lab_04",
+      "Lab_05",
+      "Lab_06",
+      "Lab_07"
+    ],
+    "venueId": "Lab_03",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:39:56.750Z"
+  },
+  {
+    "id": "exam-6ee12c9b-a5f8-411a-b886-a0320baa17c6",
+    "moduleCode": "MOD7M",
+    "moduleName": "Maintenance Practices (MCQ)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "09:00",
+    "endTime": "10:40",
+    "instructorName": "Mr. Shahid, Mr. Shoubaki & Mr. Furqan",
+    "invigilatorName": "",
+    "venueIds": [
+      "G19",
+      "G20",
+      "G21",
+      "G22",
+      "G23",
+      "G24",
+      "G25"
+    ],
+    "venueId": "G19",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T13:41:26.602Z"
+  },
+  {
+    "id": "exam-50bbf4ad-447f-4e88-9b28-921eaba8937f",
+    "moduleCode": "MOD7E",
+    "moduleName": "Maintenance Practices (ESSAY)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "10:45",
+    "endTime": "11:05",
+    "instructorName": "Mr. Shahid, Mr. Shoubaki & Mr. Furqan",
+    "invigilatorName": "",
+    "venueIds": [
+      "G19",
+      "G20",
+      "G21",
+      "G22",
+      "G23",
+      "G24",
+      "G25"
+    ],
+    "venueId": "G19",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T13:42:42.690Z"
+  },
+  {
+    "id": "exam-97149dca-70e2-4546-9bc8-1c62932da5bc",
+    "moduleCode": "MOD16",
+    "moduleName": "Piston Engine",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-20",
+    "startTime": "11:30",
+    "endTime": "13:00",
+    "instructorName": "Mr. Zuhair",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T13:43:25.614Z"
+  },
+  {
+    "id": "exam-70b957dc-91a7-4f64-8930-ab9cb9ffc763",
+    "moduleCode": "MOD3",
+    "moduleName": "Electrical Fundamentals",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "10:05",
+    "instructorName": "Mr. Furqan",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T13:45:03.079Z"
+  },
+  {
+    "id": "exam-5e4d4c02-b08e-4a1a-bd47-15db440e0a4b",
+    "moduleCode": "EAE4125",
+    "moduleName": "Aircraft Engine Simulation and Control",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Walid",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:45:51.322Z"
+  },
+  {
+    "id": "exam-28ff4364-2c78-4c52-9404-9ee70f688c9f",
+    "moduleCode": "EAE2340",
+    "moduleName": "Strength of Materials",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sathish",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:46:50.489Z"
+  },
+  {
+    "id": "exam-fba8cb41-5833-429f-9beb-f08302050731",
+    "moduleCode": "AE101",
+    "moduleName": "Avionics System I",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Vidhya",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:47:32.692Z"
+  },
+  {
+    "id": "exam-60692fc6-2fde-4fe6-ac93-2cdd514df2b4",
+    "moduleCode": "AV107",
+    "moduleName": "Electrical and Electronic Principles",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Vidhya",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:48:36.735Z"
+  },
+  {
+    "id": "exam-300a75e6-22a9-48cc-a3f6-0e17b86dfc37",
+    "moduleCode": "EG103",
+    "moduleName": "Construction and Operation of Aircraft Fluid System",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Toms",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:49:26.765Z"
+  },
+  {
+    "id": "exam-d2dc3898-8370-4a69-b055-a806fc154619",
+    "moduleCode": "EG101",
+    "moduleName": "Electrical, Electronic and Digital Principles",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Shirley",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:50:19.967Z"
+  },
+  {
+    "id": "exam-bab6424f-f090-43b4-9e5a-c326c691fae4",
+    "moduleCode": "EG110",
+    "moduleName": "Health, Safety and Risk Assessment in Engineering",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Jawad",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:51:22.709Z"
+  },
+  {
+    "id": "exam-c2f4ec06-7c39-4f61-ab3f-3fdb31fcf939",
+    "moduleCode": "ENG1000",
+    "moduleName": "Introduction to Mathematics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Rajaa",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:52:13.592Z"
+  },
+  {
+    "id": "exam-7ccd02f4-ca4f-47c5-aef6-9863553d8e8b",
+    "moduleCode": "AV103",
+    "moduleName": "Electrical Principles",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Mahsa",
+    "invigilatorName": "",
+    "venueIds": [
+      "Exam_Hall_2"
+    ],
+    "venueId": "Exam_Hall_2",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:53:03.666Z"
+  },
+  {
+    "id": "exam-6999920b-7247-417b-95a7-695c198dd802",
+    "moduleCode": "MOD11",
+    "moduleName": "Turbine Aeroplane Aerodynamics, Structure & Systems",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-21",
+    "startTime": "10:30",
+    "endTime": "13:25",
+    "instructorName": "Mr. Khayatzadeh, Mr. Hassan, Mr. Manuel, Ms. Renin",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23",
+      "G24"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T13:54:25.750Z"
+  },
+  {
+    "id": "exam-321d19ee-7283-48ee-87b9-1b02fa7ce858",
+    "moduleCode": "EAE2355",
+    "moduleName": "Incompressible Aerodynamics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Elham",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:57:02.912Z"
+  },
+  {
+    "id": "exam-0eb8c479-9cac-4b44-9179-3572e2638d56",
+    "moduleCode": "ENG1260",
+    "moduleName": "Electrical and Electronic Principles",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Anju",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T13:57:57.970Z"
+  },
+  {
+    "id": "exam-0c576861-74c3-422f-8ee9-0c873f82948e",
+    "moduleCode": "AE107 / 315SE",
+    "moduleName": "Aerospace Industrial Studies",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sevda",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:58:50.521Z"
+  },
+  {
+    "id": "exam-f5ce0d73-f9c9-4d02-82f2-09c91520b18a",
+    "moduleCode": "AV104",
+    "moduleName": "Aircraft Communication and Navigation System",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Vidhya",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T13:59:46.393Z"
+  },
+  {
+    "id": "exam-c8c93c8c-2850-4af3-bb27-7d8c47be1fbd",
+    "moduleCode": "EAE3350",
+    "moduleName": "Materials Science and Engineering",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wenxuan",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T14:00:46.125Z"
+  },
+  {
+    "id": "exam-52790ea4-3ab2-4a2a-a3d4-0d8ee5cd8fac",
+    "moduleCode": "EG108",
+    "moduleName": "Materials Engineering",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wenxuan",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T14:01:26.541Z"
+  },
+  {
+    "id": "exam-140f5aad-e82f-49db-a4da-548bfae9158b",
+    "moduleCode": "ME101",
+    "moduleName": "Mechanical Principles",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Mr. Toms",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T14:02:21.762Z"
+  },
+  {
+    "id": "exam-9d30407f-3ac4-4c6b-971b-dbcb25b89a1b",
+    "moduleCode": "MOD5",
+    "moduleName": "Digital Techniques / Electronic Instrument System",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "10:30",
+    "endTime": "11:20",
+    "instructorName": "Ms. Renin",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:03:21.912Z"
+  },
+  {
+    "id": "exam-66a683f2-af26-4894-9533-a3d220fb2437",
+    "moduleCode": "MOD8",
+    "moduleName": "Basic Aerodynamics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "09:25",
+    "instructorName": "Mr. Ajit",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:04:01.607Z"
+  },
+  {
+    "id": "exam-39cf9b49-d78a-4736-80a7-92fbb22c7ad5",
+    "moduleCode": "MOD8M_EASA",
+    "moduleName": "Basic Aerodynamics (MCQ - EASA)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "09:30",
+    "instructorName": "Mr. Ajit",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:04:51.029Z"
+  },
+  {
+    "id": "exam-45fd3b0d-90b6-4058-b927-33fb04d3282a",
+    "moduleCode": "MOD17",
+    "moduleName": "Propellers",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-22",
+    "startTime": "11:30",
+    "endTime": "12:10",
+    "instructorName": "Mr. Zuhair & Mr. Shoubaki",
+    "invigilatorName": "",
+    "venueIds": [
+      "G21",
+      "G22",
+      "G23",
+      "G24"
+    ],
+    "venueId": "G21",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:05:42.470Z"
+  },
+  {
+    "id": "exam-8137f2e2-09c5-461e-8630-d49b39e53252",
+    "moduleCode": "EAE4240",
+    "moduleName": "Flight Vehicle Dynamics & Stability",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Tawfik",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T14:07:08.004Z"
+  },
+  {
+    "id": "exam-8d9be591-1734-4deb-8e29-663fa2c2e9aa",
+    "moduleCode": "EG104",
+    "moduleName": "Basic Thermodynamics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Essen",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10",
+      "G_04_06"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T14:08:27.015Z"
+  },
+  {
+    "id": "exam-b256cb35-e6a3-46d8-a8e7-4ec269615865",
+    "moduleCode": "EG117 / 308SE",
+    "moduleName": "Control and Instrumentation",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Vidhya",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T14:09:12.150Z"
+  },
+  {
+    "id": "exam-f26bb112-7038-4faa-8a67-c14e47222206",
+    "moduleCode": "FDN1020",
+    "moduleName": "Foundation Physics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Shirley",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T14:10:15.024Z"
+  },
+  {
+    "id": "exam-90b2722b-36e1-4d2b-882d-fc74549d5743",
+    "moduleCode": "FDN1020",
+    "moduleName": "Foundation Physics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Shirley",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T14:10:43.299Z"
+  },
+  {
+    "id": "exam-622e1557-4b8a-4974-a620-e516cab9796e",
+    "moduleCode": "FDN1020",
+    "moduleName": "Foundation Physics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Shirley",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:11:16.772Z"
+  },
+  {
+    "id": "exam-49d61852-7256-47b2-ab95-d647d9c3e60f",
+    "moduleCode": "GEN1040",
+    "moduleName": "Sustainability and Environmental Science",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wasim",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T14:12:19.102Z"
+  },
+  {
+    "id": "exam-92f79464-76df-41b5-bdad-681459e6b33b",
+    "moduleCode": "GEN1040",
+    "moduleName": "Sustainability and Environmental Science",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wasim",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T14:13:06.104Z"
+  },
+  {
+    "id": "exam-02bc1657-76a5-4cd6-9e38-67438c9d6879",
+    "moduleCode": "GEN1040",
+    "moduleName": "Sustainability and Environmental Science",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Wasim",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:13:56.772Z"
+  },
+  {
+    "id": "exam-52625a97-c9f1-4e35-95d5-9c2feb32f3c5",
+    "moduleCode": "MOD9M_GCAA",
+    "moduleName": "Human Factors (MCQ - GCAA)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:00",
+    "endTime": "09:25",
+    "instructorName": "Dr. Crystal",
+    "invigilatorName": "",
+    "venueIds": [
+      "G20",
+      "G21",
+      "G22",
+      "G23",
+      "G24",
+      "G25"
+    ],
+    "venueId": "G20",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:14:57.228Z"
+  },
+  {
+    "id": "exam-5186c9b0-392a-4c87-a7dd-1e1ddb0fa3e4",
+    "moduleCode": "MOD9M_EASA",
+    "moduleName": "Human Factors",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "09:30",
+    "endTime": "09:55",
+    "instructorName": "Dr. Crystal",
+    "invigilatorName": "",
+    "venueIds": [
+      "G20",
+      "G21",
+      "G22",
+      "G23",
+      "G24",
+      "G25"
+    ],
+    "venueId": "G20",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:15:48.597Z"
+  },
+  {
+    "id": "exam-809b24fb-530f-4f19-86af-de9385b81376",
+    "moduleCode": "MOD9E",
+    "moduleName": "Human Factors (ESSAY)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-23",
+    "startTime": "10:00",
+    "endTime": "10:20",
+    "instructorName": "Dr. Crystal",
+    "invigilatorName": "",
+    "venueIds": [
+      "G20",
+      "G21",
+      "G22",
+      "G23",
+      "G24",
+      "G25"
+    ],
+    "venueId": "G20",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:16:34.943Z"
+  },
+  {
+    "id": "exam-7b0f4435-da70-4fd5-a285-175c0dab79a6",
+    "moduleCode": "EG107",
+    "moduleName": "Basic Aerodynamics",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-24",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Essen",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T14:17:34.723Z"
+  },
+  {
+    "id": "exam-31cf3ed7-5cda-471c-84d3-85c89135f82f",
+    "moduleCode": "ENG2500",
+    "moduleName": "Sustainable Aviation",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-24",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sameh",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T14:18:17.291Z"
+  },
+  {
+    "id": "exam-d0a6b9bb-4b7f-4ffd-8fe7-a6e9dc09f3be",
+    "moduleCode": "ENG2500",
+    "moduleName": "Sustainable Aviation",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-24",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Dr. Sameh",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_08_10"
+    ],
+    "venueId": "G_08_10",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T14:19:03.288Z"
+  },
+  {
+    "id": "exam-fbe933f6-000f-4e22-8150-33e5058c95f0",
+    "moduleCode": "FDN1010",
+    "moduleName": "Foundation Math",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-24",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Mawada",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "BSAE",
+    "students": [],
+    "createdAt": "2026-04-12T14:19:51.190Z"
+  },
+  {
+    "id": "exam-adbe3812-8af7-43cd-9de2-e9cc1b37417c",
+    "moduleCode": "FDN1010",
+    "moduleName": "Foundation Math",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-24",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Mawada",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "AB/BENG",
+    "students": [],
+    "createdAt": "2026-04-12T14:20:21.666Z"
+  },
+  {
+    "id": "exam-b8d387f0-9634-4845-ba2d-c36947218c69",
+    "moduleCode": "FDN1010",
+    "moduleName": "Foundation Math",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-24",
+    "startTime": "09:00",
+    "endTime": "11:00",
+    "instructorName": "Ms. Mawada",
+    "invigilatorName": "",
+    "venueIds": [
+      "G_04_06"
+    ],
+    "venueId": "G_04_06",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:21:07.864Z"
+  },
+  {
+    "id": "exam-d6e5c575-4c24-4311-8b48-a5292a390fa0",
+    "moduleCode": "MOD4",
+    "moduleName": "Electronic Fundamentals",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-24",
+    "startTime": "09:00",
+    "endTime": "09:25",
+    "instructorName": "Mr. Khader",
+    "invigilatorName": "",
+    "venueIds": [
+      "G19",
+      "G20",
+      "G21",
+      "G22",
+      "G23",
+      "G24",
+      "G25"
+    ],
+    "venueId": "G19",
+    "program": "ABAME",
+    "students": [],
+    "createdAt": "2026-04-12T14:21:59.368Z"
+  }
+]

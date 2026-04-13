@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Module Entry — EAU Exam Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
+    <div>
+      <div class="sidebar-uni-name">Emirates Aviation University</div>
+      <div class="sidebar-app-name">FOE Exam Planner</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Main Menu</div>
+
+  <nav class="sidebar-nav">
+    <a href="index.html" class="sidebar-link active">
+      <span class="nav-icon">📋</span> Exam Module Entry
+    </a>
+    <a href="schedule.html" class="sidebar-link">
+      <span class="nav-icon">📅</span> Exam Schedule
+    </a>
+    <a href="schedule-invigilators.html" class="sidebar-link">
+      <span class="nav-icon">👁️</span> Schedule (with Invigilators)
+    </a>
+    <a href="shared-modules.html" class="sidebar-link">
+      <span class="nav-icon">🔗</span> Shared Modules
+    </a>
+    <a href="shared-venues.html" class="sidebar-link">
+      <span class="nav-icon">🏛️</span> Shared Venues
+    </a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Data File</div>
+  <div class="sidebar-file-status">
+    <span class="file-dot" id="fileStatusDot"></span>
+    <span id="fileStatusText" style="font-size:11px; color:rgba(255,255,255,0.5);">Not connected</span>
+  </div>
+  <div class="sidebar-file-btns">
+    <button class="sidebar-file-btn" id="connectFileBtn">📂 Connect exams.json</button>
+    <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
+  </div>
+
+  <div class="sidebar-footer">
+    &copy; 2026 Mohammed Khateeb
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════════════ -->
+<div class="main-content">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <span class="topbar-title">Exam Module Entry</span>
+    <button class="btn btn-primary btn-sm" id="openAddExamBtn">
+      ＋ Add Exam Entry
+    </button>
+  </div>
+
+  <div class="page-container">
+
+    <!-- ── Exam List ──────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-header">
+        All Exam Entries
+        <span class="badge" id="examCount">0</span>
+      </div>
+      <div class="card-body" style="padding:0;">
+        <div class="filter-bar" id="filterBar">
+          <input type="text"  id="filterCode"  class="filter-input" placeholder="Search by Code…">
+          <input type="date"  id="filterDate"  class="filter-input" title="Filter by Date">
+          <input type="time"  id="filterTime"  class="filter-input" title="Filter by Start Time">
+          <select id="filterVenue" class="filter-input">
+            <option value="">All Venues</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" id="clearFiltersBtn">✕ Clear</button>
+        </div>
+        <div id="examListContainer">
+          <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <h3>No exams yet</h3>
+            <p>Click <strong>+ Add Exam Entry</strong> in the top right to get started.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-container -->
+</div><!-- /main-content -->
+
+<!-- ══════════════════════════════════════════════════════════
+     ADD EXAM MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="addExamModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <span id="addExamModalTitle">＋ New Exam Entry</span>
+      <button class="modal-close" id="closeAddExamModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="examForm" novalidate>
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="moduleCode">Module Code *</label>
+            <input type="text" id="moduleCode" placeholder="e.g. AVI101" required>
+          </div>
+
+          <div class="form-group">
+            <label for="moduleName">Module Name *</label>
+            <input type="text" id="moduleName" placeholder="e.g. Introduction to Aviation" required>
+          </div>
+
+          <div class="form-group">
+            <label for="examName">Exam Type *</label>
+            <select id="examName" required>
+              <option value="">— Select —</option>
+              <option value="Midterm">Midterm</option>
+              <option value="Final">Final</option>
+              <option value="Test">Test</option>
+              <option value="Quiz">Quiz</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="semester">Semester *</label>
+            <select id="semester" required>
+              <option value="">— Select —</option>
+              <option value="Spring 2026">Spring 2026</option>
+              <option value="Fall 2026">Fall 2026</option>
+              <option value="Spring 2027">Spring 2027</option>
+              <option value="Fall 2027">Fall 2027</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="date">Date *</label>
+            <input type="date" id="date" required>
+          </div>
+
+          <div class="form-group">
+            <label for="startTime">Start Time *</label>
+            <input type="time" id="startTime" required>
+          </div>
+
+          <div class="form-group">
+            <label for="endTime">End Time *</label>
+            <input type="time" id="endTime" required>
+          </div>
+
+          <div class="form-group form-group-full">
+            <label>Venue(s) * <span class="label-hint">select one or more</span></label>
+            <div id="venueCheckList" class="venue-checklist">
+              <span class="loading-venues">Loading venues…</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="program">Program *</label>
+            <select id="program" required>
+              <option value="">— Select —</option>
+              <option value="EDAE">EDAE</option>
+              <option value="BSAE">BSAE</option>
+              <option value="AB/BENG">AB/BENG</option>
+              <option value="ABAME">ABAME</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="instructorName">Instructor Name *</label>
+            <input type="text" id="instructorName" placeholder="e.g. Dr. Ahmed Al-Rashid" required>
+          </div>
+
+          <div class="form-group">
+            <label for="invigilatorName">Invigilator Name</label>
+            <input type="text" id="invigilatorName" placeholder="e.g. Prof. Sarah Johnson">
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelAddExamBtn">Cancel</button>
+      <button class="btn btn-primary" id="submitExamBtn">＋ Create Exam</button>
+      <input type="hidden" id="editExamId">
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PRINT MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="printModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span>🖨️ Print Options</span>
+      <button class="modal-close" id="closePrintModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:16px; color:#555; font-size:13px;">
+        Select the type of document to generate for this exam.
+      </p>
+      <div class="print-options">
+        <button class="print-option-btn" id="printAttendanceBtn">
+          <span class="print-option-icon">📝</span>
+          <div>
+            <div class="print-option-title">Attendance Sheet</div>
+            <div class="print-option-desc">Student list with signature column — used during the exam</div>
+          </div>
+        </button>
+        <button class="print-option-btn" id="printSeatingBtn">
+          <span class="print-option-icon">🗺️</span>
+          <div>
+            <div class="print-option-title">Seating Plan</div>
+            <div class="print-option-desc">Student–seat list without signatures — posted outside the venue</div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" id="cancelPrintBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DELETE CONFIRM MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="deleteModal">
+  <div class="modal">
+    <div class="modal-header" style="background:#c0392b;">
+      <span>⚠️ Confirm Delete</span>
+      <button class="modal-close" id="closeDeleteModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this exam entry? This will also remove all associated student data.</p>
+      <p style="margin-top:8px; font-weight:600;" id="deleteExamName"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" id="cancelDeleteBtn">Cancel</button>
+      <button class="btn btn-red btn-sm" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/storage.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

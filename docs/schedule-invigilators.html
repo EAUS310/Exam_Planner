@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule (with Invigilators) — FOE Exam Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <style>
+    /* ── Filter Bar ── */
+    .schedule-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      background: #fff;
+      border-bottom: 1px solid #e8ecf0;
+    }
+    .schedule-filter-bar label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a3a5c;
+    }
+    .schedule-filter-bar select {
+      padding: 6px 12px;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #1a3a5c;
+      background: #fff;
+      cursor: pointer;
+      outline: none;
+    }
+    .schedule-filter-bar select:focus { border-color: #2980b9; }
+    .filter-sep { flex: 1; }
+
+    /* ── Schedule Grid ── */
+    .schedule-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding: 24px 28px 60px;
+      align-items: flex-start;
+    }
+
+    /* ── Schedule Card ── */
+    .schedule-card {
+      flex: 1 1 540px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border: 1px solid #d6e4f0;
+    }
+
+    .schedule-card-header {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.3px;
+      line-height: 1.4;
+    }
+
+    /* ── Schedule Table ── */
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      white-space: nowrap;
+    }
+
+    .schedule-table thead tr {
+      background: #2c5f8a;
+      color: #fff;
+    }
+
+    .schedule-table th {
+      padding: 8px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+      border: 1px solid #1a4a72;
+    }
+
+    .schedule-table td {
+      padding: 7px 10px;
+      border: 1px solid #dce8f4;
+      vertical-align: middle;
+      color: #1a3a5c;
+    }
+
+    .schedule-table .date-cell,
+    .schedule-table .day-cell {
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .schedule-table .date-cell { font-size: 12px; }
+    .schedule-table .day-cell  { font-size: 11px; color: #555; }
+
+    .schedule-table .module-cell strong { color: #1a3a5c; }
+    .schedule-table .timing-cell { white-space: nowrap; font-size: 12px; }
+    .schedule-table .venue-cell  { font-weight: 600; }
+    .schedule-table .invigilator-cell { color: #555; font-style: italic; }
+
+    /* Date band colours */
+    .band-0 { background: #eef4fb; }
+    .band-1 { background: #fff; }
+    .band-2 { background: #fdf6ec; }
+    .band-3 { background: #f2fbf4; }
+
+    /* ── Per-program card colours ── */
+
+    /* BSAE — Pastel Green */
+    .prog-bsae { border-color: #a8d5b5; }
+    .prog-bsae .schedule-card-header { background: #5a9e78; }
+    .prog-bsae .schedule-table thead tr { background: #4a8566; }
+    .prog-bsae .band-0 { background: #eaf6ee; }
+    .prog-bsae .band-2 { background: #f4faf6; }
+    .prog-bsae .band-3 { background: #dff0e6; }
+
+    /* AB/BENG — Pastel Peach */
+    .prog-abbeng { border-color: #f0c4a8; }
+    .prog-abbeng .schedule-card-header { background: #c97a52; }
+    .prog-abbeng .schedule-table thead tr { background: #b06640; }
+    .prog-abbeng .band-0 { background: #fdf2eb; }
+    .prog-abbeng .band-2 { background: #fdf7f2; }
+    .prog-abbeng .band-3 { background: #fae5d5; }
+
+    /* EDAE — Pastel Purple */
+    .prog-edae { border-color: #cdb8e8; }
+    .prog-edae .schedule-card-header { background: #7a5aad; }
+    .prog-edae .schedule-table thead tr { background: #64488f; }
+    .prog-edae .band-0 { background: #f3edfb; }
+    .prog-edae .band-2 { background: #f8f5fd; }
+    .prog-edae .band-3 { background: #e9dff7; }
+
+    /* Empty state */
+    .schedule-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+      font-size: 14px;
+    }
+    .schedule-empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+    /* ════════════════════════════════════════════════════════
+       PRINT STYLES — A3 Landscape
+    ════════════════════════════════════════════════════════ */
+    @media print {
+      @page {
+        size: A3 landscape;
+        margin: 10mm 12mm;
+      }
+
+      .sidebar, .topbar, .schedule-filter-bar,
+      .no-print { display: none !important; }
+
+      .main-content { margin-left: 0 !important; }
+
+      .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 8mm;
+      }
+      .print-header-title {
+        font-size: 14pt;
+        font-weight: 800;
+        color: #1a3a5c;
+      }
+      .print-header-sub {
+        font-size: 9pt;
+        color: #555;
+        margin-top: 2mm;
+      }
+
+      .schedule-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5mm;
+        padding: 0;
+        align-items: flex-start;
+      }
+
+      .schedule-card {
+        flex: 1 1 120mm;
+        box-shadow: none;
+        border: 1px solid #aac4de;
+        border-radius: 4px;
+        break-inside: avoid;
+      }
+
+      .schedule-card-header {
+        background: #1a3a5c !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 9pt;
+        padding: 5px 8px;
+      }
+
+      .schedule-table { font-size: 8pt; white-space: normal; }
+      .schedule-table th { font-size: 7pt; padding: 4px 6px; }
+      .schedule-table td { padding: 4px 6px; }
+
+      .schedule-table thead tr,
+      .band-0, .band-1, .band-2, .band-3 {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .schedule-table thead tr { background: #2c5f8a !important; }
+      .band-0 { background: #eef4fb !important; }
+      .band-2 { background: #fdf6ec !important; }
+      .band-3 { background: #f2fbf4 !important; }
+
+      /* Program colours in print */
+      .prog-bsae .schedule-card-header { background: #5a9e78 !important; }
+      .prog-bsae .schedule-table thead tr { background: #4a8566 !important; }
+      .prog-bsae .band-0 { background: #eaf6ee !important; }
+      .prog-bsae .band-2 { background: #f4faf6 !important; }
+      .prog-bsae .band-3 { background: #dff0e6 !important; }
+
+      .prog-abbeng .schedule-card-header { background: #c97a52 !important; }
+      .prog-abbeng .schedule-table thead tr { background: #b06640 !important; }
+      .prog-abbeng .band-0 { background: #fdf2eb !important; }
+      .prog-abbeng .band-2 { background: #fdf7f2 !important; }
+      .prog-abbeng .band-3 { background: #fae5d5 !important; }
+
+      .prog-edae .schedule-card-header { background: #7a5aad !important; }
+      .prog-edae .schedule-table thead tr { background: #64488f !important; }
+      .prog-edae .band-0 { background: #f3edfb !important; }
+      .prog-edae .band-2 { background: #f8f5fd !important; }
+      .prog-edae .band-3 { background: #e9dff7 !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
+    <div>
+      <div class="sidebar-uni-name">Emirates Aviation University</div>
+      <div class="sidebar-app-name">FOE Exam Planner</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Main Menu</div>
+
+  <nav class="sidebar-nav">
+    <a href="index.html" class="sidebar-link">
+      <span class="nav-icon">📋</span> Exam Module Entry
+    </a>
+    <a href="schedule.html" class="sidebar-link">
+      <span class="nav-icon">📅</span> Exam Schedule
+    </a>
+    <a href="schedule-invigilators.html" class="sidebar-link active">
+      <span class="nav-icon">👁️</span> Schedule (with Invigilators)
+    </a>
+    <a href="shared-modules.html" class="sidebar-link">
+      <span class="nav-icon">🔗</span> Shared Modules
+    </a>
+    <a href="shared-venues.html" class="sidebar-link">
+      <span class="nav-icon">🏛️</span> Shared Venues
+    </a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Data File</div>
+  <div class="sidebar-file-status">
+    <span class="file-dot" id="fileStatusDot"></span>
+    <span id="fileStatusText" style="font-size:11px; color:rgba(255,255,255,0.5);">Not connected</span>
+  </div>
+  <div class="sidebar-file-btns">
+    <button class="sidebar-file-btn" id="connectFileBtn">📂 Connect exams.json</button>
+    <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
+  </div>
+
+  <div class="sidebar-footer">
+    &copy; 2026 Mohammed Khateeb
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════════════ -->
+<div class="main-content">
+
+  <!-- Top bar -->
+  <div class="topbar no-print">
+    <span class="topbar-title">👁️ Schedule (with Invigilators)</span>
+    <button class="btn btn-primary btn-sm" onclick="window.print()">
+      🖨️ Print / Save as A3 PDF
+    </button>
+  </div>
+
+  <!-- Print-only header (hidden on screen) -->
+  <div class="print-header" style="display:none;">
+    <div class="print-header-title">Emirates Aviation University — Faculty of Engineering</div>
+    <div class="print-header-sub" id="printHeaderSub"></div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="schedule-filter-bar no-print">
+    <label>Exam Type:</label>
+    <select id="filterExamType">
+      <option value="">All Types</option>
+      <option value="Midterm">Midterm</option>
+      <option value="Final">Final</option>
+      <option value="Test">Test</option>
+      <option value="Quiz">Quiz</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label>Semester:</label>
+    <select id="filterSemester">
+      <option value="">All Semesters</option>
+    </select>
+
+    <div class="filter-sep"></div>
+    <span id="scheduleCount" style="font-size:12px; color:#888;"></span>
+  </div>
+
+  <!-- Schedule tables -->
+  <div class="schedule-grid" id="scheduleGrid">
+    <div class="schedule-empty">
+      <div class="schedule-empty-icon">⏳</div>
+      <p>Loading schedule…</p>
+    </div>
+  </div>
+
+</div><!-- /main-content -->
+
+<script src="js/storage.js"></script>
+<script src="js/schedule-invigilators.js"></script>
+</body>
+</html>
