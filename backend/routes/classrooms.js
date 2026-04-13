@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-const CLASSROOMS_FILE = path.join(__dirname, '../../data/classrooms.json');
+const CLASSROOMS_FILE = path.join(__dirname, '../../frontend/data/classrooms.json');
 
 function computeTotalSeats(c) {
   if (c.columnRows) {

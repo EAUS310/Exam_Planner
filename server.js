@@ -9,11 +9,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files
+// Serve static frontend files (assets/ is inside frontend/, so /assets/* resolves automatically)
 app.use(express.static(path.join(__dirname, 'frontend')));
-
-// Serve assets (logo etc.)
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // API Routes
 app.use('/api/exams', require('./backend/routes/exams'));
