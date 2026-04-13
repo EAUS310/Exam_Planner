@@ -29,31 +29,40 @@ A fully static exam scheduling and seat assignment tool built with vanilla HTML/
 
 ```
 exam-planner/
-├── index.html                   # Exam entry form + exam list
-├── students.html                # Student management per exam
-├── schedule.html                # Exam schedule view
-├── schedule-invigilators.html   # Invigilator assignment
-├── shared-modules.html          # Shared module management
-├── shared-venues.html           # Venue management + import
-├── attendance-print.html        # Printable attendance sheet
-├── seating-print.html           # Printable seating plan
-├── css/
-│   ├── style.css                # Screen styles
-│   ├── sidebar.css              # Sidebar styles
-│   └── print.css                # Print-optimized styles
-├── js/
-│   ├── storage.js               # Data layer (localStorage + file sync)
-│   ├── main.js                  # Exam list page logic
-│   ├── students.js              # Student management logic
-│   ├── schedule.js              # Schedule page logic
-│   ├── schedule-invigilators.js # Invigilator page logic
-│   ├── shared-modules.js        # Shared modules page logic
-│   └── shared-venues.js         # Shared venues page logic
-├── data/
-│   └── exams.json               # Seed data (loaded on first visit if localStorage is empty)
-└── assets/
-    ├── EAU_Logo.png
-    └── EAU_Group_logo.png
+├── frontend/                        # Static app (served by GitHub Pages or Express)
+│   ├── index.html                   # Exam entry form + exam list
+│   ├── students.html                # Student management per exam
+│   ├── schedule.html                # Exam schedule view
+│   ├── schedule-invigilators.html   # Invigilator assignment
+│   ├── shared-modules.html          # Shared module management
+│   ├── shared-venues.html           # Venue management + import
+│   ├── attendance-print.html        # Printable attendance sheet
+│   ├── seating-print.html           # Printable seating plan
+│   ├── css/
+│   │   ├── style.css                # Screen styles
+│   │   ├── sidebar.css              # Sidebar styles
+│   │   └── print.css                # Print-optimized styles
+│   ├── js/
+│   │   ├── storage.js               # Data layer (localStorage + file sync)
+│   │   ├── main.js                  # Exam list page logic
+│   │   ├── students.js              # Student management logic
+│   │   ├── schedule.js              # Schedule page logic
+│   │   ├── schedule-invigilators.js # Invigilator page logic
+│   │   ├── shared-modules.js        # Shared modules page logic
+│   │   └── shared-venues.js         # Shared venues page logic
+│   ├── data/
+│   │   ├── exams.json               # Seed data (loaded on first visit if localStorage is empty)
+│   │   └── classrooms.json          # Venue/room definitions
+│   └── assets/
+│       ├── EAU_Logo.png
+│       └── EAU_Group_logo.png
+├── backend/
+│   └── routes/
+│       ├── exams.js                 # REST API: exam CRUD
+│       └── classrooms.js            # REST API: classroom data
+├── server.js                        # Express server (local dev only)
+├── package.json
+└── CLAUDE.md                        # Claude Code context for AI-assisted development
 ```
 
 ---
@@ -66,7 +75,15 @@ exam-planner/
 Visit https://eaus310.github.io/Exam_Planner/
 
 **Option B — Local file:**
-Open `index.html` directly in a modern browser (Chrome or Edge recommended for full file-sync support).
+Open `frontend/index.html` directly in a modern browser (Chrome or Edge recommended for full file-sync support).
+
+**Option C — Express dev server:**
+```bash
+npm install
+npm start        # runs on http://localhost:3000
+# or
+npm run dev      # auto-restarts on file changes (requires nodemon)
+```
 
 ---
 
@@ -112,11 +129,11 @@ All data is stored in **`localStorage`** in the browser — no server required.
 ### Syncing to a File (optional)
 Click **"📂 Connect exams.json"** in the sidebar to link a local `exams.json` file. Once connected, every change is automatically written back to that file via the File System Access API (Chrome/Edge only).
 
-To export a snapshot at any time, click **"⬇️ Download exams.json"**.
+To export a snapshot at any time, click **"⬇️ Download exams.csv"**.
 
 ### Venues / Classrooms
 
-Venue definitions are embedded in `js/storage.js` under `getClassrooms()`. To add or modify venues, edit that array directly. Two layout formats are supported:
+Venue definitions are stored in `frontend/data/classrooms.json` and loaded via `js/storage.js → getClassrooms()`. Two layout formats are supported:
 
 **Uniform layout** (same number of rows in every column):
 ```json
@@ -159,38 +176,32 @@ When multiple exams share a venue on the same date:
 
 ## Tech Stack
 
-- **Frontend**: Vanilla HTML5, CSS3, JavaScript (ES6+)
+- **Frontend**: Vanilla HTML5, CSS3, JavaScript (ES6+) — no framework, no build step
 - **Storage**: `localStorage` + File System Access API (optional file sync)
 - **Hosting**: GitHub Pages (static, no build step)
 - **Print**: CSS `@media print`, `@page` rules (A3 landscape for schedule)
+- **Backend** (`server.js`): Express + Node.js — for local development only; not used by the deployed app
 
 ---
 
-## Pushing Changes to GitHub (without Claude Code)
-
-To save your Claude Code usage, push updates directly from the terminal:
+## Pushing Changes to GitHub
 
 ```bash
-# 1. Open a terminal in the project folder (or use VS Code's integrated terminal)
-cd "path/to/exam-planner"
+# Stage specific files
+git add frontend/data/exams.json
 
-# 2. Stage the files you changed (e.g. data/exams.json)
-git add data/exams.json
-
-# 3. Or stage all changed files at once
+# Or stage all changes
 git add .
 
-# 4. Commit with a message
+# Commit and push
 git commit -m "Your description of what changed"
-
-# 5. Push to GitHub
 git push
 ```
 
-**Tip — do it directly from VS Code:**
+**Via VS Code:**
 1. Open the **Source Control** panel (`Ctrl+Shift+G`)
 2. Stage files with **+**, write a commit message, click **✓ Commit**
-3. Click **Sync Changes** (or the cloud icon) to push
+3. Click **Sync Changes** to push
 
 GitHub will update the live site at https://eaus310.github.io/Exam_Planner/ automatically within ~30 seconds after each push.
 
