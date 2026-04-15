@@ -1,7 +1,7 @@
 # Dependencies
 node_modules/
 
-# Build output (if added in future)
+# Build output
 dist/
 build/
 .cache/
@@ -10,3 +10,10 @@ build/
 *.xlsx
 *.pdf
 package-lock.json
+
+# Maps and minified assets
+*.log
+*.map
+*.min.js
+*.min.css
+large-assets/

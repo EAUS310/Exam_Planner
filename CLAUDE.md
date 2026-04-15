@@ -2,7 +2,7 @@
 
 ## What This App Does
 
-Exam scheduling and seat assignment tool for the Faculty of Engineering at Emirates Aviation University. Manages exams, imports students, auto-assigns seats across one or more venues, schedules invigilators, and generates printable attendance sheets and seating plans.
+Exam scheduling and seat assignment tool for the Faculty of Engineering at Emirates Aviation University. Manages exams, imports students, auto-assigns seats across one or more venues, schedules invigilators, and generates printable attendance sheets and seating plans. Includes a Presentation Schedule module for manually tracking project presentation slots with per-instructor conflict detection.
 
 Live at: https://eaus310.github.io/Exam_Planner/
 
@@ -24,6 +24,8 @@ Live at: https://eaus310.github.io/Exam_Planner/
 | `schedule-invigilators.html` / `js/schedule-invigilators.js` | Invigilator assignment per exam |
 | `shared-modules.html` / `js/shared-modules.js` | Modules spanning multiple exams |
 | `shared-venues.html` / `js/shared-venues.js` | Venue tracking, conflict detection, import |
+| `presentation-schedule.html` / `js/presentation-schedule.js` | Manual presentation slot entry, instructor dashboard, timing conflict detection |
+| `presentation-schedule-view.html` / `js/presentation-schedule-view.js` | Read-only date-grouped presentation view; A3 landscape PDF output |
 | `attendance-print.html` | Printable attendance sheet (signature column, sorted by seat) |
 | `seating-print.html` | Printable seating plan (grouped by venue) |
 | `js/storage.js` | Data layer — all localStorage reads/writes and file sync logic |
@@ -36,9 +38,11 @@ Live at: https://eaus310.github.io/Exam_Planner/
 ## Data Model
 
 All data lives in `localStorage`. Key entries:
-- `exams` — array of exam objects (id, module, date, time, instructor, venues, students, invigilators)
+- `eau_exam_planner_v1` — array of exam objects (id, module, date, time, instructor, venues, students, invigilators)
+- `eau_presentations_v1` — array of presentation objects (id, date, day, moduleCode, groupNumber, instructor, timing, juryNames)
 - Each student has: `id`, `name`, `seat` (e.g. `"B4"`)
 - Venues defined in `js/storage.js` → `getClassrooms()` — supports uniform and irregular column layouts
+- Presentations CRUD: `getPresentations()`, `createPresentation()`, `updatePresentation()`, `deletePresentation()` in `js/storage.js`
 
 ## Seat Assignment Logic
 

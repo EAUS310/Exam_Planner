@@ -544,6 +544,82 @@ function optimizeSeating(examId) {
   };
 }
 
+// ── CRUD — Presentations ──────────────────────────────────
+
+const _LS_PRES_KEY = 'eau_presentations_v1';
+
+function getPresentations() {
+  try { return JSON.parse(localStorage.getItem(_LS_PRES_KEY) || '[]'); } catch { return []; }
+}
+
+function _savePresentations(pres) {
+  localStorage.setItem(_LS_PRES_KEY, JSON.stringify(pres));
+  window.dispatchEvent(new CustomEvent('presentationsUpdated'));
+}
+
+function _genPresId() {
+  if (crypto && crypto.randomUUID) return 'pres-' + crypto.randomUUID();
+  return 'pres-' + 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+/** Derive day name from a YYYY-MM-DD string. */
+function _dayFromDate(dateStr) {
+  if (!dateStr) return '';
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return days[new Date(y, m - 1, d).getDay()] || '';
+}
+
+function createPresentation(payload) {
+  const pres = getPresentations();
+  const entry = {
+    id:          _genPresId(),
+    date:        payload.date        || '',
+    day:         payload.day        || _dayFromDate(payload.date),
+    moduleCode:  payload.moduleCode  || '',
+    groupNumber: payload.groupNumber || '',
+    instructor:  payload.instructor  || '',
+    timing:      payload.timing      || '',
+    juryNames:   payload.juryNames   || '',
+    createdAt:   new Date().toISOString()
+  };
+  pres.push(entry);
+  _savePresentations(pres);
+  return entry;
+}
+
+function updatePresentation(id, payload) {
+  const pres = getPresentations();
+  const idx  = pres.findIndex(p => p.id === id);
+  if (idx === -1) return null;
+  const cur     = pres[idx];
+  const updated = {
+    ...cur,
+    date:        payload.date        ?? cur.date,
+    day:         payload.day        || _dayFromDate(payload.date ?? cur.date),
+    moduleCode:  payload.moduleCode  ?? cur.moduleCode,
+    groupNumber: payload.groupNumber ?? cur.groupNumber,
+    instructor:  payload.instructor  ?? cur.instructor,
+    timing:      payload.timing      ?? cur.timing,
+    juryNames:   payload.juryNames   ?? cur.juryNames ?? ''
+  };
+  pres[idx] = updated;
+  _savePresentations(pres);
+  return updated;
+}
+
+function deletePresentation(id) {
+  const pres = getPresentations();
+  const idx  = pres.findIndex(p => p.id === id);
+  if (idx === -1) return false;
+  pres.splice(idx, 1);
+  _savePresentations(pres);
+  return true;
+}
+
 // ── Auto-init: try to restore file handle silently ────────
 (async () => {
   await _tryRestoreHandle();

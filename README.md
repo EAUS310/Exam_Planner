@@ -17,6 +17,8 @@ A fully static exam scheduling and seat assignment tool built with vanilla HTML/
 - **Invigilator Scheduling** — Assign and manage invigilators per exam
 - **Shared Modules** — View and manage modules that span multiple exams or venues
 - **Shared Venues** — Track and import venue data, detect scheduling conflicts across exams
+- **Presentation Schedule** — Manually log project presentation slots (date, module, group, instructor, timing); dashboard grouped by instructor and date with automatic overlap/conflict detection
+- **Presentation Schedule View** — Read-only date-grouped view (sorted date → timing); A3 landscape PDF output via `window.print()`
 - **Exam Schedule Page** — Program-grouped schedule view with filters and A3 print layout
 - **Print Outputs**:
   - Attendance Sheet (student list with signature column, sorted by seat)
@@ -36,6 +38,8 @@ exam-planner/
 │   ├── schedule-invigilators.html   # Invigilator assignment
 │   ├── shared-modules.html          # Shared module management
 │   ├── shared-venues.html           # Venue management + import
+│   ├── presentation-schedule.html   # Presentation slot entry + instructor dashboard
+│   ├── presentation-schedule-view.html  # Date-grouped view + A3 landscape PDF
 │   ├── attendance-print.html        # Printable attendance sheet
 │   ├── seating-print.html           # Printable seating plan
 │   ├── css/
@@ -49,7 +53,9 @@ exam-planner/
 │   │   ├── schedule.js              # Schedule page logic
 │   │   ├── schedule-invigilators.js # Invigilator page logic
 │   │   ├── shared-modules.js        # Shared modules page logic
-│   │   └── shared-venues.js         # Shared venues page logic
+│   │   ├── shared-venues.js         # Shared venues page logic
+│   │   ├── presentation-schedule.js # Presentation CRUD + conflict detection
+│   │   └── presentation-schedule-view.js # Date-grouped view logic
 │   ├── data/
 │   │   ├── exams.json               # Seed data (loaded on first visit if localStorage is empty)
 │   │   └── classrooms.json          # Venue/room definitions

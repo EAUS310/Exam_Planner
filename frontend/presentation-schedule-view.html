@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentation Schedule View — FOE Exam Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/print.css">
+  <style>
+    /* ══════════════════════════════════════════════════════════
+       SCREEN — Day-grouped schedule list
+    ══════════════════════════════════════════════════════════ */
+
+    /* Filter bar */
+    .pv-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      background: #fff;
+      border-bottom: 1px solid #e8ecf0;
+    }
+    .pv-filter-bar label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a3a5c;
+    }
+    .pv-filter-bar select {
+      padding: 6px 12px;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #1a3a5c;
+      background: #fff;
+      cursor: pointer;
+      outline: none;
+    }
+    .pv-filter-bar select:focus { border-color: #2980b9; }
+    .filter-sep { flex: 1; }
+
+    /* Schedule list container */
+    .pv-list {
+      padding: 24px 28px 60px;
+    }
+
+    /* Day section */
+    .pv-day-section {
+      margin-bottom: 32px;
+    }
+
+    /* Day heading */
+    .pv-day-heading {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a3a5c;
+      background: #eef4fb;
+      border-left: 4px solid #2980b9;
+      padding: 10px 16px;
+      margin: 0 0 0 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* Table wrapper (horizontal scroll on small screens) */
+    .pv-table-wrap {
+      overflow-x: auto;
+    }
+
+    /* Presentation table */
+    .pv-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 0;
+    }
+    .pv-table thead tr {
+      background: #2c5f8a;
+      color: #fff;
+    }
+    .pv-table th {
+      padding: 9px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+    .pv-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #e4edf5;
+      vertical-align: middle;
+    }
+    .pv-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .pv-table tbody tr:nth-child(even) td {
+      background: #f7f9fc;
+    }
+    .pv-table .timing-cell {
+      white-space: nowrap;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+      color: #1a3a5c;
+      font-weight: 600;
+    }
+    .col-time       { width: 18%; }
+    .col-module     { width: 45%; }
+    .col-instructor { width: 37%; }
+
+    /* Empty state */
+    .pv-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+      font-size: 14px;
+    }
+    .pv-empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+    /* Print-only header (hidden on screen) */
+    .pv-print-header { display: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       PRINT — A3 Landscape
+       Overrides css/print.css @page (A4 portrait).
+       Rules that are last in cascade win for @page.
+    ══════════════════════════════════════════════════════════ */
+    @media print {
+      @page {
+        size: A3 landscape;
+        margin: 12mm 15mm;
+      }
+
+      /* Hide chrome */
+      .sidebar,
+      .topbar,
+      .pv-filter-bar,
+      .no-print { display: none !important; }
+
+      .main-content { margin-left: 0 !important; }
+
+      /* Show print header */
+      .pv-print-header {
+        display: block;
+        text-align: center;
+        border-bottom: 2px solid #1a3a5c;
+        padding-bottom: 6mm;
+        margin-bottom: 8mm;
+      }
+      .pv-print-header-title {
+        font-size: 13pt;
+        font-weight: 800;
+        color: #1a3a5c;
+      }
+      .pv-print-header-sub {
+        font-size: 9pt;
+        color: #555;
+        margin-top: 2mm;
+      }
+
+      /* Remove screen padding */
+      .pv-list { padding: 0; }
+
+      /* Day section: keep heading with its table */
+      .pv-day-section { margin-bottom: 8mm; }
+
+      /* CRITICAL: h2 must not be separated from the table below it */
+      h2.pv-day-heading {
+        page-break-after: avoid;
+        break-after: avoid;
+        font-size: 10pt;
+        padding: 4pt 8pt;
+        background: #eef4fb !important;
+        border-left: 3pt solid #2980b9;
+        color: #1a3a5c !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* Tables span full page width */
+      .pv-table-wrap { overflow-x: visible; }
+      .pv-table {
+        width: 100%;
+        font-size: 9pt;
+        border-collapse: collapse;
+      }
+      .pv-table thead tr {
+        background: #2c5f8a !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .pv-table th {
+        font-size: 8pt;
+        padding: 4pt 8pt;
+      }
+      .pv-table td {
+        padding: 4pt 8pt;
+        border-bottom: 0.5pt solid #ccc;
+      }
+      .pv-table tbody tr:nth-child(even) td {
+        background: #f7f9fc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .pv-table .timing-cell {
+        font-size: 8.5pt;
+      }
+
+      /* Prevent a day section from splitting across pages when possible */
+      .pv-day-section {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
+    <div>
+      <div class="sidebar-uni-name">Emirates Aviation University</div>
+      <div class="sidebar-app-name">FOE Exam Planner</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Main Menu</div>
+
+  <nav class="sidebar-nav">
+    <a href="index.html" class="sidebar-link">
+      <span class="nav-icon">📋</span> Exam Module Entry
+    </a>
+    <a href="schedule.html" class="sidebar-link">
+      <span class="nav-icon">📅</span> Exam Schedule
+    </a>
+    <a href="schedule-invigilators.html" class="sidebar-link">
+      <span class="nav-icon">👁️</span> Schedule (with Invigilators)
+    </a>
+    <a href="shared-modules.html" class="sidebar-link">
+      <span class="nav-icon">🔗</span> Shared Modules
+    </a>
+    <a href="shared-venues.html" class="sidebar-link">
+      <span class="nav-icon">🏛️</span> Shared Venues
+    </a>
+    <a href="presentation-schedule.html" class="sidebar-link">
+      <span class="nav-icon">🎓</span> Presentation Schedule
+    </a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Data File</div>
+  <div class="sidebar-file-status">
+    <span class="file-dot" id="fileStatusDot"></span>
+    <span id="fileStatusText" style="font-size:11px; color:rgba(255,255,255,0.5);">Not connected</span>
+  </div>
+  <div class="sidebar-file-btns">
+    <button class="sidebar-file-btn" id="connectFileBtn">📂 Connect exams.json</button>
+    <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
+  </div>
+
+  <div class="sidebar-footer">
+    &copy; 2026 Mohammed Khateeb
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════════════ -->
+<div class="main-content">
+
+  <!-- Top bar (screen only) -->
+  <div class="topbar no-print">
+    <span class="topbar-title">📊 Presentation Schedule View</span>
+    <button class="btn btn-primary btn-sm" onclick="window.print()">
+      🖨️ Print / Save as A3 Landscape PDF
+    </button>
+  </div>
+
+  <!-- Print-only header -->
+  <div class="pv-print-header">
+    <div class="pv-print-header-title">Emirates Aviation University — Faculty of Engineering</div>
+    <div class="pv-print-header-sub" id="printHeaderSub">Presentation Schedule</div>
+  </div>
+
+  <!-- Filter bar (screen only) -->
+  <div class="pv-filter-bar no-print">
+    <label for="filterModule">Module:</label>
+    <select id="filterModule">
+      <option value="">All Modules</option>
+    </select>
+    <div class="filter-sep"></div>
+    <span id="scheduleCount" style="font-size:12px; color:#888;"></span>
+  </div>
+
+  <!-- Date-grouped schedule list -->
+  <div class="pv-list" id="scheduleList">
+    <div class="pv-empty">
+      <div class="pv-empty-icon">⏳</div>
+      <p>Loading presentations…</p>
+    </div>
+  </div>
+
+</div><!-- /main-content -->
+
+<script src="js/storage.js"></script>
+<script src="js/presentation-schedule-view.js"></script>
+</body>
+</html>
