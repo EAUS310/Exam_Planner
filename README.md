@@ -1,7 +1,7 @@
 # FOE Exam Planner
 ### Emirates Aviation University — Faculty of Engineering
 
-A fully static exam scheduling and seat assignment tool built with vanilla HTML/CSS/JavaScript. No server or installation required — runs entirely in the browser.
+A fully static exam scheduling and seat assignment tool built with vanilla HTML/CSS/JavaScript. No server or installation required — runs entirely in the browser (Google Chrome or Microsoft Edge only).
 
 **Live app:** https://eaus310.github.io/Exam_Planner/
 
