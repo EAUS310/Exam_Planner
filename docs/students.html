@@ -42,6 +42,9 @@
     <a href="presentation-schedule.html" class="sidebar-link">
       <span class="nav-icon">🎓</span> Presentation Schedule
     </a>
+    <a href="student-data.html" class="sidebar-link">
+      <span class="nav-icon">👤</span> Student Data
+    </a>
   </nav>
 
   <div class="sidebar-divider"></div>
@@ -150,7 +153,7 @@
       </div>
       <div class="card-body">
         <p style="font-size:13px; color:#555; margin-bottom:14px;">
-          Multiple exams share this venue on the same date. Optimise seating to interleave students from different modules across columns — reducing the risk of copying.
+          Optimise seating to assign students across alternate columns — reducing the risk of copying. When multiple modules share the venue, students are interleaved between modules.
         </p>
         <div id="aiCoExamsList" style="margin-bottom:14px;"></div>
         <button class="btn btn-primary" id="aiOptimizeBtn">
@@ -162,9 +165,9 @@
 
     <!-- ── Current Student List ──────────────────────────── -->
     <div class="card">
-      <div class="card-header">
-        Current Student List
-        <span class="badge" id="studentCount">0</span>
+      <div class="card-header" style="display:flex; align-items:center; justify-content:space-between;">
+        <span>Current Student List <span class="badge" id="studentCount">0</span></span>
+        <button class="btn btn-red btn-sm" id="deleteAllStudentsBtn" style="display:none;">🗑️ Delete All</button>
       </div>
       <div class="card-body" style="padding:0;" id="studentListContainer">
         <div class="empty-state" style="padding:32px;">
@@ -177,6 +180,25 @@
 
   </div><!-- /page-container -->
 </div><!-- /main-content -->
+
+<!-- ══════════════════════════════════════════════════════════
+     DELETE ALL CONFIRM MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="deleteAllModal">
+  <div class="modal">
+    <div class="modal-header" style="background:#c0392b;">
+      <span>⚠️ Delete All Students</span>
+      <button class="modal-close" id="closeDeleteAllModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to remove all students from this exam? All seat assignments will be lost.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" id="cancelDeleteAllBtn">Cancel</button>
+      <button class="btn btn-red btn-sm" id="confirmDeleteAllBtn">Delete All</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════════════════════════
      EDIT SEAT MODAL

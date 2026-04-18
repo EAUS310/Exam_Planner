@@ -117,63 +117,63 @@
     "id": "G18",
     "name": "G18",
     "totalSeats": 15,
-    "columns": ["A","C","E"],
+    "columns": ["A","B","C","D","E"],
     "rows": [1,2,3,4,5]
   },
   {
     "id": "G19",
     "name": "G19",
     "totalSeats": 15,
-    "columns": ["A","C","E"],
+    "columns": ["A","B","C","D","E"],
     "rows": [1,2,3,4,5]
   },
   {
     "id": "G20",
     "name": "G20",
     "totalSeats": 15,
-    "columns": ["A","C","E"],
+    "columns": ["A","B","C","D","E"],
     "rows": [1,2,3,4,5]
   },
   {
     "id": "G21",
     "name": "G21",
     "totalSeats": 15,
-    "columns": ["A","C","E"],
+    "columns": ["A","B","C","D","E"],
     "rows": [1,2,3,4,5]
   },
   {
     "id": "G22",
     "name": "G22",
     "totalSeats": 15,
-    "columns": ["A","C","E"],
+    "columns": ["A","B","C","D","E"],
     "rows": [1,2,3,4,5]
   },
   {
     "id": "G23",
     "name": "G23",
     "totalSeats": 15,
-    "columns": ["A","C","E"],
+    "columns": ["A","B","C","D","E"],
     "rows": [1,2,3,4,5]
   },
   {
     "id": "G24",
     "name": "G24",
     "totalSeats": 15,
-    "columns": ["A","C","E"],
+    "columns": ["A","B","C","D","E"],
     "rows": [1,2,3,4,5]
   },
   {
     "id": "G25",
     "name": "G25",
     "totalSeats": 15,
-    "columns": ["A","C","E"],
+    "columns": ["A","B","C","D","E"],
     "rows": [1,2,3,4,5]
   },
   {
     "id": "G26",
     "name": "G26",
     "totalSeats": 15,
-    "columns": ["A","C","E"],
+    "columns": ["A","B","C","D","E"],
     "rows": [1,2,3,4,5]
   },
   {

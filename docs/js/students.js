@@ -32,8 +32,13 @@ const previewTableBody  = document.getElementById('previewTableBody');
 const saveStudentsBtn   = document.getElementById('saveStudentsBtn');
 const cancelPreviewBtn  = document.getElementById('cancelPreviewBtn');
 
-const studentCountBadge = document.getElementById('studentCount');
-const studentListCont   = document.getElementById('studentListContainer');
+const studentCountBadge   = document.getElementById('studentCount');
+const studentListCont     = document.getElementById('studentListContainer');
+const deleteAllStudentsBtn = document.getElementById('deleteAllStudentsBtn');
+const deleteAllModal       = document.getElementById('deleteAllModal');
+const confirmDeleteAllBtn  = document.getElementById('confirmDeleteAllBtn');
+const cancelDeleteAllBtn   = document.getElementById('cancelDeleteAllBtn');
+const closeDeleteAllModal  = document.getElementById('closeDeleteAllModal');
 
 // ── Toast ─────────────────────────────────────────────────
 function showToast(message, type = 'default', duration = 3500) {
@@ -85,7 +90,9 @@ function getCoExams() {
   const myVenueSet = new Set(getExamVenueIds(exam));
   return allExams.filter(e =>
     e.id !== exam.id &&
-    e.date === exam.date &&
+    e.date      === exam.date      &&
+    e.startTime === exam.startTime &&
+    e.endTime   === exam.endTime   &&
     getExamVenueIds(e).some(vid => myVenueSet.has(vid))
   );
 }
@@ -170,7 +177,8 @@ function renderCoExamsInfo() {
 
   if (coExams.length === 0) {
     coExamsAlert.style.display    = 'none';
-    aiOptimizeSection.style.display = 'none';
+    aiOptimizeSection.style.display = exam.students.length > 0 ? 'block' : 'none';
+    aiCoExamsList.innerHTML = '';
     return;
   }
 
@@ -207,6 +215,7 @@ function renderCoExamsInfo() {
 function renderStudentList() {
   const students = exam.students || [];
   studentCountBadge.textContent = students.length;
+  deleteAllStudentsBtn.style.display = students.length > 0 ? 'inline-flex' : 'none';
 
   if (students.length === 0) {
     studentListCont.innerHTML = `
@@ -445,7 +454,7 @@ window.openEditSeat = openEditSeat;
 // ── Seating Optimisation ──────────────────────────────────
 aiOptimizeBtn.addEventListener('click', () => {
   const coExams       = getCoExams();
-  const totalStudents = coExams.reduce((s, e) => s + e.students.length, 0);
+  const totalStudents = exam.students.length + coExams.reduce((s, e) => s + e.students.length, 0);
 
   if (totalStudents === 0) {
     showToast('No students to optimise. Please add students first.', 'warning');
@@ -481,6 +490,22 @@ aiOptimizeBtn.addEventListener('click', () => {
     aiOptimizeBtn.disabled = false;
     aiOptimizeBtn.innerHTML = '🔀 Optimise Seating for All Exams in This Venue';
   }
+});
+
+// ── Delete All Students ───────────────────────────────────
+deleteAllStudentsBtn.addEventListener('click', () => deleteAllModal.classList.remove('hidden'));
+closeDeleteAllModal.addEventListener('click',  () => deleteAllModal.classList.add('hidden'));
+cancelDeleteAllBtn.addEventListener('click',   () => deleteAllModal.classList.add('hidden'));
+deleteAllModal.addEventListener('click', e => { if (e.target === deleteAllModal) deleteAllModal.classList.add('hidden'); });
+
+confirmDeleteAllBtn.addEventListener('click', () => {
+  const result = clearStudents(examId);
+  if (!result) { showToast('Failed to delete students.', 'error'); return; }
+  exam = result;
+  deleteAllModal.classList.add('hidden');
+  renderStudentList();
+  renderCoExamsInfo();
+  showToast('All students deleted.', 'success');
 });
 
 // ── Init ──────────────────────────────────────────────────

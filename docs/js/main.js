@@ -28,6 +28,7 @@ const addExamModalTitle = document.getElementById('addExamModalTitle');
 const editExamIdInput   = document.getElementById('editExamId');
 
 const venueCheckList   = document.getElementById('venueCheckList');
+const programCheckList = document.getElementById('programCheckList');
 const examListCont     = document.getElementById('examListContainer');
 const examCountBadge   = document.getElementById('examCount');
 
@@ -85,6 +86,12 @@ function formatDate(dateStr) {
   return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
 }
 
+function getDayName(dateStr) {
+  if (!dateStr) return '';
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return days[new Date(dateStr).getDay()];
+}
+
 function formatTime(t) {
   if (!t) return '';
   const [h, min] = t.split(':');
@@ -106,6 +113,15 @@ function getVenueNames(exam) {
 
 function getCheckedVenueIds() {
   return [...venueCheckList.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
+}
+
+function getCheckedProgramIds() {
+  return [...programCheckList.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value);
+}
+
+function getProgramDisplay(exam) {
+  const list = Array.isArray(exam.programs) && exam.programs.length ? exam.programs : (exam.program ? [exam.program] : []);
+  return list;
 }
 
 function getExamTypePillClass(type) {
@@ -189,57 +205,109 @@ function renderExamList() {
     return;
   }
 
-  const rows = exams.map(exam => {
-    const venue        = getVenueNames(exam);
-    const typeClass    = getExamTypePillClass(exam.examName);
-    const studentCount = (exam.students || []).length;
+  // Group by date, sorted chronologically then by start time within each day
+  const byDate = {};
+  exams.forEach(e => {
+    if (!byDate[e.date]) byDate[e.date] = [];
+    byDate[e.date].push(e);
+  });
+  const sortedDates = Object.keys(byDate).sort();
+  sortedDates.forEach(date => byDate[date].sort((a, b) => a.startTime.localeCompare(b.startTime)));
+
+  const PASTEL_COLORS = ['day-pastel-0','day-pastel-1','day-pastel-2','day-pastel-3','day-pastel-4'];
+
+  const groupsHtml = sortedDates.map((date, idx) => {
+    const dayExams = byDate[date];
+
+    // Sub-group by primary venue (first venueId), unknown → 'unassigned'
+    const byVenue = {};
+    dayExams.forEach(exam => {
+      const ids = exam.venueIds && exam.venueIds.length > 0 ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
+      const key = ids[0] || 'unassigned';
+      if (!byVenue[key]) byVenue[key] = [];
+      byVenue[key].push(exam);
+    });
+
+    // Sort venue groups by venue name
+    const sortedVenueIds = Object.keys(byVenue).sort((a, b) => {
+      const nameA = a === 'unassigned' ? '~' : (classroomMap.get(a)?.name || a);
+      const nameB = b === 'unassigned' ? '~' : (classroomMap.get(b)?.name || b);
+      return nameA.localeCompare(nameB);
+    });
+
+    const COL_COUNT = 11; // number of <th> columns (for colspan on venue separator)
+
+    let tbodyHtml = '';
+    sortedVenueIds.forEach(venueId => {
+      const venueName = venueId === 'unassigned' ? 'Unassigned' : (classroomMap.get(venueId)?.name || venueId);
+      const venueExams = byVenue[venueId];
+
+      const venueStudentTotal = venueExams.reduce((sum, e) => sum + (e.students || []).length, 0);
+      tbodyHtml += `<tr class="venue-subgroup-row"><td colspan="${COL_COUNT}">🏛️ ${escHtml(venueName)}<span style="margin-left:10px;font-weight:400;opacity:0.75;font-size:12px;">${venueStudentTotal} student${venueStudentTotal !== 1 ? 's' : ''}</span></td></tr>`;
+
+      venueExams.forEach(exam => {
+        const venue        = getVenueNames(exam);
+        const typeClass    = getExamTypePillClass(exam.examName);
+        const studentCount = (exam.students || []).length;
+        tbodyHtml += `
+          <tr>
+            <td><strong style="color:#1a3a5c;">${escHtml(exam.moduleCode)}</strong></td>
+            <td>${escHtml(exam.moduleName)}</td>
+            <td>${getProgramDisplay(exam).length ? getProgramDisplay(exam).map(p => `<span class="pill pill-blue">${escHtml(p)}</span>`).join(' ') : '<span class="pill pill-gray">—</span>'}</td>
+            <td><span class="pill ${typeClass}">${escHtml(exam.examName)}</span></td>
+            <td><span class="pill pill-gray">${escHtml(exam.semester)}</span></td>
+            <td>${formatTime(exam.startTime)} – ${formatTime(exam.endTime)}</td>
+            <td>${escHtml(venue)}</td>
+            <td>${escHtml(exam.instructorName || '—')}</td>
+            <td>${escHtml(exam.invigilatorName || '—')}</td>
+            <td>
+              <span class="pill ${studentCount > 0 ? 'pill-green' : 'pill-gray'}">
+                ${studentCount} student${studentCount !== 1 ? 's' : ''}
+              </span>
+            </td>
+            <td>
+              <div class="actions-cell">
+                <a href="students.html?examId=${exam.id}" class="btn btn-sm btn-outline">👥 Students</a>
+                <button class="btn btn-sm btn-ghost" onclick="openEditExam('${exam.id}')">✏️ Edit</button>
+                <button class="btn btn-sm btn-primary" onclick="openPrintModal('${exam.id}')">🖨️ Print</button>
+                <button class="btn btn-sm btn-red" onclick="openDeleteModal('${exam.id}', '${escHtml(exam.moduleCode)} — ${escHtml(exam.moduleName)} (${escHtml(exam.examName)})')">🗑️</button>
+              </div>
+            </td>
+          </tr>`;
+      });
+    });
 
     return `
-      <tr>
-        <td><strong style="color:#1a3a5c;">${escHtml(exam.moduleCode)}</strong></td>
-        <td>${escHtml(exam.moduleName)}</td>
-        <td>${exam.program ? `<span class="pill pill-blue">${escHtml(exam.program)}</span>` : '<span class="pill pill-gray">—</span>'}</td>
-        <td><span class="pill ${typeClass}">${escHtml(exam.examName)}</span></td>
-        <td><span class="pill pill-gray">${escHtml(exam.semester)}</span></td>
-        <td>${formatDate(exam.date)}</td>
-        <td>${formatTime(exam.startTime)} – ${formatTime(exam.endTime)}</td>
-        <td>${escHtml(venue)}</td>
-        <td>
-          <span class="pill ${studentCount > 0 ? 'pill-green' : 'pill-gray'}">
-            ${studentCount} student${studentCount !== 1 ? 's' : ''}
-          </span>
-        </td>
-        <td>
-          <div class="actions-cell">
-            <a href="students.html?examId=${exam.id}" class="btn btn-sm btn-outline">👥 Students</a>
-            <button class="btn btn-sm btn-ghost" onclick="openEditExam('${exam.id}')">✏️ Edit</button>
-            <button class="btn btn-sm btn-primary" onclick="openPrintModal('${exam.id}')">🖨️ Print</button>
-            <button class="btn btn-sm btn-red" onclick="openDeleteModal('${exam.id}', '${escHtml(exam.moduleCode)} — ${escHtml(exam.moduleName)} (${escHtml(exam.examName)})')">🗑️</button>
-          </div>
-        </td>
-      </tr>`;
+      <div class="day-group ${PASTEL_COLORS[idx % PASTEL_COLORS.length]}">
+        <div class="day-group-header">
+          <span class="day-group-name">${getDayName(date)}</span>
+          <span class="day-group-date">${formatDate(date)}</span>
+          <span class="day-group-count">${dayExams.length} exam${dayExams.length !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Module Name</th>
+                <th>Program</th>
+                <th>Type</th>
+                <th>Semester</th>
+                <th>Time</th>
+                <th>Venue</th>
+                <th>Instructor</th>
+                <th>Invigilator</th>
+                <th>Students</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>${tbodyHtml}</tbody>
+          </table>
+        </div>
+      </div>`;
   }).join('');
 
-  examListCont.innerHTML = `
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Code</th>
-            <th>Module Name</th>
-            <th>Program</th>
-            <th>Type</th>
-            <th>Semester</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Venue</th>
-            <th>Students</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
+  examListCont.innerHTML = `<div class="day-groups">${groupsHtml}</div>`;
 }
 
 // ── Add / Edit Exam Modal ─────────────────────────────────
@@ -268,7 +336,11 @@ function openEditExam(examId) {
   document.getElementById('date').value             = exam.date;
   document.getElementById('startTime').value        = exam.startTime;
   document.getElementById('endTime').value          = exam.endTime;
-  document.getElementById('program').value          = exam.program || '';
+  const examPrograms = Array.isArray(exam.programs) && exam.programs.length ? exam.programs : (exam.program ? [exam.program] : []);
+  programCheckList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.checked = examPrograms.includes(cb.value);
+    cb.closest('.venue-check-item').classList.toggle('checked', cb.checked);
+  });
   document.getElementById('instructorName').value   = exam.instructorName;
   document.getElementById('invigilatorName').value  = exam.invigilatorName || '';
 
@@ -289,6 +361,10 @@ function closeAddExam() {
     cb.checked = false;
     cb.closest('.venue-check-item').classList.remove('checked');
   });
+  programCheckList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('.venue-check-item').classList.remove('checked');
+  });
 }
 
 openAddExamBtn.addEventListener('click', openAddExam);
@@ -299,7 +375,7 @@ addExamModal.addEventListener('click', (e) => { if (e.target === addExamModal) c
 // ── Create / Update Exam ──────────────────────────────────
 submitExamBtn.addEventListener('click', () => {
   const required = ['moduleCode','moduleName','examName','semester',
-                    'date','startTime','endTime','program','instructorName'];
+                    'date','startTime','endTime','instructorName'];
   for (const f of required) {
     if (!document.getElementById(f).value.trim()) {
       showToast(`Please fill in: ${f.replace(/([A-Z])/g, ' $1').trim()}`, 'warning');
@@ -314,6 +390,12 @@ submitExamBtn.addEventListener('click', () => {
     return;
   }
 
+  const selectedPrograms = getCheckedProgramIds();
+  if (selectedPrograms.length === 0) {
+    showToast('Please select at least one program.', 'warning');
+    return;
+  }
+
   const payload = {
     moduleCode:      document.getElementById('moduleCode').value.trim(),
     moduleName:      document.getElementById('moduleName').value.trim(),
@@ -323,7 +405,7 @@ submitExamBtn.addEventListener('click', () => {
     startTime:       document.getElementById('startTime').value,
     endTime:         document.getElementById('endTime').value,
     venueIds:        selectedVenueIds,
-    program:         document.getElementById('program').value,
+    programs:        selectedPrograms,
     instructorName:  document.getElementById('instructorName').value.trim(),
     invigilatorName: document.getElementById('invigilatorName').value.trim()
   };
@@ -441,6 +523,12 @@ window.openEditExam    = openEditExam;
   window.addEventListener('examsUpdated', () => {
     allExams = getExams();
     renderExamList();
+  });
+
+  programCheckList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.venue-check-item').classList.toggle('checked', this.checked);
+    });
   });
 
   loadClassrooms();

@@ -259,14 +259,77 @@ textarea {
 #filterTime   { width: 130px; }
 #filterVenue  { width: 180px; }
 
+/* ── Day Groups ─────────────────────────────────────────── */
+.day-groups { display: flex; flex-direction: column; gap: 16px; padding: 16px; }
+
+.day-group {
+  border-radius: 10px;
+  border: 1.5px solid rgba(0,0,0,0.07);
+  overflow: hidden;
+}
+
+.day-group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1.5px solid rgba(0,0,0,0.07);
+}
+
+.day-group-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #1a3a5c;
+}
+
+.day-group-date {
+  font-size: 13px;
+  color: #555;
+}
+
+.day-group-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  background: rgba(0,0,0,0.06);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Pastel palette — 5 rotating colours */
+.day-pastel-0 { background: #eef6ff; border-color: #c2dcf7; }
+.day-pastel-0 .day-group-header { background: #ddeeff; }
+.day-pastel-1 { background: #f0faf3; border-color: #b8e8c8; }
+.day-pastel-1 .day-group-header { background: #d6f2df; }
+.day-pastel-2 { background: #fffbea; border-color: #f0e080; }
+.day-pastel-2 .day-group-header { background: #fef5c0; }
+.day-pastel-3 { background: #fdf3ff; border-color: #ddb8f5; }
+.day-pastel-3 .day-group-header { background: #f5deff; }
+.day-pastel-4 { background: #fff2f5; border-color: #f5b8c8; }
+.day-pastel-4 .day-group-header { background: #fdd8e4; }
+
+/* ── Venue sub-group row ────────────────────────────────── */
+tr.venue-subgroup-row td {
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #1a3a5c;
+  background: rgba(0,0,0,0.04);
+  border-top: 1.5px solid rgba(0,0,0,0.08);
+  border-bottom: none;
+}
+
 /* ── Tables ─────────────────────────────────────────────── */
 .table-wrapper { overflow-x: auto; width: 100%; }
 
 table {
   width: 100%;
-  white-space: nowrap;
   border-collapse: collapse;
   font-size: 13px;
+  table-layout: auto;
 }
 
 thead th {
@@ -288,6 +351,8 @@ td {
   padding: 10px 14px;
   border-bottom: 1px solid var(--gray-200);
   vertical-align: middle;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 td:last-child { white-space: nowrap; }

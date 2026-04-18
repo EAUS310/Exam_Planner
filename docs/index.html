@@ -42,6 +42,9 @@
     <a href="presentation-schedule.html" class="sidebar-link">
       <span class="nav-icon">🎓</span> Presentation Schedule
     </a>
+    <a href="student-data.html" class="sidebar-link">
+      <span class="nav-icon">👤</span> Student Data
+    </a>
   </nav>
 
   <div class="sidebar-divider"></div>
@@ -172,15 +175,14 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="program">Program *</label>
-            <select id="program" required>
-              <option value="">— Select —</option>
-              <option value="EDAE">EDAE</option>
-              <option value="BSAE">BSAE</option>
-              <option value="AB/BENG">AB/BENG</option>
-              <option value="ABAME">ABAME</option>
-            </select>
+          <div class="form-group form-group-full">
+            <label>Program(s) * <span class="label-hint">select one or more</span></label>
+            <div id="programCheckList" class="venue-checklist">
+              <label class="venue-check-item"><input type="checkbox" value="EDAE"> <span>EDAE</span></label>
+              <label class="venue-check-item"><input type="checkbox" value="BSAE"> <span>BSAE</span></label>
+              <label class="venue-check-item"><input type="checkbox" value="AB/BENG"> <span>AB/BENG</span></label>
+              <label class="venue-check-item"><input type="checkbox" value="ABAME"> <span>ABAME</span></label>
+            </div>
           </div>
 
           <div class="form-group">

@@ -87,6 +87,7 @@ function _assignSeatsMultiVenue(exam, allExams) {
   const takenByVenue = new Map();
   for (const e of allExams) {
     if (e.id === exam.id || e.date !== exam.date) continue;
+    if (e.startTime !== exam.startTime || e.endTime !== exam.endTime) continue;
     for (const s of e.students) {
       if (!s.seatAssigned) continue;
       const seatVenueId = s.venueId || e.venueId || null;
@@ -105,23 +106,36 @@ function _assignSeatsMultiVenue(exam, allExams) {
     return la.localeCompare(lb);
   });
 
-  let si = 0;
+  const validVenueIds = venueIds.filter(id => classroomMap.has(id));
   const result = [];
 
-  for (const venueId of venueIds) {
-    const classroom = classroomMap.get(venueId);
-    if (!classroom) continue;
+  if (validVenueIds.length === 0) {
+    return sorted.map(s => ({ ...s, venueId: venueIds[0] || null, seatAssigned: null }));
+  }
 
+  // Distribute students evenly across venues.
+  // First (n % v) venues get one extra student so no venue is more than 1 ahead.
+  const n     = sorted.length;
+  const v     = validVenueIds.length;
+  const base  = Math.floor(n / v);
+  const extra = n % v;
+  const shares = validVenueIds.map((_, i) => base + (i < extra ? 1 : 0));
+
+  let si = 0;
+  for (let vi = 0; vi < validVenueIds.length; vi++) {
+    const venueId  = validVenueIds[vi];
+    const classroom = classroomMap.get(venueId);
     const taken    = takenByVenue.get(venueId) || new Set();
     const available = _generateAllSeats(classroom).filter(s => !taken.has(s));
-    let seati = 0;
-    while (si < sorted.length && seati < available.length) {
-      result.push({ ...sorted[si], venueId, seatAssigned: available[seati] });
-      si++; seati++;
+    const share    = shares[vi];
+
+    for (let k = 0, seati = 0; k < share && si < n; k++, si++, seati++) {
+      result.push({ ...sorted[si], venueId, seatAssigned: seati < available.length ? available[seati] : null });
     }
   }
 
-  while (si < sorted.length) {
+  // Safety: any students left over (all venues over capacity) → unassigned
+  while (si < n) {
     result.push({ ...sorted[si], venueId: venueIds[0] || null, seatAssigned: null });
     si++;
   }
@@ -368,7 +382,7 @@ function createExam(payload) {
     invigilatorName:payload.invigilatorName|| '',
     venueIds,
     venueId:        venueIds[0]            || '',
-    program:        payload.program        || '',
+    programs:       Array.isArray(payload.programs) ? payload.programs : (payload.program ? [payload.program] : []),
     students:       [],
     createdAt:      new Date().toISOString()
   };
@@ -397,7 +411,7 @@ function updateExam(id, payload) {
     invigilatorName: payload.invigilatorName ?? cur.invigilatorName,
     venueIds,
     venueId:         venueIds[0]             || cur.venueId || '',
-    program:         payload.program         ?? cur.program ?? ''
+    programs:        Array.isArray(payload.programs) ? payload.programs : (payload.program ? [payload.program] : (Array.isArray(cur.programs) ? cur.programs : (cur.program ? [cur.program] : [])))
   };
   exams[idx] = updated;
   _saveExams(exams);
@@ -471,63 +485,152 @@ function removeStudent(examId, studentId) {
   return exam;
 }
 
+function clearStudents(examId) {
+  const exams = getExams();
+  const idx   = exams.findIndex(e => e.id === examId);
+  if (idx === -1) return null;
+  exams[idx].students = [];
+  _saveExams(exams);
+  return exams[idx];
+}
+
 // ── Seating optimisation ──────────────────────────────────
+// Venues whose physical layout already enforces separation (e.g. columns are
+// already A,C,E) — skip the alternate-column stride so all columns are used.
+const _NO_ALTERNATE_VENUES = new Set([
+  'G19','G20','G21','G22','G23','G24','G25','G26'
+]);
 
 function optimizeSeating(examId) {
-  const exams      = getExams();
-  const classrooms = getClassrooms();
-  const examIdx    = exams.findIndex(e => e.id === examId);
+  const exams        = getExams();
+  const classrooms   = getClassrooms();
+  const examIdx      = exams.findIndex(e => e.id === examId);
   if (examIdx === -1) return { error: 'Exam not found' };
 
-  const exam           = exams[examIdx];
-  const primaryVenueId = _getVenueIds(exam)[0];
-  const classroom      = classrooms.find(c => c.id === primaryVenueId);
-  if (!classroom) return { error: 'Venue not found' };
+  const exam         = exams[examIdx];
+  const venueIds     = _getVenueIds(exam);
+  if (venueIds.length === 0) return { error: 'No venue assigned' };
 
-  const coExams       = exams.filter(e => _getVenueIds(e).includes(primaryVenueId) && e.date === exam.date);
-  const allSeats      = _generateAllSeats(classroom);
-  const totalStudents = coExams.reduce((s, e) => s + e.students.length, 0);
+  const classroomMap = new Map(classrooms.map(c => [c.id, c]));
+  const examIndexMap = new Map(exams.map((ex, i) => [ex.id, i]));
+  const validVenueIds = venueIds.filter(id => classroomMap.has(id));
+  if (validVenueIds.length === 0) return { error: 'Venue not found' };
 
-  if (totalStudents > allSeats.length) {
-    return { error: `Not enough seats. Students: ${totalStudents}, Seats: ${allSeats.length}` };
-  }
+  // Collect ALL students from this module (merges program-split entries).
+  // Sort alphabetically by last name — venue assignment is redone from scratch
+  // so the current venueId on each student is intentionally ignored here.
+  const thisModuleKey = exam.moduleCode || exam.id;
+  const thisModuleExams = exams.filter(e =>
+    (e.moduleCode || e.id) === thisModuleKey &&
+    e.date      === exam.date      &&
+    e.startTime === exam.startTime &&
+    e.endTime   === exam.endTime
+  );
+  const allModuleStudents = thisModuleExams
+    .flatMap(e => e.students.map(s => ({ ...s, examId: e.id })))
+    .sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''));
 
-  const columns = classroom.columnRows ? Object.keys(classroom.columnRows) : classroom.columns;
-  const queues  = coExams.map(e => ({
-    examId:   e.id,
-    students: [...e.students].sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''))
-  }));
-  const assignments = [];
+  const n = allModuleStudents.length;
+  if (n === 0) return { error: 'No students to optimise' };
 
-  for (let ci = 0; ci < columns.length; ci++) {
-    const col      = columns[ci];
-    const rows     = classroom.columnRows ? classroom.columnRows[col] : classroom.rows;
-    const primaryQ = queues[ci % queues.length];
+  // Evenly distribute this module's students across venues (same logic as _assignSeatsMultiVenue).
+  // First (n % v) venues get one extra student.
+  const v     = validVenueIds.length;
+  const base  = Math.floor(n / v);
+  const extra = n % v;
+  const shares = validVenueIds.map((_, i) => base + (i < extra ? 1 : 0));
 
-    for (const row of rows) {
-      let chosen = null;
-      if (primaryQ.students.length > 0) {
-        chosen = { examId: primaryQ.examId, student: primaryQ.students.shift() };
-      } else {
-        for (const q of queues) {
-          if (q.students.length > 0) { chosen = { examId: q.examId, student: q.students.shift() }; break; }
+  const allAssignments = [];
+  const venueErrors    = [];
+
+  let studentOffset = 0;
+  for (let vi = 0; vi < validVenueIds.length; vi++) {
+    const venueId   = validVenueIds[vi];
+    const classroom = classroomMap.get(venueId);
+    const share     = shares[vi];
+
+    // This module's slice for this venue
+    const thisVenueStudents = allModuleStudents.slice(studentOffset, studentOffset + share);
+    studentOffset += share;
+
+    // Other modules already assigned to this venue (for interleaving).
+    // Their venueId is trusted as-is — they're managed by their own optimize call.
+    const otherQueues = new Map();
+    for (const e of exams) {
+      const mKey = e.moduleCode || e.id;
+      if (mKey === thisModuleKey) continue;
+      if (!_getVenueIds(e).includes(venueId)) continue;
+      if (e.date !== exam.date || e.startTime !== exam.startTime || e.endTime !== exam.endTime) continue;
+      const vStudents = e.students
+        .filter(s => s.venueId === venueId)
+        .map(s => ({ ...s, examId: e.id }));
+      if (!vStudents.length) continue;
+      if (!otherQueues.has(mKey)) otherQueues.set(mKey, []);
+      otherQueues.get(mKey).push(...vStudents);
+    }
+    for (const q of otherQueues.values()) {
+      q.sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''));
+    }
+
+    // Build queue list: this module first, then other modules
+    const queues = [];
+    if (thisVenueStudents.length > 0) queues.push(thisVenueStudents);
+    for (const q of otherQueues.values()) queues.push(q);
+    if (queues.length === 0) continue;
+
+    const totalInVenue = queues.reduce((s, q) => s + q.length, 0);
+    const allSeats     = _generateAllSeats(classroom);
+    if (totalInVenue > allSeats.length) {
+      venueErrors.push(`${classroom.name}: ${totalInVenue} students, ${allSeats.length} seats`);
+      continue;
+    }
+
+    const columns       = classroom.columnRows ? Object.keys(classroom.columnRows) : classroom.columns;
+    const skipAlternate = _NO_ALTERNATE_VENUES.has(venueId);
+
+    const moduleColumns = queues.map((_, qi) => {
+      if (queues.length === 1) {
+        // Single module: use alternate columns unless venue is exempt
+        return skipAlternate ? columns : columns.filter((_, ci) => ci % 2 === 0);
+      }
+      // Multiple modules: round-robin across all columns to interleave
+      return columns.filter((_, ci) => ci % queues.length === qi);
+    });
+
+    for (let qi = 0; qi < queues.length; qi++) {
+      const queue = queues[qi];
+      let si = 0;
+      for (const col of moduleColumns[qi]) {
+        if (si >= queue.length) break;
+        const rows = classroom.columnRows ? classroom.columnRows[col] : classroom.rows;
+        for (const row of rows) {
+          if (si >= queue.length) break;
+          allAssignments.push({ examId: queue[si].examId, studentId: queue[si].studentId, seat: `${col}${row}`, venueId });
+          si++;
         }
       }
-      if (!chosen) break;
-      assignments.push({ examId: chosen.examId, studentId: chosen.student.studentId, seat: `${col}${row}` });
     }
   }
 
-  // Build O(1) lookup maps instead of O(E) findIndex + O(A) assignments.find per student
-  const examIndexMap  = new Map(exams.map((ex, i) => [ex.id, i]));
-  const assignmentMap = new Map(assignments.map(a => [`${a.examId}::${a.studentId}`, a.seat]));
+  if (allAssignments.length === 0) {
+    return { error: venueErrors.length ? venueErrors.join('; ') : 'No students to optimise' };
+  }
 
-  for (const e of coExams) {
-    const eIdx = examIndexMap.get(e.id);
+  // Apply: update seatAssigned + venueId for every student that received an assignment
+  const assignmentMap   = new Map(allAssignments.map(a => [`${a.examId}::${a.studentId}`, a]));
+  const involvedExamIds = new Set(allAssignments.map(a => a.examId));
+
+  for (const eid of involvedExamIds) {
+    const eIdx = examIndexMap.get(eid);
+    if (eIdx === undefined) continue;
     exams[eIdx].students = exams[eIdx].students.map(student => {
-      const seat = assignmentMap.get(`${e.id}::${student.studentId}`);
-      return { ...student, seatAssigned: seat !== undefined ? seat : student.seatAssigned };
+      const asgn = assignmentMap.get(`${eid}::${student.studentId}`);
+      if (asgn) return { ...student, seatAssigned: asgn.seat, venueId: asgn.venueId };
+      return student;
     }).sort((a, b) => {
+      // Sort by venue order first, then by seat within each venue
+      const viA = validVenueIds.indexOf(a.venueId), viB = validVenueIds.indexOf(b.venueId);
+      if (viA !== viB) return (viA === -1 ? 999 : viA) - (viB === -1 ? 999 : viB);
       const sA = a.seatAssigned || '', sB = b.seatAssigned || '';
       const colA = sA.charAt(0), colB = sB.charAt(0);
       const rowA = parseInt(sA.slice(1)) || 0, rowB = parseInt(sB.slice(1)) || 0;
@@ -537,10 +640,12 @@ function optimizeSeating(examId) {
   }
 
   _saveExams(exams);
+
+  const warnSuffix = venueErrors.length ? ` (warnings: ${venueErrors.join('; ')})` : '';
   return {
     success: true,
-    message: `Seating optimized for ${coExams.length} exam(s) with ${totalStudents} students — modules interleaved`,
-    assignments
+    message: `Seating optimized across ${validVenueIds.length} venue(s) — ${allAssignments.length} students redistributed evenly and seated in alternate columns${warnSuffix}`,
+    assignments: allAssignments
   };
 }
 

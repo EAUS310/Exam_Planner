@@ -118,9 +118,10 @@
     });
   }
 
-  const ROWS_PER_PAGE = 22;
+  const FIRST_PAGE_ROWS = 15; // first page: 15 students (header + info block take space)
+  const ROWS_PER_PAGE   = 25; // subsequent pages: 25 students
 
-  function buildAttendancePage(exam, classroom, students, pageNum, totalPages, startIdx) {
+  function buildAttendancePage(exam, classroom, students, pageNum, totalPages, startIdx, rowsThisPage) {
     const isFirst = pageNum === 1;
 
     const headerHtml = `
@@ -182,7 +183,7 @@
         </div>`;
     }
 
-    const pageStudents = students.slice(startIdx, startIdx + ROWS_PER_PAGE);
+    const pageStudents = students.slice(startIdx, startIdx + rowsThisPage);
     const rowsHtml = pageStudents.map((s, i) => `
       <tr>
         <td class="col-no">${startIdx + i + 1}</td>
@@ -248,9 +249,12 @@
           : exam.students;
         const sorted = sortBySeat(venueStudents);
         if (sorted.length === 0) continue;
-        const totalPages = Math.max(1, Math.ceil(sorted.length / ROWS_PER_PAGE));
+        const remaining  = Math.max(0, sorted.length - FIRST_PAGE_ROWS);
+        const totalPages = 1 + Math.ceil(remaining / ROWS_PER_PAGE);
         for (let p = 1; p <= totalPages; p++) {
-          pagesHtml += buildAttendancePage(exam, venueClassroom || classroom, sorted, p, totalPages, (p - 1) * ROWS_PER_PAGE);
+          const startIdx     = p === 1 ? 0 : FIRST_PAGE_ROWS + (p - 2) * ROWS_PER_PAGE;
+          const rowsThisPage = p === 1 ? FIRST_PAGE_ROWS : ROWS_PER_PAGE;
+          pagesHtml += buildAttendancePage(exam, venueClassroom || classroom, sorted, p, totalPages, startIdx, rowsThisPage);
         }
       }
 

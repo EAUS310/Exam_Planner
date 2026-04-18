@@ -118,8 +118,8 @@
     });
   }
 
-  const FIRST_PAGE_ROWS = 20; // header + info block consume ~50mm, leaving room for ~20 rows
-  const ROWS_PER_PAGE   = 25; // subsequent pages: header only, fits more rows
+  const FIRST_PAGE_ROWS = 15; // first page: 15 students (header takes space)
+  const ROWS_PER_PAGE   = 25; // subsequent pages: 25 students
 
   function buildSeatingPage(exam, classroom, students, pageNum, totalPages, startIdx, rowsThisPage) {
     const isFirst = pageNum === 1;

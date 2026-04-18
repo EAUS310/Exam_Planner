@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   FOE Exam Planner — Schedule Page
+   FOE Exam Planner — Schedule (with Invigilators) Page
    All data via storage.js (localStorage + file sync)
    ══════════════════════════════════════════════════════════ */
 
@@ -9,12 +9,11 @@ const PROGRAM_CONFIG = [
   { id: 'BSAE',    label: 'BSc in Aeronautical Engineering' },
   { id: 'AB/BENG', label: 'Applied Bachelor & BEng (AE/AV/ME)' },
   { id: 'ABAME',   label: 'Applied Bachelor in AME' },
-  { id: 'EDAE',    label: 'Engineering Diploma in Aeronautical Engineering' }
+  { id: 'EDAE',    label: 'Extended Diploma in Aeronautical Engineering' }
 ];
 
 let allExams      = [];
 let allClassrooms = [];
-let classroomMap  = new Map();   // id → classroom, built once at init
 
 const scheduleGrid   = document.getElementById('scheduleGrid');
 const filterExamType = document.getElementById('filterExamType');
@@ -48,7 +47,7 @@ function getVenueNames(exam) {
   const ids = exam.venueIds && exam.venueIds.length > 0
     ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
   return ids.map(id => {
-    const room = classroomMap.get(id);
+    const room = allClassrooms.find(c => c.id === id);
     return room ? room.name : id;
   }).join(', ') || '—';
 }
@@ -73,18 +72,16 @@ function buildProgramTable(title, exams, programId) {
     byDate[e.date].push(e);
   });
 
-  // Sort each date group once here, not on every forEach iteration
-  Object.values(byDate).forEach(g => g.sort((a, b) => a.startTime.localeCompare(b.startTime)));
-
   const sortedDates = Object.keys(byDate).sort();
   let rowsHtml = '';
 
   sortedDates.forEach((date, dateIdx) => {
-    const group     = byDate[date];   // already sorted above
+    const group     = byDate[date].sort((a, b) => a.startTime.localeCompare(b.startTime));
     const bandClass = `band-${dateIdx % 4}`;
 
     group.forEach((exam, i) => {
-      const venues = escHtml(getVenueNames(exam));
+      const venues      = escHtml(getVenueNames(exam));
+      const invigilator = escHtml(exam.invigilatorName || '—');
       rowsHtml += `
         <tr class="${bandClass}">
           ${i === 0
@@ -97,6 +94,7 @@ function buildProgramTable(title, exams, programId) {
           </td>
           <td class="venue-cell">${venues}</td>
           <td class="timing-cell">${escHtml(formatTime(exam.startTime))} &ndash; ${escHtml(formatTime(exam.endTime))}</td>
+          <td class="invigilator-cell">${invigilator}</td>
           <td>${escHtml(exam.instructorName)}</td>
         </tr>`;
     });
@@ -116,6 +114,7 @@ function buildProgramTable(title, exams, programId) {
               <th>Module</th>
               <th>Venue</th>
               <th>Timings</th>
+              <th>Invigilator</th>
               <th>Instructor</th>
             </tr>
           </thead>
@@ -137,16 +136,18 @@ function renderSchedule() {
 
   const typeLabel = examType ? examType : 'All Exam Types';
   const semLabel  = semester ? semester : 'All Semesters';
-  printHeaderSub.textContent = `${semLabel} — ${typeLabel} Schedule`;
+  printHeaderSub.textContent = `${semLabel} — ${typeLabel} Schedule (with Invigilators)`;
 
   const typeSuffix = examType ? `${examType} ` : '';
   const semSuffix  = semester ? `${semester} ` : '';
 
   const byProgram = {};
   filtered.forEach(e => {
-    const prog = e.program || 'Unknown';
-    if (!byProgram[prog]) byProgram[prog] = [];
-    byProgram[prog].push(e);
+    const progs = (Array.isArray(e.programs) && e.programs.length ? e.programs : (e.program ? [e.program] : ['Unknown']));
+    progs.forEach(prog => {
+      if (!byProgram[prog]) byProgram[prog] = [];
+      byProgram[prog].push(e);
+    });
   });
 
   scheduleCount.textContent = `${filtered.length} exam${filtered.length !== 1 ? 's' : ''} shown`;
@@ -198,7 +199,6 @@ function populateSemesterFilter() {
 
   window.addEventListener('examsUpdated', () => {
     allExams = getExams();
-    // Rebuild semester filter if new semesters appeared
     const curSem = filterSemester.value;
     filterSemester.innerHTML = '<option value="">All Semesters</option>';
     populateSemesterFilter();
@@ -207,7 +207,6 @@ function populateSemesterFilter() {
   });
 
   allClassrooms = getClassrooms();
-  classroomMap  = new Map(allClassrooms.map(c => [c.id, c]));
   allExams      = getExams();
   populateSemesterFilter();
   renderSchedule();

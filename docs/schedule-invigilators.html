@@ -153,11 +153,11 @@
     .schedule-empty-icon { font-size: 40px; margin-bottom: 12px; }
 
     /* ════════════════════════════════════════════════════════
-       PRINT STYLES — A3 Landscape
+       PRINT STYLES — A3 Portrait
     ════════════════════════════════════════════════════════ */
     @media print {
       @page {
-        size: A3 landscape;
+        size: A3 portrait;
         margin: 10mm 12mm;
       }
 
@@ -183,19 +183,21 @@
       }
 
       .schedule-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5mm;
+        display: block;
         padding: 0;
-        align-items: flex-start;
       }
 
       .schedule-card {
-        flex: 1 1 120mm;
+        width: 100%;
         box-shadow: none;
         border: 1px solid #aac4de;
         border-radius: 4px;
         break-inside: avoid;
+        break-after: page;
+      }
+
+      .schedule-card:last-child {
+        break-after: auto;
       }
 
       .schedule-card-header {
@@ -278,6 +280,9 @@
     <a href="presentation-schedule.html" class="sidebar-link">
       <span class="nav-icon">🎓</span> Presentation Schedule
     </a>
+    <a href="student-data.html" class="sidebar-link">
+      <span class="nav-icon">👤</span> Student Data
+    </a>
   </nav>
 
   <div class="sidebar-divider"></div>
@@ -305,7 +310,7 @@
   <div class="topbar no-print">
     <span class="topbar-title">👁️ Schedule (with Invigilators)</span>
     <button class="btn btn-primary btn-sm" onclick="window.print()">
-      🖨️ Print / Save as A3 PDF
+      🖨️ Print / Save as A3 Portrait PDF
     </button>
   </div>
 
