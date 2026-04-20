@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static frontend files (assets/ is inside frontend/, so /assets/* resolves automatically)
-app.use(express.static(path.join(__dirname, 'frontend')));
+app.use(express.static(path.join(__dirname, 'docs')));
 
 // API Routes
 app.use('/api/exams', require('./backend/routes/exams'));
@@ -19,16 +19,13 @@ app.use('/api/classrooms', require('./backend/routes/classrooms'));
 // Fallback: serve index.html for any non-API route
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, 'frontend/index.html'));
+    res.sendFile(path.join(__dirname, 'docs/index.html'));
   }
 });
 
 app.listen(PORT, () => {
+  const url = `http://localhost:${PORT}`;
   console.log('');
-  console.log('  ╔══════════════════════════════════════════════════╗');
-  console.log('  ║   Emirates Aviation University                   ║');
-  console.log('  ║   Exam Planning Tool                             ║');
-  console.log(`  ║   Running at http://localhost:${PORT}               ║`);
-  console.log('  ╚══════════════════════════════════════════════════╝');
+  console.log(`  Server started — open: \x1b[36m\x1b[4m${url}\x1b[0m`);
   console.log('');
 });

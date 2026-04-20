@@ -572,10 +572,12 @@ function optimizeSeating(examId) {
       q.sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''));
     }
 
-    // Build queue list: this module first, then other modules
-    const queues = [];
-    if (thisVenueStudents.length > 0) queues.push(thisVenueStudents);
-    for (const q of otherQueues.values()) queues.push(q);
+    // Build queue list: sort all modules by student count descending so the
+    // largest module gets the lowest column index (most columns when uneven).
+    const allQueues = [];
+    if (thisVenueStudents.length > 0) allQueues.push(thisVenueStudents);
+    for (const q of otherQueues.values()) allQueues.push(q);
+    const queues = allQueues.sort((a, b) => b.length - a.length);
     if (queues.length === 0) continue;
 
     const totalInVenue = queues.reduce((s, q) => s + q.length, 0);
@@ -588,26 +590,82 @@ function optimizeSeating(examId) {
     const columns       = classroom.columnRows ? Object.keys(classroom.columnRows) : classroom.columns;
     const skipAlternate = _NO_ALTERNATE_VENUES.has(venueId);
 
-    const moduleColumns = queues.map((_, qi) => {
-      if (queues.length === 1) {
-        // Single module: use alternate columns unless venue is exempt
-        return skipAlternate ? columns : columns.filter((_, ci) => ci % 2 === 0);
+    // Assign `seatList` to queue[qIdx] starting where the pointer left off.
+    // Returns the number of seats consumed from seatList.
+    const ptr = queues.map(() => 0);
+    const assignSeats = (qIdx, seatList) => {
+      if (qIdx >= queues.length) return 0;
+      let count = 0;
+      for (const seat of seatList) {
+        if (ptr[qIdx] >= queues[qIdx].length) break;
+        const s = queues[qIdx][ptr[qIdx]];
+        allAssignments.push({ examId: s.examId, studentId: s.studentId, seat, venueId });
+        ptr[qIdx]++;
+        count++;
       }
-      // Multiple modules: round-robin across all columns to interleave
-      return columns.filter((_, ci) => ci % queues.length === qi);
-    });
+      return count;
+    };
 
-    for (let qi = 0; qi < queues.length; qi++) {
-      const queue = queues[qi];
-      let si = 0;
-      for (const col of moduleColumns[qi]) {
-        if (si >= queue.length) break;
+    // Build all seats for given columns, all rows in order.
+    const buildAllSeats = (cols) => {
+      const seats = [];
+      for (const col of cols) {
         const rows = classroom.columnRows ? classroom.columnRows[col] : classroom.rows;
-        for (const row of rows) {
-          if (si >= queue.length) break;
-          allAssignments.push({ examId: queue[si].examId, studentId: queue[si].studentId, seat: `${col}${row}`, venueId });
-          si++;
+        for (const row of rows) seats.push(`${col}${row}`);
+      }
+      return seats;
+    };
+
+    if (queues.length === 1) {
+      // ── Single module ────────────────────────────────────────
+      // Fill alternate columns (all rows), spill into remaining columns if needed.
+      const altCols    = skipAlternate ? columns : columns.filter((_, ci) => ci % 2 === 0);
+      const nonAltCols = skipAlternate ? []      : columns.filter((_, ci) => ci % 2 === 1);
+      assignSeats(0, buildAllSeats(altCols));
+      assignSeats(0, buildAllSeats(nonAltCols));
+
+    } else if (skipAlternate) {
+      // ── Exempt venues (G19–G26) ──────────────────────────────
+      // Physical layout already provides column separation; interleave row-by-row.
+      let qi = 0;
+      for (const seat of allSeats) {
+        let tries = 0;
+        while (tries < queues.length && ptr[qi] >= queues[qi].length) {
+          qi = (qi + 1) % queues.length;
+          tries++;
         }
+        if (tries === queues.length) break;
+        const s = queues[qi][ptr[qi]];
+        allAssignments.push({ examId: s.examId, studentId: s.studentId, seat, venueId });
+        ptr[qi]++;
+        qi = (qi + 1) % queues.length;
+      }
+
+    } else {
+      // ── Multiple modules, normal venue ───────────────────────
+      // Queues sorted largest-first: M0 > M1 > M2 > M3 …
+      //   M0 + M2  →  even-indexed columns (A, C, E, …)  — all rows
+      //   M1 + M3  →  odd-indexed  columns (B, D, F, …)  — all rows
+      // Primary fills its column group first; secondary fills same group after.
+
+      const evenCols = columns.filter((_, ci) => ci % 2 === 0);
+      const oddCols  = columns.filter((_, ci) => ci % 2 === 1);
+
+      const processGroup = (primaryIdx, secondaryIdx, cols) => {
+        if (primaryIdx >= queues.length || cols.length === 0) return;
+        const seats = buildAllSeats(cols);
+        const used  = assignSeats(primaryIdx, seats);
+        assignSeats(secondaryIdx, seats.slice(used));
+      };
+
+      processGroup(0, 2, evenCols);
+      processGroup(1, 3, oddCols);
+
+      // Modules beyond index 3: fill any remaining unseated slots.
+      if (queues.length > 4) {
+        const used      = new Set(allAssignments.map(a => a.seat));
+        const remaining = allSeats.filter(s => !used.has(s));
+        for (let qi = 4; qi < queues.length; qi++) assignSeats(qi, remaining);
       }
     }
   }
