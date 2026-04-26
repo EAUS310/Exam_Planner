@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentation Schedule — FOE Exam Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <style>
+    /* ── Conflict banner ─────────────────────────────────── */
+    .conflict-banner {
+      background: #fdecea;
+      border: 1px solid #e57373;
+      border-radius: 6px;
+      color: #b71c1c;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      margin: 16px 28px 0;
+    }
+
+    /* ── Dashboard wrapper ───────────────────────────────── */
+    .dashboard-wrap {
+      padding: 20px 28px 60px;
+    }
+
+    /* ── Instructor block ────────────────────────────────── */
+    .instructor-block {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+      border: 1px solid #d6e4f0;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .instructor-heading {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 11px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .instructor-icon {
+      font-size: 16px;
+    }
+
+    /* ── Presentations table ─────────────────────────────── */
+    .pres-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .pres-table thead tr {
+      background: #2c5f8a;
+      color: #fff;
+    }
+
+    .pres-table th {
+      padding: 8px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+
+    .pres-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #eaf0f8;
+      vertical-align: middle;
+    }
+
+    .pres-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pres-table .timing-cell {
+      white-space: nowrap;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+    }
+
+    /* ── Conflict row highlight ──────────────────────────── */
+    .row-conflict {
+      background: #fff5f5;
+    }
+
+    .row-conflict td {
+      border-left: 3px solid #e53935;
+    }
+
+    /* ── Form: timing hint ───────────────────────────────── */
+    .field-hint {
+      font-size: 11px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* ── Timing input placeholder style ─────────────────── */
+    #fTiming {
+      font-family: 'Consolas', 'Courier New', monospace;
+    }
+
+    /* ── Empty state (reuse global styles) ───────────────── */
+
+    /* ── Print view (hidden on screen) ─────────────────────── */
+    .ps-print-view { display: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       PRINT — A3 Landscape
+       Hides the CRUD dashboard; shows the generated date-grouped
+       view rendered into #printView by printView() in JS.
+    ══════════════════════════════════════════════════════════ */
+    @media print {
+      @page {
+        size: A3 landscape;
+        margin: 12mm 15mm;
+      }
+
+      /* Hide all screen chrome */
+      .sidebar,
+      .topbar,
+      .dashboard-wrap,
+      .conflict-banner,
+      #addModal,
+      #deleteModal,
+      #toast-container { display: none !important; }
+
+      .main-content { margin-left: 0 !important; }
+
+      /* Show print header and generated view */
+      .ps-print-header { display: block !important; }
+      .ps-print-view   { display: block !important; }
+
+      /* ── Page break between instructors (all except first) ── */
+      .ps-print-view .print-page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+
+      /* ── Instructor heading ── */
+      .ps-print-view h2 {
+        font-size: 11pt;
+        font-weight: 700;
+        color: #1a3a5c;
+        background: #eef4fb !important;
+        border-left: 3pt solid #2980b9;
+        padding: 5pt 10pt;
+        margin: 6mm 0 0;
+        page-break-after: avoid;
+        break-after: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* ── Schedule table ── */
+      .ps-print-view table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9pt;
+        margin-bottom: 4mm;
+      }
+      .ps-print-view thead tr {
+        background: #2c5f8a !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .ps-print-view th {
+        padding: 4pt 10pt;
+        font-size: 8pt;
+        font-weight: 700;
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.4pt;
+      }
+      .ps-print-view td {
+        padding: 4pt 10pt;
+        border-bottom: 0.5pt solid #ccc;
+      }
+      .ps-print-view tbody tr:nth-child(even) td {
+        background: #f7f9fc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .ps-print-view .timing-cell {
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 8.5pt;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
+    <div>
+      <div class="sidebar-uni-name">Emirates Aviation University</div>
+      <div class="sidebar-app-name">FOE Exam Planner</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Main Menu</div>
+
+  <nav class="sidebar-nav">
+    <a href="index.html" class="sidebar-link">
+      <span class="nav-icon">📋</span> Exam Module Entry
+    </a>
+    <a href="schedule.html" class="sidebar-link">
+      <span class="nav-icon">📅</span> Exam Schedule
+    </a>
+    <a href="schedule-invigilators.html" class="sidebar-link">
+      <span class="nav-icon">👁️</span> Schedule (with Invigilators)
+    </a>
+    <a href="shared-modules.html" class="sidebar-link">
+      <span class="nav-icon">🔗</span> Shared Modules
+    </a>
+    <a href="shared-venues.html" class="sidebar-link">
+      <span class="nav-icon">🏛️</span> Shared Venues
+    </a>
+    <a href="presentation-schedule.html" class="sidebar-link active">
+      <span class="nav-icon">🎓</span> Presentation Schedule
+    </a>
+    <a href="presentation-csv.html" class="sidebar-link">
+      <span class="nav-icon">📊</span> Presentation CSV
+    </a>
+    <a href="student-data.html" class="sidebar-link">
+      <span class="nav-icon">👤</span> Student Data
+    </a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Data File</div>
+  <div class="sidebar-file-status">
+    <span class="file-dot" id="fileStatusDot"></span>
+    <span id="fileStatusText" style="font-size:11px; color:rgba(255,255,255,0.5);">Not connected</span>
+  </div>
+  <div class="sidebar-file-btns">
+    <button class="sidebar-file-btn" id="connectFileBtn">📂 Connect exams.json</button>
+    <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
+  </div>
+
+  <div class="sidebar-footer">
+    &copy; 2026 Mohammed Khateeb
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════════════ -->
+<div class="main-content">
+
+  <!-- Print-only header (hidden on screen) -->
+  <div class="ps-print-header" style="display:none; border-bottom:2px solid #1a3a5c; padding-bottom:6mm; margin-bottom:6mm; text-align:center;">
+    <div style="font-size:13pt; font-weight:800; color:#1a3a5c;">Emirates Aviation University — Faculty of Engineering</div>
+    <div style="font-size:9pt; color:#555; margin-top:2mm;">Presentation Schedule</div>
+  </div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <span class="topbar-title">🎓 Presentation Schedule</span>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="btn btn-ghost btn-sm" onclick="printView()"
+              title="Print date-grouped schedule as PDF">
+        🖨️ Print to PDF
+      </button>
+      <button class="btn btn-primary btn-sm" id="openAddBtn">
+        ＋ Add Presentation
+      </button>
+    </div>
+  </div>
+
+  <!-- Conflict banner (hidden until conflicts found) -->
+  <div class="conflict-banner" id="conflictBanner" style="display:none;"></div>
+
+  <!-- Dashboard -->
+  <div class="dashboard-wrap">
+
+    <!-- Count card header -->
+    <div class="card">
+      <div class="card-header">
+        All Presentations
+        <span class="badge" id="presCount">0</span>
+      </div>
+      <div class="card-body" style="padding:0;">
+        <div id="dashboard">
+          <div class="empty-state">
+            <div class="empty-state-icon">🎓</div>
+            <h3>No presentations yet</h3>
+            <p>Click <strong>+ Add Presentation</strong> to get started.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dashboard-wrap -->
+
+  <!-- Print-only date-grouped view (populated by printView() in JS) -->
+  <div id="printView" class="ps-print-view"></div>
+
+</div><!-- /main-content -->
+
+<!-- ══════════════════════════════════════════════════════════
+     ADD / EDIT MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="addModalTitle">＋ New Presentation Entry</span>
+      <button class="modal-close" id="closeModalBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="presForm" novalidate>
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="fDate">Date *</label>
+            <input type="date" id="fDate" required>
+          </div>
+
+          <div class="form-group">
+            <label for="fModuleCode">Module Code *</label>
+            <input type="text" id="fModuleCode" placeholder="e.g. AVI101" required>
+          </div>
+
+          <div class="form-group">
+            <label for="fGroupNumber">Group Number *</label>
+            <input type="text" id="fGroupNumber" placeholder="e.g. 1" required>
+          </div>
+
+          <div class="form-group">
+            <label for="fInstructor">Instructor *</label>
+            <input type="text" id="fInstructor" placeholder="e.g. Dr. Ahmed Al-Rashid" required>
+          </div>
+
+          <div class="form-group form-group-full">
+            <label for="fTiming">Timing * <span class="label-hint">HH:MM - HH:MM (24-hour)</span></label>
+            <input type="text" id="fTiming" placeholder="09:00 - 10:30" required
+                   pattern="^\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}$">
+            <div class="field-hint">Format: HH:MM - HH:MM, e.g. <code>09:00 - 10:30</code></div>
+          </div>
+
+          <div class="form-group form-group-full">
+            <label for="fJuryNames">Jury Names</label>
+            <input type="text" id="fJuryNames" placeholder="e.g. Dr. Ahmed, Dr. Sara, Prof. Khalid">
+            <div class="field-hint">Separate multiple names with commas.</div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelBtn">Cancel</button>
+      <button class="btn btn-primary" id="submitBtn">＋ Add Presentation</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DELETE CONFIRM MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="deleteModal">
+  <div class="modal">
+    <div class="modal-header" style="background:#c0392b;">
+      <span>⚠️ Confirm Delete</span>
+      <button class="modal-close" id="closeDeleteModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this presentation entry?</p>
+      <p style="margin-top:8px; font-weight:600;" id="deleteLabel"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" id="cancelDeleteBtn">Cancel</button>
+      <button class="btn btn-red btn-sm" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/storage.js"></script>
+<script src="js/presentation-schedule.js"></script>
+</body>
+</html>

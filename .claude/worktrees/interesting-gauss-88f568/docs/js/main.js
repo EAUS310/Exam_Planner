@@ -37,25 +37,17 @@ const filterCode    = document.getElementById('filterCode');
 const filterDate    = document.getElementById('filterDate');
 const filterTime    = document.getElementById('filterTime');
 const filterVenue   = document.getElementById('filterVenue');
-const filterProgram = document.getElementById('filterProgram');
 const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 
 const debouncedRender = debounce(renderExamList, 150);
 [filterCode, filterDate, filterTime, filterVenue].forEach(el =>
   el.addEventListener('input', debouncedRender)
 );
-filterProgram.addEventListener('click', e => {
-  const chip = e.target.closest('.filter-chip');
-  if (!chip) return;
-  chip.classList.toggle('active');
-  debouncedRender();
-});
 clearFiltersBtn.addEventListener('click', () => {
   filterCode.value = '';
   filterDate.value = '';
   filterTime.value = '';
   filterVenue.value = '';
-  filterProgram.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
   renderExamList();
 });
 
@@ -169,11 +161,10 @@ function loadClassrooms() {
 
 // ── Filter logic ──────────────────────────────────────────
 function getFilteredExams() {
-  const code             = filterCode.value.trim().toLowerCase();
-  const date             = filterDate.value;
-  const time             = filterTime.value;
-  const venue            = filterVenue.value;
-  const selectedPrograms = [...filterProgram.querySelectorAll('.filter-chip.active')].map(b => b.dataset.program);
+  const code  = filterCode.value.trim().toLowerCase();
+  const date  = filterDate.value;
+  const time  = filterTime.value;
+  const venue = filterVenue.value;
 
   return allExams.filter(exam => {
     if (code  && !exam.moduleCode.toLowerCase().includes(code)) return false;
@@ -182,10 +173,6 @@ function getFilteredExams() {
     if (venue) {
       const ids = exam.venueIds && exam.venueIds.length > 0 ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
       if (!ids.includes(venue)) return false;
-    }
-    if (selectedPrograms.length > 0) {
-      const progs = Array.isArray(exam.programs) && exam.programs.length ? exam.programs : (exam.program ? [exam.program] : []);
-      if (!progs.some(p => selectedPrograms.includes(p))) return false;
     }
     return true;
   });
@@ -280,10 +267,10 @@ function renderExamList() {
             </td>
             <td>
               <div class="actions-cell">
-                <a href="students.html?examId=${exam.id}" class="btn btn-sm btn-outline icon-btn" title="Students">👥</a>
-                <button class="btn btn-sm btn-ghost icon-btn" onclick="openEditExam('${exam.id}')" title="Edit">✏️</button>
-                <button class="btn btn-sm btn-primary icon-btn" onclick="openPrintModal('${exam.id}')" title="Print">🖨️</button>
-                <button class="btn btn-sm btn-red icon-btn" onclick="openDeleteModal('${exam.id}', '${escHtml(exam.moduleCode)} — ${escHtml(exam.moduleName)} (${escHtml(exam.examName)})')" title="Delete">🗑️</button>
+                <a href="students.html?examId=${exam.id}" class="btn btn-sm btn-outline">👥 Students</a>
+                <button class="btn btn-sm btn-ghost" onclick="openEditExam('${exam.id}')">✏️ Edit</button>
+                <button class="btn btn-sm btn-primary" onclick="openPrintModal('${exam.id}')">🖨️ Print</button>
+                <button class="btn btn-sm btn-red" onclick="openDeleteModal('${exam.id}', '${escHtml(exam.moduleCode)} — ${escHtml(exam.moduleName)} (${escHtml(exam.examName)})')">🗑️</button>
               </div>
             </td>
           </tr>`;

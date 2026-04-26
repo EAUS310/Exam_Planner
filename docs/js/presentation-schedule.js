@@ -1,431 +1,352 @@
-/* ══════════════════════════════════════════════════════════
-   Presentation Schedule — presentation-schedule.js
-   CRUD + conflict detection for project presentations.
-   Data via storage.js (localStorage key: eau_presentations_v1)
-   ══════════════════════════════════════════════════════════ */
-
 'use strict';
 
-// ── State ─────────────────────────────────────────────────
-let allPresentations    = [];
-let currentEditId       = null;
-let currentDeleteId     = null;
+const STORAGE_KEY = 'eau_presentation_schedule_v1';
 
-// ── Timing helpers ────────────────────────────────────────
+// ── State ────────────────────────────────────────────────────────────────────
+let rows = [];
 
-/** Parse "HH:MM - HH:MM" → { start, end } in total minutes, or null on failure. */
-function parseTimingMinutes(timing) {
-  const m = (timing || '').trim().match(/^(\d{2}):(\d{2})\s*-\s*(\d{2}):(\d{2})$/);
-  if (!m) return null;
-  const start = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
-  const end   = parseInt(m[3], 10) * 60 + parseInt(m[4], 10);
-  return (end > start) ? { start, end } : null;
-}
+// ── DOM refs ─────────────────────────────────────────────────────────────────
+const csvFileInput   = document.getElementById('csvFileInput');
+const fileNameLabel  = document.getElementById('fileNameLabel');
+const clearDataBtn   = document.getElementById('clearDataBtn');
+const printBtn       = document.getElementById('printBtn');
+const statsBar       = document.getElementById('statsBar');
+const uploadState    = document.getElementById('uploadState');
+const supervisorGrid = document.getElementById('supervisorGrid');
+const errorBanner    = document.getElementById('errorBanner');
+const errorText      = document.getElementById('errorText');
 
-/** Validate a timing string: must be "HH:MM - HH:MM" with end > start. */
-function isValidTiming(timing) {
-  return parseTimingMinutes(timing) !== null;
-}
-
-/**
- * Normalize a timing string to canonical "HH:MM - HH:MM" form.
- * Pads single-digit hours and collapses whitespace around the dash.
- * Returns the trimmed raw value unchanged if it doesn't match the pattern.
- */
-function normalizeTiming(raw) {
-  const m = (raw || '').trim().match(/^(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})$/);
-  if (!m) return (raw || '').trim();
-  const pad = n => String(n).padStart(2, '0');
-  return `${pad(m[1])}:${m[2]} - ${pad(m[3])}:${m[4]}`;
-}
-
-/**
- * Detect conflicts: two presentations for the same instructor on the same date
- * whose time intervals overlap (strict — touching endpoints are allowed).
- * Returns a Set of presentation IDs that are involved in at least one conflict.
- * O(G × n²) where G = number of instructor+date groups (typically small).
- */
-function detectConflicts(presentations) {
-  const conflictIds = new Set();
-
-  // Group by instructor + date
-  const groups = new Map();
-  for (const p of presentations) {
-    const key = `${p.instructor}||${p.date}`;
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(p);
+// ── Init ─────────────────────────────────────────────────────────────────────
+(function init() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      rows = JSON.parse(saved);
+      if (rows.length) render();
+    } catch (_) {
+      rows = [];
+    }
   }
 
-  for (const group of groups.values()) {
-    if (group.length < 2) continue;
-    // Parse timings once per group entry
-    const parsed = group.map(p => ({ p, t: parseTimingMinutes(p.timing) }));
+  uploadState.addEventListener('dragover', e => { e.preventDefault(); uploadState.classList.add('drag-over'); });
+  uploadState.addEventListener('dragleave', () => uploadState.classList.remove('drag-over'));
+  uploadState.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadState.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
 
-    for (let i = 0; i < parsed.length; i++) {
-      if (!parsed[i].t) continue;
-      for (let j = i + 1; j < parsed.length; j++) {
-        if (!parsed[j].t) continue;
-        const a = parsed[i].t, b = parsed[j].t;
-        // Overlap when intervals interleave (touching at one point is NOT a conflict)
-        if (a.start < b.end && b.start < a.end) {
-          conflictIds.add(parsed[i].p.id);
-          conflictIds.add(parsed[j].p.id);
-        }
+  csvFileInput.addEventListener('change', () => {
+    if (csvFileInput.files[0]) handleFile(csvFileInput.files[0]);
+  });
+
+  clearDataBtn.addEventListener('click', clearData);
+  printBtn.addEventListener('click', () => window.print());
+
+  if (typeof initStorageSidebar === 'function') initStorageSidebar();
+})();
+
+// ── CSV parsing ───────────────────────────────────────────────────────────────
+function parseCSV(text) {
+  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+  const result = [];
+
+  function parseLine(line) {
+    const fields = [];
+    let cur = '';
+    let inQuote = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQuote && line[i + 1] === '"') { cur += '"'; i++; }
+        else { inQuote = !inQuote; }
+      } else if (ch === ',' && !inQuote) {
+        fields.push(cur.trim());
+        cur = '';
+      } else {
+        cur += ch;
       }
     }
-  }
-  return conflictIds;
-}
-
-// ── Format helpers ────────────────────────────────────────
-function formatDate(dateStr) {
-  if (!dateStr) return '—';
-  const [y, m, d] = dateStr.split('-');
-  const months = ['Jan','Feb','Mar','Apr','May','Jun',
-                  'Jul','Aug','Sep','Oct','Nov','Dec'];
-  return `${parseInt(d, 10)} ${months[parseInt(m, 10) - 1]} ${y}`;
-}
-
-function escHtml(str) {
-  return String(str || '').replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
-}
-
-// ── Toast ─────────────────────────────────────────────────
-function showToast(message, type = 'default', duration = 3500) {
-  const container = document.getElementById('toast-container');
-  const toast     = document.createElement('div');
-  toast.className  = `toast toast-${type}`;
-  toast.textContent = message;
-  container.appendChild(toast);
-  setTimeout(() => {
-    toast.style.transition = 'opacity 0.4s';
-    toast.style.opacity    = '0';
-    setTimeout(() => toast.remove(), 400);
-  }, duration);
-}
-
-// ── DOM refs ──────────────────────────────────────────────
-const presForm        = document.getElementById('presForm');
-const openAddBtn      = document.getElementById('openAddBtn');
-const addModal        = document.getElementById('addModal');
-const addModalTitle   = document.getElementById('addModalTitle');
-const submitBtn       = document.getElementById('submitBtn');
-const cancelBtn       = document.getElementById('cancelBtn');
-const closeModalBtn   = document.getElementById('closeModalBtn');
-
-const deleteModal     = document.getElementById('deleteModal');
-const closeDeleteBtn  = document.getElementById('closeDeleteModal');
-const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-const confirmDeleteBtn= document.getElementById('confirmDeleteBtn');
-const deleteLabel     = document.getElementById('deleteLabel');
-
-const dashboardEl     = document.getElementById('dashboard');
-const conflictBanner  = document.getElementById('conflictBanner');
-const presCountBadge  = document.getElementById('presCount');
-
-// ── Modal helpers ─────────────────────────────────────────
-function openAdd() {
-  currentEditId = null;
-  presForm.reset();
-  addModalTitle.textContent = '＋ New Presentation Entry';
-  submitBtn.textContent     = '＋ Add Presentation';
-  addModal.classList.remove('hidden');
-  document.getElementById('fDate').focus();
-}
-
-function openEdit(id) {
-  const p = allPresentations.find(x => x.id === id);
-  if (!p) return;
-  currentEditId = id;
-  presForm.reset();
-  addModalTitle.textContent           = '✏️ Edit Presentation';
-  submitBtn.textContent               = '💾 Save Changes';
-  document.getElementById('fDate').value        = p.date;
-  document.getElementById('fModuleCode').value  = p.moduleCode;
-  document.getElementById('fGroupNumber').value = p.groupNumber;
-  document.getElementById('fInstructor').value  = p.instructor;
-  document.getElementById('fTiming').value      = p.timing;
-  document.getElementById('fJuryNames').value   = p.juryNames || '';
-  addModal.classList.remove('hidden');
-}
-
-function closeAdd() {
-  addModal.classList.add('hidden');
-  presForm.reset();
-  currentEditId = null;
-}
-
-function openDeleteModal(id, label) {
-  currentDeleteId       = id;
-  deleteLabel.textContent = label;
-  deleteModal.classList.remove('hidden');
-}
-
-function closeDelete() {
-  deleteModal.classList.add('hidden');
-  currentDeleteId = null;
-}
-
-// ── Form submit (create / update) ─────────────────────────
-submitBtn.addEventListener('click', () => {
-  const date        = document.getElementById('fDate').value.trim();
-  const moduleCode  = document.getElementById('fModuleCode').value.trim();
-  const groupNumber = document.getElementById('fGroupNumber').value.trim();
-  const instructor  = document.getElementById('fInstructor').value.trim();
-  const timing      = normalizeTiming(document.getElementById('fTiming').value);
-  const juryNames   = document.getElementById('fJuryNames').value.trim();
-
-  if (!date)       { showToast('Date is required.', 'warning'); return; }
-  if (!moduleCode) { showToast('Module code is required.', 'warning'); return; }
-  if (!groupNumber){ showToast('Group number is required.', 'warning'); return; }
-  if (!instructor) { showToast('Instructor name is required.', 'warning'); return; }
-  if (!timing)     { showToast('Timing is required.', 'warning'); return; }
-
-  if (!isValidTiming(timing)) {
-    showToast('Timing must be in "HH:MM - HH:MM" format with end after start (e.g. 09:00 - 10:30).', 'warning');
-    document.getElementById('fTiming').focus();
-    return;
+    fields.push(cur.trim());
+    return fields;
   }
 
-  const payload = { date, moduleCode, groupNumber, instructor, timing, juryNames };
+  let headerIdx = -1;
+  let headers = [];
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (!trimmed) continue;
+    headers = parseLine(trimmed).map(h => h.toLowerCase().replace(/\s+/g, ''));
+    headerIdx = i;
+    break;
+  }
+  if (headerIdx === -1) return { error: 'File appears to be empty.' };
 
-  const isEdit = !!currentEditId;
-  submitBtn.disabled   = true;
-  submitBtn.innerHTML  = `<span class="spinner"></span> ${isEdit ? 'Saving…' : 'Adding…'}`;
-
-  try {
-    if (isEdit) {
-      const updated = updatePresentation(currentEditId, payload);
-      if (!updated) throw new Error('Presentation not found');
-      const idx = allPresentations.findIndex(p => p.id === currentEditId);
-      if (idx !== -1) allPresentations[idx] = updated;
-      showToast(`✓ Updated: ${updated.moduleCode} — Group ${updated.groupNumber}`, 'success');
-    } else {
-      const created = createPresentation(payload);
-      allPresentations.push(created);
-      showToast(`✓ Added: ${created.moduleCode} — Group ${created.groupNumber}`, 'success');
+  const colMap = {};
+  const aliases = {
+    date:        ['date'],
+    moduleCode:  ['modulecode', 'code', 'module_code', 'modulecode'],
+    moduleName:  ['modulename', 'name', 'module_name', 'subject'],
+    groupNumber: ['groupnumber', 'group', 'groupno', 'group_number', 'grp'],
+    timing:      ['timing', 'time', 'slot', 'timeslot'],
+    venue:       ['venue', 'room', 'hall', 'location', 'classroom'],
+    supervisor:  ['supervisor', 'instructor', 'lecturer', 'faculty', 'teacher'],
+    jury:        ['jury', 'jurynames', 'jury_names', 'jurors', 'panel'],
+  };
+  headers.forEach((h, i) => {
+    for (const [key, aliasList] of Object.entries(aliases)) {
+      if (aliasList.includes(h)) { colMap[key] = i; break; }
     }
-    renderDashboard();
-    closeAdd();
-  } catch (err) {
-    showToast('Error: ' + err.message, 'error');
-  } finally {
-    submitBtn.disabled  = false;
-    submitBtn.innerHTML = isEdit ? '💾 Save Changes' : '＋ Add Presentation';
-  }
-});
-
-// ── Delete ────────────────────────────────────────────────
-confirmDeleteBtn.addEventListener('click', () => {
-  if (!currentDeleteId) return;
-  confirmDeleteBtn.disabled   = true;
-  confirmDeleteBtn.innerHTML  = '<span class="spinner"></span> Deleting…';
-
-  try {
-    const ok = deletePresentation(currentDeleteId);
-    if (!ok) throw new Error('Not found');
-    allPresentations = allPresentations.filter(p => p.id !== currentDeleteId);
-    renderDashboard();
-    showToast('Presentation deleted.', 'success');
-    closeDelete();
-  } catch (err) {
-    showToast('Error: ' + err.message, 'error');
-  } finally {
-    confirmDeleteBtn.disabled  = false;
-    confirmDeleteBtn.innerHTML = 'Delete';
-  }
-});
-
-// ── Event wiring ──────────────────────────────────────────
-openAddBtn.addEventListener('click', openAdd);
-cancelBtn.addEventListener('click', closeAdd);
-closeModalBtn.addEventListener('click', closeAdd);
-addModal.addEventListener('click', e => { if (e.target === addModal) closeAdd(); });
-
-closeDeleteBtn.addEventListener('click', closeDelete);
-cancelDeleteBtn.addEventListener('click', closeDelete);
-deleteModal.addEventListener('click', e => { if (e.target === deleteModal) closeDelete(); });
-
-// Expose to inline onclick handlers
-window.openEdit         = openEdit;
-window.openDeleteModal  = openDeleteModal;
-
-// ── Dashboard render ──────────────────────────────────────
-function renderDashboard() {
-  const pres = allPresentations;
-  presCountBadge.textContent = pres.length;
-
-  if (pres.length === 0) {
-    conflictBanner.style.display = 'none';
-    dashboardEl.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">🎓</div>
-        <h3>No presentations yet</h3>
-        <p>Click <strong>+ Add Presentation</strong> to get started.</p>
-      </div>`;
-    return;
-  }
-
-  // Detect conflicts before building HTML
-  const conflictIds = detectConflicts(pres);
-  if (conflictIds.size > 0) {
-    conflictBanner.style.display = '';
-    conflictBanner.textContent   =
-      `⚠️ Conflict detected: ${conflictIds.size} presentation${conflictIds.size !== 1 ? 's' : ''} overlap in timing for the same instructor. Affected rows are highlighted below.`;
-  } else {
-    conflictBanner.style.display = 'none';
-  }
-
-  // Group by instructor (flat list — date+time sort applied below)
-  const byInstructor = new Map();
-  for (const p of pres) {
-    if (!byInstructor.has(p.instructor)) byInstructor.set(p.instructor, []);
-    byInstructor.get(p.instructor).push(p);
-  }
-
-  // Sort instructors alphabetically
-  const instructorsSorted = [...byInstructor.keys()].sort((a, b) => a.localeCompare(b));
-
-  let html = '';
-  for (const instructor of instructorsSorted) {
-    const entries = byInstructor.get(instructor);
-
-    // Sort chronologically: date ASC, then timing start ASC
-    entries.sort((a, b) => {
-      if (a.date !== b.date) return a.date.localeCompare(b.date);
-      const ta = parseTimingMinutes(a.timing);
-      const tb = parseTimingMinutes(b.timing);
-      if (!ta && !tb) return 0;
-      if (!ta) return 1;
-      if (!tb) return -1;
-      return ta.start - tb.start;
-    });
-
-    html += `
-      <div class="instructor-block">
-        <div class="instructor-heading">
-          <span class="instructor-icon">👤</span>
-          ${escHtml(instructor)}
-        </div>
-        <div style="overflow-x:auto;">
-          <table class="pres-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Day</th>
-                <th>Time</th>
-                <th>Module &amp; Group</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>`;
-
-    for (const p of entries) {
-      const rowClass    = conflictIds.has(p.id) ? 'row-conflict' : '';
-      const conflictTag = conflictIds.has(p.id)
-        ? '<span class="pill pill-red" style="margin-left:6px;font-size:10px;">CONFLICT</span>'
-        : '';
-      html += `
-              <tr class="${rowClass}">
-                <td class="timing-cell">${escHtml(formatDate(p.date))}</td>
-                <td>${escHtml(p.day || '—')}</td>
-                <td class="timing-cell">${escHtml(p.timing)}${conflictTag}</td>
-                <td><strong>${escHtml(p.moduleCode)}</strong> — Group ${escHtml(p.groupNumber)}</td>
-                <td>
-                  <div class="actions-cell">
-                    <button class="btn btn-sm btn-ghost" onclick="openEdit('${p.id}')">✏️ Edit</button>
-                    <button class="btn btn-sm btn-red"   onclick="openDeleteModal('${p.id}', '${escHtml(p.moduleCode)} — Group ${escHtml(p.groupNumber)}')">🗑️</button>
-                  </div>
-                </td>
-              </tr>`;
-    }
-
-    html += `
-            </tbody>
-          </table>
-        </div>
-      </div>`;
-  }
-
-  dashboardEl.innerHTML = html;
-}
-
-// ── Print view ────────────────────────────────────────────
-
-/**
- * Generate an instructor-grouped schedule into #printView and trigger window.print().
- * Sorted: instructor ASC → date ASC → timing ASC.
- */
-function printView() {
-  if (allPresentations.length === 0) {
-    alert('No presentations to print.');
-    return;
-  }
-
-  // Group by instructor
-  const byInstructor = new Map();
-  for (const p of allPresentations) {
-    if (!byInstructor.has(p.instructor)) byInstructor.set(p.instructor, []);
-    byInstructor.get(p.instructor).push(p);
-  }
-
-  const instructorsSorted = [...byInstructor.keys()].sort((a, b) => a.localeCompare(b));
-
-  let html = '';
-  let first = true;
-  for (const instructor of instructorsSorted) {
-    const entries = byInstructor.get(instructor);
-    entries.sort((a, b) => {
-      if (a.date !== b.date) return a.date.localeCompare(b.date);
-      return (a.timing || '').localeCompare(b.timing || '');
-    });
-
-    html += `
-      <div class="${first ? '' : 'print-page-break'}">
-        <h2>${escHtml(instructor)}</h2>
-        <table>
-          <thead>
-            <tr><th>Date</th><th>Day</th><th>Time</th><th>Module &amp; Group</th></tr>
-          </thead>
-          <tbody>`;
-    for (const p of entries) {
-      html += `
-            <tr>
-              <td class="timing-cell">${escHtml(formatDate(p.date))}</td>
-              <td>${escHtml(p.day || '—')}</td>
-              <td class="timing-cell">${escHtml(p.timing || '—')}</td>
-              <td>${escHtml(p.moduleCode)} — Group ${escHtml(p.groupNumber)}</td>
-            </tr>`;
-    }
-    html += `
-          </tbody>
-        </table>
-      </div>`;
-    first = false;
-  }
-
-  document.getElementById('printView').innerHTML = html;
-  window.print();
-}
-
-window.printView = printView;
-
-// ── Init ──────────────────────────────────────────────────
-(function init() {
-  setupFileUI(
-    document.getElementById('fileStatusDot'),
-    document.getElementById('fileStatusText'),
-    document.getElementById('connectFileBtn'),
-    document.getElementById('exportFileBtn')
-  );
-
-  allPresentations = getPresentations();
-  renderDashboard();
-
-  window.addEventListener('presentationsUpdated', () => {
-    allPresentations = getPresentations();
-    renderDashboard();
   });
-})();
+
+  const required = ['date', 'groupNumber', 'timing', 'supervisor'];
+  const missing = required.filter(k => colMap[k] === undefined);
+  if (missing.length) {
+    return { error: `Missing required columns: ${missing.join(', ')}. Found: ${headers.join(', ')}` };
+  }
+
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    const fields = parseLine(lines[i]);
+
+    const rawCode = colMap.moduleCode !== undefined ? (fields[colMap.moduleCode] || '') : '';
+    const rawName = colMap.moduleName !== undefined ? (fields[colMap.moduleName] || '') : '';
+
+    let moduleCode = rawCode.trim();
+    let moduleName = rawName.trim();
+    // If moduleName absent but moduleCode contains " - ", split it
+    if (!moduleName && moduleCode.includes(' - ')) {
+      const dashIdx = moduleCode.indexOf(' - ');
+      moduleName = moduleCode.slice(dashIdx + 3).trim();
+      moduleCode = moduleCode.slice(0, dashIdx).trim();
+    }
+
+    result.push({
+      date:        (fields[colMap.date] || '').trim(),
+      moduleCode,
+      moduleName,
+      groupNumber: (fields[colMap.groupNumber] || '').trim(),
+      timing:      (fields[colMap.timing] || '').trim(),
+      venue:       colMap.venue !== undefined ? (fields[colMap.venue] || '').trim() : '',
+      supervisor:  (fields[colMap.supervisor] || '').trim(),
+      jury:        colMap.jury !== undefined ? (fields[colMap.jury] || '').trim() : '',
+    });
+  }
+
+  if (!result.length) return { error: 'No data rows found after the header.' };
+  return { rows: result };
+}
+
+// ── Date helpers ─────────────────────────────────────────────────────────────
+const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function parseDate(str) {
+  if (!str) return null;
+  let m;
+  if ((m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/))) return new Date(+m[3], +m[2]-1, +m[1]);
+  if ((m = str.match(/^(\d{4})-(\d{2})-(\d{2})$/)))       return new Date(+m[1], +m[2]-1, +m[3]);
+  return new Date(str);
+}
+
+function formatDate(str) {
+  const d = parseDate(str);
+  if (!d || isNaN(d)) return str;
+  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function getDayName(str) {
+  const d = parseDate(str);
+  if (!d || isNaN(d)) return '';
+  return DAYS[d.getDay()];
+}
+
+// Sort oldest → newest date, then timing ascending
+function dateSort(a, b) {
+  const da = parseDate(a.date), db = parseDate(b.date);
+  const ta = da ? da.getTime() : 0, tb = db ? db.getTime() : 0;
+  if (ta !== tb) return ta - tb;
+  return (a.timing || '').localeCompare(b.timing || '');
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function render() {
+  if (!rows.length) { showUploadState(); return; }
+
+  // Outer pivot: group by supervisor
+  const bySupervisor = {};
+  rows.forEach(r => {
+    const key = r.supervisor || '(No Supervisor)';
+    if (!bySupervisor[key]) bySupervisor[key] = [];
+    bySupervisor[key].push(r);
+  });
+
+  const supervisors = Object.keys(bySupervisor).sort((a, b) => a.localeCompare(b));
+
+  // Update stats
+  const allDates   = new Set(rows.map(r => r.date));
+  const allModules = new Set(rows.map(r => r.moduleCode || r.moduleName).filter(Boolean));
+  document.getElementById('statSupervisors').textContent = supervisors.length;
+  document.getElementById('statGroups').textContent      = rows.length;
+  document.getElementById('statModules').textContent     = allModules.size;
+  document.getElementById('statDays').textContent        = allDates.size;
+
+  document.getElementById('printSubtitle').textContent =
+    `Presentation Schedule — ${rows.length} Groups · ${supervisors.length} Supervisors`;
+
+  supervisorGrid.innerHTML = '';
+
+  supervisors.forEach((supervisor, idx) => {
+    const supervRows = bySupervisor[supervisor].slice().sort(dateSort);
+    const colorClass = `sv-color-${idx % 8}`;
+
+    // Inner pivot: group by moduleCode (fall back to moduleName)
+    const byModule = {};
+    supervRows.forEach(r => {
+      const key = r.moduleCode || r.moduleName || '(Unknown Module)';
+      if (!byModule[key]) byModule[key] = [];
+      byModule[key].push(r);
+    });
+    const modules = Object.keys(byModule).sort((a, b) => a.localeCompare(b));
+
+    const hasVenue = supervRows.some(r => r.venue);
+    const hasJury  = supervRows.some(r => r.jury);
+
+    // Build inner HTML: one sub-section per module
+    const moduleSections = modules.map(modKey => {
+      const modRows = byModule[modKey].slice().sort(dateSort);
+      const sample  = modRows[0];
+      const modName = sample.moduleName || '';
+
+      // Alternating date bands + rowspan counts
+      const dateOrder   = [];
+      const seenDates   = new Set();
+      const dateRowspan = {};
+      modRows.forEach(r => {
+        if (!seenDates.has(r.date)) { dateOrder.push(r.date); seenDates.add(r.date); }
+        dateRowspan[r.date] = (dateRowspan[r.date] || 0) + 1;
+      });
+      const dateBandMap   = {};
+      dateOrder.forEach((d, i) => { dateBandMap[d] = i % 2 === 0 ? 'band-even' : 'band-odd'; });
+      const dateRendered  = new Set();
+
+      const venueTh = hasVenue ? '<th>Venue</th>' : '';
+      const juryTh  = hasJury  ? '<th>Jury</th>'  : '';
+
+      const tbody = modRows.map(r => {
+        const band      = dateBandMap[r.date] || 'band-odd';
+        const venueCell = hasVenue ? `<td class="venue-cell">${esc(r.venue)}</td>` : '';
+        const juryCell  = hasJury  ? `<td class="jury-cell">${esc(r.jury)}</td>`   : '';
+
+        let dateCells = '';
+        if (!dateRendered.has(r.date)) {
+          dateRendered.add(r.date);
+          const span     = dateRowspan[r.date];
+          const spanAttr = span > 1 ? ` rowspan="${span}"` : '';
+          dateCells = `<td class="date-cell"${spanAttr}>${esc(formatDate(r.date))}</td>` +
+                      `<td class="day-cell"${spanAttr}>${esc(getDayName(r.date))}</td>`;
+        }
+
+        return `<tr class="${band}">
+          ${dateCells}
+          <td class="group-cell">${esc(r.groupNumber)}</td>
+          <td class="timing-cell">${esc(r.timing)}</td>
+          ${venueCell}
+          ${juryCell}
+        </tr>`;
+      }).join('');
+
+      return `
+        <div class="module-section">
+          <div class="module-section-header">
+            <span class="module-section-code">${esc(modKey)}</span>
+            ${modName ? `<span class="module-section-name">${esc(modName)}</span>` : ''}
+            <span class="module-section-badge">${modRows.length} group${modRows.length !== 1 ? 's' : ''}</span>
+          </div>
+          <div style="overflow-x:auto; display:inline-block; min-width:100%; box-sizing:border-box;">
+            <table class="pres-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Day</th>
+                  <th>Group #</th>
+                  <th>Timing</th>
+                  ${venueTh}
+                  ${juryTh}
+                </tr>
+              </thead>
+              <tbody>${tbody}</tbody>
+            </table>
+          </div>
+        </div>`;
+    }).join('');
+
+    const card = document.createElement('div');
+    card.className = `supervisor-card ${colorClass}`;
+    card.innerHTML = `
+      <div class="supervisor-card-header">
+        <span class="supervisor-name">👤 ${esc(supervisor)}</span>
+        <span class="supervisor-badge">${supervRows.length} group${supervRows.length !== 1 ? 's' : ''} · ${modules.length} module${modules.length !== 1 ? 's' : ''}</span>
+      </div>
+      ${moduleSections}`;
+    supervisorGrid.appendChild(card);
+  });
+
+  showDataState();
+}
+
+function showUploadState() {
+  uploadState.style.display = '';
+  supervisorGrid.style.display = 'none';
+  statsBar.style.display = 'none';
+  clearDataBtn.style.display = 'none';
+  printBtn.style.display = 'none';
+  fileNameLabel.textContent = '';
+}
+
+function showDataState() {
+  uploadState.style.display = 'none';
+  supervisorGrid.style.display = '';
+  statsBar.style.display = '';
+  clearDataBtn.style.display = '';
+  printBtn.style.display = '';
+}
+
+function showError(msg) {
+  errorText.textContent = msg;
+  errorBanner.style.display = '';
+  setTimeout(() => { errorBanner.style.display = 'none'; }, 8000);
+}
+
+// ── File handling ─────────────────────────────────────────────────────────────
+function handleFile(file) {
+  if (!file.name.toLowerCase().endsWith('.csv')) {
+    showError('Please upload a .csv file.'); return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const result = parseCSV(e.target.result);
+    if (result.error) { showError(result.error); return; }
+    rows = result.rows;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
+    fileNameLabel.textContent = file.name;
+    errorBanner.style.display = 'none';
+    render();
+  };
+  reader.readAsText(file);
+  csvFileInput.value = '';
+}
+
+function clearData() {
+  if (!confirm('Clear all presentation schedule data?')) return;
+  rows = [];
+  localStorage.removeItem(STORAGE_KEY);
+  supervisorGrid.innerHTML = '';
+  showUploadState();
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}

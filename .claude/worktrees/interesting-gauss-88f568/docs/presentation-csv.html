@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentation Schedule (CSV) — EAU Exam Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <style>
+    /* ── Dashboard wrapper ───────────────────────────────── */
+    .dashboard-wrap {
+      padding: 20px 28px 60px;
+    }
+
+    /* ── Upload zone ─────────────────────────────────────── */
+    .upload-zone {
+      border: 2px dashed #2c5f8a;
+      border-radius: 10px;
+      background: #f0f6fc;
+      text-align: center;
+      padding: 48px 24px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .upload-zone:hover,
+    .upload-zone.drag-over {
+      background: #d6e4f0;
+      border-color: #1a3a5c;
+    }
+    .upload-zone-icon { font-size: 48px; margin-bottom: 12px; }
+    .upload-zone h3 { font-size: 16px; color: #1a3a5c; margin: 0 0 6px; }
+    .upload-zone p  { font-size: 13px; color: #666; margin: 0 0 16px; }
+    .upload-zone .format-hint {
+      font-size: 11px;
+      color: #888;
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: #e8f0f8;
+      border-radius: 4px;
+      padding: 6px 12px;
+      display: inline-block;
+    }
+    #csvFileInput { display: none; }
+
+    /* ── Topbar meta row ─────────────────────────────────── */
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 28px 12px;
+      font-size: 12px;
+      color: #555;
+    }
+    .meta-row strong { color: #1a3a5c; }
+
+    /* ── Supervisor block ────────────────────────────────── */
+    .supervisor-block {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+      border: 1px solid #d6e4f0;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .supervisor-heading {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 11px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .supervisor-badge {
+      margin-left: auto;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      font-size: 11px;
+      padding: 2px 10px;
+      font-weight: 600;
+    }
+
+    /* ── Presentations table ─────────────────────────────── */
+    .pres-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .pres-table thead tr {
+      background: #2c5f8a;
+      color: #fff;
+    }
+    .pres-table th {
+      padding: 8px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+    .pres-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #eaf0f8;
+      vertical-align: middle;
+    }
+    .pres-table tbody tr:last-child td { border-bottom: none; }
+    .pres-table tbody tr:hover td     { background: #f5f9ff; }
+    .pres-table .timing-cell {
+      white-space: nowrap;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+    }
+    .pres-table .jury-cell {
+      color: #555;
+      font-size: 12px;
+    }
+    .pres-table .date-cell { white-space: nowrap; }
+    .group-pill {
+      display: inline-block;
+      background: #d6e4f0;
+      color: #1a3a5c;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 9px;
+    }
+
+    /* ── Print ───────────────────────────────────────────── */
+    .csv-print-view { display: none; }
+
+    @media print {
+      @page { size: A3 landscape; margin: 12mm 15mm; }
+
+      .sidebar, .topbar, .dashboard-wrap, .meta-row,
+      #toast-container { display: none !important; }
+
+      .main-content { margin-left: 0 !important; }
+
+      .csv-print-header { display: block !important; }
+      .csv-print-view   { display: block !important; }
+
+      .csv-print-view .print-page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+      .csv-print-view h2 {
+        font-size: 11pt; font-weight: 700; color: #1a3a5c;
+        background: #eef4fb !important;
+        border-left: 3pt solid #2980b9;
+        padding: 5pt 10pt; margin: 6mm 0 0;
+        page-break-after: avoid; break-after: avoid;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      }
+      .csv-print-view table {
+        width: 100%; border-collapse: collapse;
+        font-size: 9pt; margin-bottom: 4mm;
+      }
+      .csv-print-view thead tr {
+        background: #2c5f8a !important; color: #fff !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      }
+      .csv-print-view th {
+        padding: 4pt 10pt; font-size: 8pt; font-weight: 700;
+        text-align: left; text-transform: uppercase; letter-spacing: 0.4pt;
+      }
+      .csv-print-view td { padding: 4pt 10pt; border-bottom: 0.5pt solid #ccc; }
+      .csv-print-view tbody tr:nth-child(even) td {
+        background: #f7f9fc !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      }
+      .csv-print-view .timing-cell {
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 8.5pt; white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
+    <div>
+      <div class="sidebar-uni-name">Emirates Aviation University</div>
+      <div class="sidebar-app-name">FOE Exam Planner</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Main Menu</div>
+
+  <nav class="sidebar-nav">
+    <a href="index.html" class="sidebar-link">
+      <span class="nav-icon">📋</span> Exam Module Entry
+    </a>
+    <a href="schedule.html" class="sidebar-link">
+      <span class="nav-icon">📅</span> Exam Schedule
+    </a>
+    <a href="schedule-invigilators.html" class="sidebar-link">
+      <span class="nav-icon">👁️</span> Schedule (with Invigilators)
+    </a>
+    <a href="shared-modules.html" class="sidebar-link">
+      <span class="nav-icon">🔗</span> Shared Modules
+    </a>
+    <a href="shared-venues.html" class="sidebar-link">
+      <span class="nav-icon">🏛️</span> Shared Venues
+    </a>
+    <a href="presentation-schedule.html" class="sidebar-link">
+      <span class="nav-icon">🎓</span> Presentation Schedule
+    </a>
+    <a href="presentation-csv.html" class="sidebar-link active">
+      <span class="nav-icon">📊</span> Presentation CSV
+    </a>
+    <a href="student-data.html" class="sidebar-link">
+      <span class="nav-icon">👤</span> Student Data
+    </a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Data File</div>
+  <div class="sidebar-file-status">
+    <span class="file-dot" id="fileStatusDot"></span>
+    <span id="fileStatusText" style="font-size:11px; color:rgba(255,255,255,0.5);">Not connected</span>
+  </div>
+  <div class="sidebar-file-btns">
+    <button class="sidebar-file-btn" id="connectFileBtn">📂 Connect exams.json</button>
+    <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
+  </div>
+
+  <div class="sidebar-footer">
+    &copy; 2026 Mohammed Khateeb
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════════════ -->
+<div class="main-content">
+
+  <!-- Print-only header -->
+  <div class="csv-print-header" style="display:none; border-bottom:2px solid #1a3a5c; padding-bottom:6mm; margin-bottom:6mm; text-align:center;">
+    <div style="font-size:13pt; font-weight:800; color:#1a3a5c;">Emirates Aviation University — Faculty of Engineering</div>
+    <div style="font-size:9pt; color:#555; margin-top:2mm;">Presentation Schedule — Grouped by Supervisor</div>
+  </div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <span class="topbar-title">📊 Presentation Schedule (CSV)</span>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="btn btn-ghost btn-sm" id="printBtn" style="display:none;" onclick="doPrint()">
+        🖨️ Print to PDF
+      </button>
+      <button class="btn btn-ghost btn-sm" id="clearBtn" style="display:none;" onclick="clearData()">
+        🗑️ Clear Data
+      </button>
+      <button class="btn btn-primary btn-sm" id="uploadBtn" onclick="triggerUpload()">
+        ⬆️ Upload CSV
+      </button>
+    </div>
+  </div>
+
+  <!-- Meta row (shown after data is loaded) -->
+  <div class="meta-row" id="metaRow" style="display:none;">
+    <span>Loaded from: <strong id="metaFilename"></strong></span>
+    <span>&bull;</span>
+    <span><strong id="metaTotalRows"></strong> rows &bull; <strong id="metaSupervisors"></strong> supervisors</span>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="dashboard-wrap" id="dashboardWrap">
+    <!-- Upload card (shown when no data) -->
+    <div class="card" id="uploadCard">
+      <div class="card-body" style="padding:28px;">
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="csvFileInput" accept=".csv">
+          <div class="upload-zone-icon">📂</div>
+          <h3>Upload Presentation CSV</h3>
+          <p>Drag &amp; drop a CSV file here, or click to browse</p>
+          <div class="format-hint">Date, moduleCode, moduleName, groupNumber, timing, supervisor, jury</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data dashboard (shown after upload) -->
+    <div id="dashboard" style="display:none;"></div>
+  </div>
+
+  <!-- Print view (hidden on screen, shown when printing) -->
+  <div id="csvPrintView" class="csv-print-view"></div>
+
+</div><!-- /main-content -->
+
+<div id="toast-container"></div>
+<script src="js/storage.js"></script>
+<script src="js/presentation-csv.js"></script>
+</body>
+</html>

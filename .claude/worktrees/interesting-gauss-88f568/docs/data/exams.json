@@ -9,12 +9,12 @@
     "startTime": "09:00",
     "endTime": "11:00",
     "instructorName": "Dr. Sameh",
-    "invigilatorName": "Ms. Karyn (G16), Ms. Sreeja (G17)",
+    "invigilatorName": "Ms. Karyn (Lab 02), Ms. Sreeja (Lab 03)",
     "venueIds": [
-      "G16",
-      "G17"
+      "Lab_02",
+      "Lab_03"
     ],
-    "venueId": "G16",
+    "venueId": "Lab_02",
     "program": "AB/BENG",
     "students": [
       {
@@ -204,10 +204,7 @@
         "venueId": "Lab_03"
       }
     ],
-    "createdAt": "2026-04-12T10:49:38.140Z",
-    "programs": [
-      "AB/BENG"
-    ]
+    "createdAt": "2026-04-12T10:49:38.140Z"
   },
   {
     "id": "exam-3c7249ec-24a6-4505-8cbb-d4b2fbeeca0e",
@@ -541,7 +538,7 @@
     "startTime": "09:00",
     "endTime": "11:00",
     "instructorName": "Ms. Elif",
-    "invigilatorName": "Mr. Furqan, Ms. Mahsa",
+    "invigilatorName": "Ms. Ninu, Ms. Mahsa",
     "venueIds": [
       "G_08_10"
     ],
@@ -11978,7 +11975,7 @@
     "startTime": "09:00",
     "endTime": "11:00",
     "instructorName": "Dr. Tawfik",
-    "invigilatorName": "Mr. Furqan, Ms. Mahsa",
+    "invigilatorName": "Ms. Ninu, Ms. Mahsa",
     "venueIds": [
       "G_08_10"
     ],
@@ -12451,7 +12448,7 @@
     "startTime": "14:00",
     "endTime": "16:00",
     "instructorName": "Dr. Vidhya",
-    "invigilatorName": "Dr. Sathish, Mr. Toms",
+    "invigilatorName": "",
     "venueIds": [
       "G_08_10"
     ],
@@ -12776,7 +12773,7 @@
     "startTime": "12:00",
     "endTime": "12:25",
     "instructorName": "Dr. Crystal",
-    "invigilatorName": "Mr. Furqan (G20), Mr. Jawad (G21), Mr. Uzair (G22), Ms. Ninu (G23), Mr. Tarek (G24), Mr. Ashbar (G25)",
+    "invigilatorName": "",
     "venueIds": [
       "G20",
       "G21",
@@ -13272,7 +13269,7 @@
     "startTime": "12:30",
     "endTime": "12:55",
     "instructorName": "Dr. Crystal",
-    "invigilatorName": "Mr. Furqan (G20), Mr. Jawad (G21), Mr. Uzair (G22), Ms. Ninu (G23), Mr. Tarek (G24), Mr. Ashbar (G25)",
+    "invigilatorName": "",
     "venueIds": [
       "G20",
       "G21",
@@ -13768,7 +13765,7 @@
     "startTime": "13:00",
     "endTime": "13:20",
     "instructorName": "Dr. Crystal",
-    "invigilatorName": "Mr. Furqan (G20), Mr. Jawad (G21), Mr. Uzair (G22), Ms. Ninu (G23), Mr. Tarek (G24), Mr. Ashbar (G25)",
+    "invigilatorName": "",
     "venueIds": [
       "G20",
       "G21",
@@ -14264,7 +14261,7 @@
     "startTime": "14:00",
     "endTime": "16:00",
     "instructorName": "Dr. Essen",
-    "invigilatorName": "Dr. Sathish, Mr. Toms",
+    "invigilatorName": "",
     "venueIds": [
       "G_08_10"
     ],
@@ -14383,7 +14380,7 @@
     "startTime": "14:00",
     "endTime": "16:00",
     "instructorName": "Dr. Sameh",
-    "invigilatorName": "Dr. Sathish, Mr. Toms",
+    "invigilatorName": "",
     "venueIds": [
       "G_08_10"
     ],
@@ -14589,11 +14586,11 @@
     "moduleName": "Foundation Math",
     "examName": "Final",
     "semester": "Spring 2026",
-    "date": "2026-05-19",
+    "date": "2026-05-16",
     "startTime": "09:00",
     "endTime": "11:00",
     "instructorName": "Ms. Mawada",
-    "invigilatorName": "2 FOM Invigilators, Ms. Sreeja",
+    "invigilatorName": "Ms. Ninu, Ms. Mahsa",
     "venueIds": [
       "G_04_06"
     ],
@@ -14630,7 +14627,7 @@
     "startTime": "12:00",
     "endTime": "12:25",
     "instructorName": "Mr. Khader",
-    "invigilatorName": "Mr. Furqan (G19), Mr. Tarek (G20), Mr. Jawad (G21), Mr. Basel (G22), Mr. Fayyadh (G23), Mr. Ashbar (G24),",
+    "invigilatorName": "",
     "venueIds": [
       "G19",
       "G20",
@@ -16326,905 +16323,5 @@
       }
     ],
     "createdAt": "2026-04-16T13:07:30.606Z"
-  },
-  {
-    "id": "exam-0472b858-4445-41bc-8ed5-d4430f1d4e46",
-    "moduleCode": "EAE4255",
-    "moduleName": "Aircraft Design II",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-18",
-    "startTime": "12:00",
-    "endTime": "14:00",
-    "instructorName": "Dr. Elham",
-    "invigilatorName": "",
-    "venueIds": [
-      "G20"
-    ],
-    "venueId": "G20",
-    "programs": [
-      "Project Presentation"
-    ],
-    "students": [],
-    "createdAt": "2026-04-23T08:57:47.925Z"
-  },
-  {
-    "id": "exam-db8ff84b-4d02-4c21-92f8-63b19b22c6c2",
-    "moduleCode": "EAE4065",
-    "moduleName": "Aerospace Project 2",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-19",
-    "startTime": "09:00",
-    "endTime": "11:00",
-    "instructorName": "Dr. Elham",
-    "invigilatorName": "",
-    "venueIds": [
-      "G20"
-    ],
-    "venueId": "G20",
-    "programs": [
-      "Project Presentation"
-    ],
-    "students": [],
-    "createdAt": "2026-04-23T08:59:28.484Z"
-  },
-  {
-    "id": "exam-a8f13952-c664-4354-94b1-214103682b64",
-    "moduleCode": "302SEAE",
-    "moduleName": "Aerospace Application (AE) - Group 1 to 5",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-18",
-    "startTime": "09:00",
-    "endTime": "11:30",
-    "instructorName": "Dr. Walid",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-b57351ab-5871-4c06-832c-873eb02fd5da",
-    "moduleCode": "302SEAE",
-    "moduleName": "Aerospace Application (AE) - Group 6 to 11",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-20",
-    "startTime": "09:00",
-    "endTime": "12:00",
-    "instructorName": "Dr. Walid",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-6aaf6a46-771c-4722-92d5-74522418a06d",
-    "moduleCode": "302SEAV",
-    "moduleName": "Aerospace Application (AV) - Group 1",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "16:30",
-    "endTime": "17:00",
-    "instructorName": "Dr. Walid",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-6d1aca11-48f6-4a90-ad92-18a598a756ff",
-    "moduleCode": "302SEAV",
-    "moduleName": "Aerospace Application (AV) - Group 1 to 10",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-07",
-    "startTime": "09:00",
-    "endTime": "15:00",
-    "instructorName": "Dr. Anju",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-a6e15a1e-ac49-4935-81b0-6c8fdd085808",
-    "moduleCode": "302SEAV",
-    "moduleName": "Aerospace Application (AV) - Group 11 to 18",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-08",
-    "startTime": "08:30",
-    "endTime": "15:00",
-    "instructorName": "Dr. Anju",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-365eb2eb-33b7-43ab-ba6a-9d5f0644f35f",
-    "moduleCode": "303SE/AE108",
-    "moduleName": "Individual Aerospace Project (Online) - Group 1 to 8",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-18",
-    "startTime": "09:00",
-    "endTime": "14:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-36a3d295-58f5-407c-b434-f1d38a0811fb",
-    "moduleCode": "303SE/AE108",
-    "moduleName": "Individual Aerospace Project (Online) - Group 9 to 10",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-19",
-    "startTime": "09:00",
-    "endTime": "10:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-6221410e-021c-4455-bb67-1fb05215f3d2",
-    "moduleCode": "303SE/AE108",
-    "moduleName": "Individual Aerospace Project (Physical) - Group 1 to 2",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-04",
-    "startTime": "12:30",
-    "endTime": "13:30",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "G18"
-    ],
-    "venueId": "G18",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-3aaffa34-6802-46ef-abd0-cb0eccc4f5a8",
-    "moduleCode": "303SE/AE108",
-    "moduleName": "Individual Aerospace Project (Physical) - Group 3 to 4",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "09:30",
-    "endTime": "10:30",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "G17"
-    ],
-    "venueId": "G17",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-dcdf2e5f-de42-4229-9a61-960cd34f39f8",
-    "moduleCode": "303SE/AE108",
-    "moduleName": "Individual Aerospace Project (Physical) - Group 5 to 6",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-06",
-    "startTime": "08:00",
-    "endTime": "09:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "G18"
-    ],
-    "venueId": "G18",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-e1810422-b3a2-4e10-bb59-e0fe81a74f1a",
-    "moduleCode": "303SE/AE108",
-    "moduleName": "Individual Aerospace Project (Physical) - Group 7 to 9",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-11",
-    "startTime": "12:30",
-    "endTime": "15:30",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "G18"
-    ],
-    "venueId": "G18",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-97148ed7-739f-4dcc-b4c5-9ef04aeacc47",
-    "moduleCode": "303SEAV",
-    "moduleName": "Individual Avionics Project - Group 1,2,8,9,10,11,12,13,14",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-04",
-    "startTime": "10:00",
-    "endTime": "14:50",
-    "instructorName": "Ms. Mahsa, Ms. Ninu",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-54f3caa6-8dd9-44a6-8b2a-92948d359df0",
-    "moduleCode": "303SEAV",
-    "moduleName": "Individual Avionics Project - Group 3,4,15,16,17,18,19,20,21",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "09:30",
-    "endTime": "14:20",
-    "instructorName": "Ms. Mahsa, Ms. Ninu",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-0ee85b35-cf58-4a65-b946-c055b3619955",
-    "moduleCode": "303SEAV",
-    "moduleName": "Individual Avionics Project - Group 5,6,7,22,23,24",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-06",
-    "startTime": "10:00",
-    "endTime": "14:50",
-    "instructorName": "Ms. Mahsa, Ms. Ninu",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-a9854921-9742-4f54-aebc-f5cf5c225dfa",
-    "moduleCode": "AV108",
-    "moduleName": "Avionics Project Design - Group 1",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-07",
-    "startTime": "13:00",
-    "endTime": "13:20",
-    "instructorName": "Ms. Ninu",
-    "invigilatorName": "",
-    "venueIds": [
-      "G15"
-    ],
-    "venueId": "G15",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-8390dd6a-f7ea-4f24-a8da-917bda7ad2a2",
-    "moduleCode": "AV108",
-    "moduleName": "Avionics Project Design - Group 1 to 3",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-07",
-    "startTime": "10:00",
-    "endTime": "11:20",
-    "instructorName": "Ms. Ninu",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-5fd6781d-5be7-481a-9ea9-c6c7804d646e",
-    "moduleCode": "AV110",
-    "moduleName": "Individual Avionics Project - Group 1",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-06",
-    "startTime": "09:30",
-    "endTime": "09:50",
-    "instructorName": "Ms. Ninu",
-    "invigilatorName": "",
-    "venueIds": [
-      "G16"
-    ],
-    "venueId": "G16",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-4d3881d6-ff75-4cdd-8866-b6d9aac4f6f3",
-    "moduleCode": "AV110",
-    "moduleName": "Individual Avionics Project - Group 25,26,29",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-07",
-    "startTime": "13:30",
-    "endTime": "14:50",
-    "instructorName": "Ms. Mahsa",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-9523a3b5-55a3-442d-a2f9-5751980ac96d",
-    "moduleCode": "AV110",
-    "moduleName": "Individual Avionics Project - Group 27,28,30",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-08",
-    "startTime": "10:00",
-    "endTime": "11:20",
-    "instructorName": "Ms. Mahsa",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-8cf95eed-ecc2-4c29-961f-20128f842689",
-    "moduleCode": "EA303SE/ME110",
-    "moduleName": "Individual Mechanical Project (Online) - Group 1 to 4",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-12",
-    "startTime": "08:00",
-    "endTime": "11:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-363f2131-d7f5-4ca2-b48e-1e040f7dcdc0",
-    "moduleCode": "EA303SE/ME110",
-    "moduleName": "Individual Mechanical Project (Online) - Group 5 to 6",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-14",
-    "startTime": "08:00",
-    "endTime": "09:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-bd0c6990-485a-4ffa-af5b-86a1cd17fd26",
-    "moduleCode": "EA303SE/ME110",
-    "moduleName": "Individual Mechanical Project (Online) - Group 7 to 10",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-15",
-    "startTime": "09:00",
-    "endTime": "11:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-72a58d8f-2280-4b4c-b0f7-58763b2c817d",
-    "moduleCode": "EA303SE/ME110",
-    "moduleName": "Individual Mechanical Project (Online) - Group 11 to 16",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-19",
-    "startTime": "08:00",
-    "endTime": "12:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-75cda289-14b0-44d2-9cfe-0e3e8cad7d51",
-    "moduleCode": "EA303SE/ME110",
-    "moduleName": "Individual Mechanical Project (Physical) - Group 1 to 4",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "08:00",
-    "endTime": "11:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "G15"
-    ],
-    "venueId": "G15",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-4ebb62b4-ba14-4429-a209-d504a256161b",
-    "moduleCode": "EA303SE/ME110",
-    "moduleName": "Individual Mechanical Project (Physical) - Group 5 to 6",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-07",
-    "startTime": "08:00",
-    "endTime": "09:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "G02"
-    ],
-    "venueId": "G02",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-2d92473d-3a1b-4540-bf82-3348786413cf",
-    "moduleCode": "EA303SE/ME110",
-    "moduleName": "Individual Mechanical Project (Physical) - Group 7 to 10",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-08",
-    "startTime": "09:00",
-    "endTime": "11:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "G19"
-    ],
-    "venueId": "G19",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-b5f6ed92-1b11-49f3-a916-b13fd5017e4a",
-    "moduleCode": "EA305MAA",
-    "moduleName": "Mechanical Application - Group 1",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "12:00",
-    "endTime": "12:30",
-    "instructorName": "Dr. Afaq",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-075b2df1-31de-4612-be5a-805957e398cb",
-    "moduleCode": "EA305MAA",
-    "moduleName": "Mechanical Application - Group 2 to 3",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-07",
-    "startTime": "10:30",
-    "endTime": "11:30",
-    "instructorName": "Dr. Afaq",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-9e800ea4-65d4-4519-8fce-de936934fc20",
-    "moduleCode": "EA305MAA",
-    "moduleName": "Mechanical Application - Group 4 to 7",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-11",
-    "startTime": "13:00",
-    "endTime": "15:00",
-    "instructorName": "Dr. Afaq",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-17417b88-3306-4e38-b71d-eaf5a395e9a0",
-    "moduleCode": "EA305MAA",
-    "moduleName": "Mechanical Application - Group 8 to 11",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-12",
-    "startTime": "09:30",
-    "endTime": "11:30",
-    "instructorName": "Dr. Afaq",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-5cfcfe10-513a-4c71-8520-69f966d898b6",
-    "moduleCode": "EG118",
-    "moduleName": "Aerospace Application - Group 1 to 2",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-13",
-    "startTime": "08:00",
-    "endTime": "09:00",
-    "instructorName": "Dr. Walid",
-    "invigilatorName": "",
-    "venueIds": [
-      "G11"
-    ],
-    "venueId": "G11",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-37802f0e-45e8-4871-a3c0-a8deec03fc9e",
-    "moduleCode": "EG118AE",
-    "moduleName": "Aerospace Application (AE) - Group 2",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "17:00",
-    "endTime": "17:30",
-    "instructorName": "Dr. Walid",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-d622f5fe-f157-4ed1-acdf-ccf1c190d384",
-    "moduleCode": "EG118AE",
-    "moduleName": "Aerospace Application (AE) - Group 3",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-08",
-    "startTime": "14:00",
-    "endTime": "14:30",
-    "instructorName": "Dr. Walid",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-4bd14133-d8a2-4023-a1bc-18cdcfc59168",
-    "moduleCode": "ME105",
-    "moduleName": "Mechanical Project Design - Group 1 to 2",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-04",
-    "startTime": "09:00",
-    "endTime": "10:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "G19"
-    ],
-    "venueId": "G19",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-726a1c2e-eaed-4ff5-9274-5cf61c7de00b",
-    "moduleCode": "ME105",
-    "moduleName": "Mechanical Project Design - Group 3 to 4",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-07",
-    "startTime": "11:00",
-    "endTime": "12:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "G15"
-    ],
-    "venueId": "G15",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-bbe10b32-c1db-4a03-ae38-b269057c83c9",
-    "moduleCode": "ME105",
-    "moduleName": "Mechanical Project Design - Group 1 to 2",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-08",
-    "startTime": "08:00",
-    "endTime": "09:00",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-416eb1cd-20a2-4a95-863e-ea995238b258",
-    "moduleCode": "ME105",
-    "moduleName": "Mechanical Project Design - Group 3",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-11",
-    "startTime": "09:00",
-    "endTime": "09:30",
-    "instructorName": "Dr. Tawfik",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-c582f059-156c-423f-808c-6ed3ce734faa",
-    "moduleCode": "ME108",
-    "moduleName": "Mechanical Applications - Group 1 to 4",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-04",
-    "startTime": "13:00",
-    "endTime": "15:00",
-    "instructorName": "Dr. Afaq",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-c3eae3eb-748b-4754-b953-15b2ba83b75a",
-    "moduleCode": "ME108",
-    "moduleName": "Mechanical Applications - Group 5 to 9",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "09:30",
-    "endTime": "12:00",
-    "instructorName": "Dr. Afaq",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
   }
 ]

@@ -1,14 +1,9 @@
 /* ══════════════════════════════════════════════════════════
-   Sidebar Layout — Navy palette + micro-interaction effects
+   Sidebar Layout
    ══════════════════════════════════════════════════════════ */
 
 :root {
-  --sidebar-width: 190px;
-}
-
-html, body {
-  overflow-x: hidden;
-  max-width: 100%;
+  --sidebar-width: 230px;
 }
 
 /* ── Sidebar ─────────────────────────────────────────────── */
@@ -18,7 +13,7 @@ html, body {
   left: 0;
   width: var(--sidebar-width);
   height: 100vh;
-  background: #1a3a5c;
+  background: var(--blue);
   display: flex;
   flex-direction: column;
   z-index: 200;
@@ -28,25 +23,24 @@ html, body {
 
 /* Logo / brand area */
 .sidebar-brand {
-  padding: 14px 12px 12px;
+  padding: 20px 16px 16px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .sidebar-logo {
-  width: 56px;
+  width: 80px;
   height: auto;
   object-fit: contain;
   filter: brightness(1.05);
 }
 
 .sidebar-uni-name {
-  font-family: 'Lora', Georgia, serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: #fff;
   line-height: 1.4;
@@ -54,7 +48,7 @@ html, body {
 }
 
 .sidebar-app-name {
-  font-size: 9px;
+  font-size: 10px;
   color: rgba(255,255,255,0.55);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -63,12 +57,12 @@ html, body {
 
 /* Nav section label */
 .sidebar-section-label {
-  font-size: 8.5px;
+  font-size: 9.5px;
   font-weight: 700;
   color: rgba(255,255,255,0.4);
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  padding: 14px 12px 5px;
+  padding: 18px 16px 6px;
 }
 
 /* Nav items */
@@ -83,34 +77,19 @@ html, body {
 .sidebar-link {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
+  gap: 10px;
+  padding: 10px 12px;
   border-radius: 6px;
   color: rgba(255,255,255,0.75);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 500;
   text-decoration: none;
-  transition: background 0.18s ease, color 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease;
+  transition: background 0.15s, color 0.15s;
   cursor: pointer;
   border: none;
   background: none;
   width: 100%;
   text-align: left;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Ripple sweep layer */
-.sidebar-link::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.28) 0%, transparent 65%);
-  transform: scale(0);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.32s ease, opacity 0.32s ease;
 }
 
 .sidebar-link:hover {
@@ -119,54 +98,17 @@ html, body {
   text-decoration: none;
 }
 
-/* Press-down scale + ripple trigger */
-.sidebar-link:active {
-  transform: scale(0.95) translateX(1px);
-  background: rgba(255,255,255,0.2) !important;
-}
-
-.sidebar-link:active::after {
-  transform: scale(2.2);
-  opacity: 1;
-  transition: none;
-}
-
-/* Active link */
 .sidebar-link.active {
   background: rgba(255,255,255,0.18);
   color: #fff;
   font-weight: 600;
-  box-shadow: inset 3px 0 0 rgba(255,255,255,0.8);
-}
-
-/* Indicator bar slides in when link becomes active */
-@keyframes sidebar-indicator-in {
-  from { transform: translateY(-50%) scaleY(0); opacity: 0; }
-  to   { transform: translateY(-50%) scaleY(1); opacity: 1; }
-}
-
-.sidebar-link.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 3px;
-  height: 60%;
-  background: rgba(255,255,255,0.9);
-  border-radius: 0 3px 3px 0;
-  animation: sidebar-indicator-in 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 .sidebar-link .nav-icon {
-  font-size: 13px;
-  width: 16px;
+  font-size: 16px;
+  width: 20px;
   text-align: center;
   flex-shrink: 0;
-  transition: transform 0.18s ease;
-}
-
-.sidebar-link:hover .nav-icon {
-  transform: scale(1.15);
 }
 
 /* Divider */
@@ -178,9 +120,9 @@ html, body {
 
 /* Footer */
 .sidebar-footer {
-  padding: 10px 12px;
+  padding: 12px 16px;
   border-top: 1px solid rgba(255,255,255,0.08);
-  font-size: 9px;
+  font-size: 10px;
   color: rgba(255,255,255,0.3);
   text-align: center;
   line-height: 1.6;
@@ -189,18 +131,15 @@ html, body {
 /* ── Main content shifts right ───────────────────────────── */
 .main-content {
   margin-left: var(--sidebar-width);
-  width: calc(100% - var(--sidebar-width));
-  min-width: 0;
-  overflow-x: hidden;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* ── Top bar ─────────────────────────────────────────────── */
+/* ── Top bar (slim, inside main content) ─────────────────── */
 .topbar {
-  background: #1a3a5c;
-  border-bottom: none;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
   padding: 0 24px;
   height: 48px;
   display: flex;
@@ -209,22 +148,32 @@ html, body {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
 .topbar-title {
-  font-family: 'Lora', Georgia, serif;
   font-size: 15px;
   font-weight: 700;
-  color: #fff;
+  color: var(--blue);
 }
 
-.topbar-breadcrumb { font-size: 12px; color: rgba(255,255,255,0.7); }
-.topbar-breadcrumb a { color: rgba(255,255,255,0.7); }
-.topbar-breadcrumb a:hover { color: #fff; }
+.topbar-breadcrumb {
+  font-size: 12px;
+  color: var(--gray-600);
+}
 
-/* ── Page container ──────────────────────────────────────── */
-.main-content .page-container { flex: 1; }
+.topbar-breadcrumb a {
+  color: var(--gray-600);
+}
+
+.topbar-breadcrumb a:hover {
+  color: var(--blue);
+}
+
+/* ── Page container (now inside main-content) ────────────── */
+.main-content .page-container {
+  flex: 1;
+}
 
 /* ── File status / connect section ──────────────────────── */
 .sidebar-file-status {
@@ -255,9 +204,9 @@ html, body {
 }
 
 .sidebar-file-btn {
-  padding: 5px 8px;
-  font-size: 10px;
-  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  padding: 6px 10px;
+  font-size: 11.5px;
+  font-family: 'Segoe UI', Arial, sans-serif;
   border-radius: 5px;
   border: 1px solid rgba(255,255,255,0.2);
   background: rgba(255,255,255,0.08);
@@ -275,14 +224,9 @@ html, body {
   color: #fff;
 }
 
-/* ── Narrow screens: collapse sidebar ───────────────────── */
-@media (max-width: 768px) {
-  .sidebar { width: 0; overflow: hidden; }
-  .main-content { margin-left: 0; width: 100%; }
-}
-
 /* ── Print: hide sidebar ─────────────────────────────────── */
 @media print {
-  .sidebar, .topbar { display: none !important; }
+  .sidebar,
+  .topbar { display: none !important; }
   .main-content { margin-left: 0 !important; }
 }

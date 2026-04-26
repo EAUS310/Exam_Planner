@@ -8,12 +8,14 @@
   <link rel="stylesheet" href="css/sidebar.css">
   <style>
     /* ── Search area ── */
-    .search-area { padding: 28px 28px 0; }
+    .search-area {
+      padding: 28px 28px 0;
+    }
 
     .search-card {
       background: #fff;
-      border-radius: 5px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 4px 6px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       border: 1px solid #d6e4f0;
       padding: 24px 28px;
       display: flex;
@@ -30,43 +32,46 @@
     }
 
     .search-field label {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
-      color: #888;
+      color: #1a3a5c;
       text-transform: uppercase;
-      letter-spacing: 0.7px;
-      font-family: 'Inter', system-ui, sans-serif;
+      letter-spacing: 0.5px;
     }
 
-    .search-input-wrap { display: flex; gap: 0; }
+    .search-input-wrap {
+      display: flex;
+      gap: 0;
+    }
 
     .search-id-input {
       flex: 1;
       padding: 10px 14px;
       border: 1.5px solid #d0d7de;
       border-right: none;
-      border-radius: 5px 0 0 5px;
+      border-radius: 6px 0 0 6px;
       font-size: 14px;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       color: #1a3a5c;
       outline: none;
       transition: border-color 0.15s;
     }
 
-    .search-id-input:focus { border-color: #2980b9; }
+    .search-id-input:focus {
+      border-color: #2980b9;
+    }
 
     .search-btn {
       padding: 10px 20px;
       background: #1a3a5c;
       color: #fff;
       border: none;
-      border-radius: 0 5px 5px 0;
+      border-radius: 0 6px 6px 0;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.15s;
       white-space: nowrap;
-      font-family: 'Inter', system-ui, sans-serif;
     }
 
     .search-btn:hover { background: #2c5f8a; }
@@ -75,49 +80,52 @@
       padding: 10px 16px;
       background: #fff;
       color: #1a3a5c;
-      border: 1.5px solid #d0d7de;
-      border-radius: 5px;
+      border: 1.5px solid #1a3a5c;
+      border-radius: 6px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.15s;
       white-space: nowrap;
-      font-family: 'Inter', system-ui, sans-serif;
     }
 
-    .clear-btn:hover { background: #f8f9fa; }
+    .clear-btn:hover { background: #d6e4f0; }
 
     /* ── Results area ── */
-    .results-area { padding: 20px 28px 60px; }
+    .results-area {
+      padding: 20px 28px 60px;
+    }
 
     /* ── Student banner ── */
     .student-banner {
-      background: #2D2A2E;
+      background: #1a3a5c;
       color: #fff;
-      border-radius: 5px 5px 0 0;
+      border-radius: 8px 8px 0 0;
       padding: 14px 20px;
       display: flex;
       align-items: center;
       gap: 16px;
     }
 
-    .student-banner-icon { font-size: 28px; line-height: 1; }
+    .student-banner-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
 
     .student-banner-name {
-      font-family: 'Lora', Georgia, serif;
       font-size: 17px;
       font-weight: 700;
     }
 
     .student-banner-id {
       font-size: 12px;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255,255,255,0.65);
       margin-top: 2px;
     }
 
     .student-banner-count {
       margin-left: auto;
-      background: rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.15);
       border-radius: 20px;
       padding: 4px 14px;
       font-size: 12px;
@@ -127,10 +135,10 @@
     /* ── Results table card ── */
     .results-card {
       background: #fff;
-      border-radius: 0 0 5px 5px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 4px 6px rgba(0,0,0,0.05);
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       overflow: hidden;
-      border: 1px solid #E7E5E4;
+      border: 1px solid #d6e4f0;
       border-top: none;
     }
 
@@ -138,10 +146,12 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
-      font-family: 'Inter', system-ui, sans-serif;
     }
 
-    .results-table thead tr { background: #4A4A4A; color: #fff; }
+    .results-table thead tr {
+      background: #2c5f8a;
+      color: #fff;
+    }
 
     .results-table th {
       padding: 10px 14px;
@@ -154,61 +164,65 @@
     }
 
     .results-table tbody tr {
-      border-bottom: 1px solid #E7E5E4;
+      border-bottom: 1px solid #edf1f5;
       transition: background 0.1s;
     }
 
     .results-table tbody tr:last-child { border-bottom: none; }
-    .results-table tbody tr:hover { background: #E8EDEA; }
+    .results-table tbody tr:hover { background: #f4f8fc; }
 
     .results-table td {
       padding: 11px 14px;
-      color: #2D2A2E;
+      color: #2d3748;
       vertical-align: middle;
     }
 
-    .col-code  { font-weight: 700; color: #2D2A2E; white-space: nowrap; }
-    .col-seat  { font-weight: 700; color: #7C9082; font-size: 14px; white-space: nowrap; }
-    .col-venue { white-space: nowrap; }
-    .col-time  { white-space: nowrap; font-size: 12px; color: #6B6868; }
-    .col-date  { white-space: nowrap; }
+    .col-code   { font-weight: 700; color: #1a3a5c; white-space: nowrap; }
+    .col-seat   { font-weight: 700; color: #1a3a5c; font-size: 14px; white-space: nowrap; }
+    .col-venue  { white-space: nowrap; }
+    .col-time   { white-space: nowrap; font-size: 12px; color: #555; }
+    .col-date   { white-space: nowrap; }
 
-    /* Subject/exam type badge — sage pastel */
     .badge-exam-type {
       display: inline-block;
       padding: 2px 9px;
       border-radius: 12px;
       font-size: 11px;
       font-weight: 700;
-      background: #E8EDEA;
-      color: #6A7D6F;
-      border: 1px solid #B8C5BD;
+      background: #e8f0fa;
+      color: #1a3a5c;
       white-space: nowrap;
     }
 
     /* ── State messages ── */
     .state-box {
       background: #fff;
-      border-radius: 5px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 4px 6px rgba(0,0,0,0.05);
-      border: 1px solid #E7E5E4;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border: 1px solid #d6e4f0;
       padding: 48px 28px;
       text-align: center;
     }
 
-    .state-box-icon { font-size: 40px; margin-bottom: 12px; }
+    .state-box-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
 
     .state-box h3 {
-      font-family: 'Lora', Georgia, serif;
       font-size: 16px;
-      color: #2D2A2E;
+      color: #1a3a5c;
       margin: 0 0 6px;
     }
 
-    .state-box p { font-size: 13px; color: #6B6868; margin: 0; }
+    .state-box p {
+      font-size: 13px;
+      color: #888;
+      margin: 0;
+    }
 
-    .state-box.error h3 { color: #E29578; }
-    .state-box.error .state-box-icon { color: #E29578; }
+    .state-box.error h3 { color: #c0392b; }
+    .state-box.error .state-box-icon { color: #c0392b; }
   </style>
 </head>
 <body>
@@ -243,11 +257,14 @@
     <a href="shared-venues.html" class="sidebar-link">
       <span class="nav-icon">🏛️</span> Shared Venues
     </a>
+    <a href="presentation-schedule.html" class="sidebar-link">
+      <span class="nav-icon">🎓</span> Presentation Schedule
+    </a>
+    <a href="presentation-csv.html" class="sidebar-link">
+      <span class="nav-icon">📊</span> Presentation CSV
+    </a>
     <a href="student-data.html" class="sidebar-link active">
       <span class="nav-icon">👤</span> Student Data
-    </a>
-    <a href="presentation-schedule.html" class="sidebar-link">
-      <span class="nav-icon">🎤</span> Presentation Schedule
     </a>
   </nav>
 

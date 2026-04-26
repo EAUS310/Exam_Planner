@@ -15,7 +15,7 @@
       gap: 12px;
       padding: 14px 28px;
       background: #fff;
-      border-bottom: 1px solid #e8ecf0;
+      border-bottom: 1px dashed #e9ecef;
     }
     .schedule-filter-bar label {
       font-size: 13px;
@@ -25,12 +25,13 @@
     .schedule-filter-bar select {
       padding: 6px 12px;
       border: 1px solid #d0d7de;
-      border-radius: 6px;
+      border-radius: 5px;
       font-size: 13px;
       color: #1a3a5c;
       background: #fff;
       cursor: pointer;
       outline: none;
+      font-family: 'Inter', system-ui, sans-serif;
     }
     .schedule-filter-bar select:focus { border-color: #2980b9; }
     .filter-sep { flex: 1; }
@@ -48,16 +49,22 @@
     .schedule-card {
       flex: 1 1 480px;
       background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 4px 6px rgba(0,0,0,0.05);
       overflow: hidden;
       border: 1px solid #d6e4f0;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .schedule-card:hover {
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04), 0 8px 16px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
     }
 
     .schedule-card-header {
       background: #1a3a5c;
       color: #fff;
       padding: 12px 16px;
+      font-family: 'Lora', Georgia, serif;
       font-size: 13px;
       font-weight: 700;
       text-align: center;
@@ -71,6 +78,7 @@
       border-collapse: collapse;
       font-size: 12.5px;
       white-space: nowrap;
+      font-family: 'Inter', system-ui, sans-serif;
     }
 
     .schedule-table thead tr {
@@ -155,10 +163,7 @@
        PRINT STYLES — A3 Portrait
     ════════════════════════════════════════════════════════ */
     @media print {
-      @page {
-        size: A3 portrait;
-        margin: 10mm 12mm;
-      }
+      @page { size: A3 portrait; margin: 10mm 12mm; }
 
       .sidebar, .topbar, .schedule-filter-bar,
       .no-print { display: none !important; }
@@ -166,25 +171,20 @@
       .main-content { margin-left: 0 !important; }
 
       .print-header {
+        position: fixed;
+        top: 0; left: 0; right: 0;
         display: block !important;
         text-align: center;
-        margin-bottom: 8mm;
+        padding-bottom: 4mm;
+        margin-bottom: 0;
+        background: #fff;
+        border-bottom: 2px solid #1a3a5c;
+        z-index: 1000;
       }
-      .print-header-title {
-        font-size: 14pt;
-        font-weight: 800;
-        color: #1a3a5c;
-      }
-      .print-header-sub {
-        font-size: 9pt;
-        color: #555;
-        margin-top: 2mm;
-      }
+      .print-header-title { font-size: 14pt; font-weight: 800; color: #1a3a5c; }
+      .print-header-sub   { font-size: 9pt; color: #555; margin-top: 2mm; }
 
-      .schedule-grid {
-        display: block;
-        padding: 0;
-      }
+      .schedule-grid { display: block; padding: 0; margin-top: 22mm; }
 
       .schedule-card {
         width: 100%;
@@ -194,10 +194,7 @@
         break-inside: avoid;
         break-after: page;
       }
-
-      .schedule-card:last-child {
-        break-after: auto;
-      }
+      .schedule-card:last-child { break-after: auto; }
 
       .schedule-card-header {
         background: #1a3a5c !important;
@@ -276,11 +273,11 @@
     <a href="shared-venues.html" class="sidebar-link">
       <span class="nav-icon">🏛️</span> Shared Venues
     </a>
-    <a href="presentation-schedule.html" class="sidebar-link">
-      <span class="nav-icon">🎓</span> Presentation Schedule
-    </a>
     <a href="student-data.html" class="sidebar-link">
       <span class="nav-icon">👤</span> Student Data
+    </a>
+    <a href="presentation-schedule.html" class="sidebar-link">
+      <span class="nav-icon">🎤</span> Presentation Schedule
     </a>
   </nav>
 
