@@ -112,6 +112,7 @@
     .venues-empty-icon { font-size: 40px; margin-bottom: 12px; }
 
     /* ── Buttons ── */
+    .btn-group { display: inline-flex; gap: 8px; }
     .btn-excel {
       display: inline-flex;
       align-items: center;
@@ -127,6 +128,21 @@
       transition: background 0.15s;
     }
     .btn-excel:hover { background: #155c30; }
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #1a3a5c;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-pdf:hover { background: #2c5f8a; }
 
     /* ════════════════════════════════════════════════════════
        PRINT STYLES — A4 Portrait
@@ -255,9 +271,14 @@
   <!-- Page action bar -->
   <div class="page-bar no-print">
     <span class="page-bar-info" id="venueCount"></span>
-    <button class="btn-excel" id="downloadExcelBtn">
-      ⬇️ Download as Excel
-    </button>
+    <div class="btn-group">
+      <button class="btn-excel" id="downloadExcelBtn">
+        ⬇️ Download as Excel
+      </button>
+      <button class="btn-pdf" id="downloadPdfBtn">
+        🖨️ Download as PDF
+      </button>
+    </div>
   </div>
 
   <!-- Table content -->

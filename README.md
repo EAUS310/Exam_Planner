@@ -18,7 +18,7 @@ A fully static exam scheduling and seat assignment tool built with vanilla HTML/
 - **Shared Modules** — View and manage modules that span multiple exams or venues
 - **Shared Venues** — Track and import venue data, detect scheduling conflicts across exams
 - **Presentation Schedule** — Manually log project presentation slots (date, module, group, instructor, timing); dashboard grouped by instructor and date with automatic overlap/conflict detection
-- **Presentation Schedule View** — Read-only date-grouped view (sorted date → timing); A3 landscape PDF output via `window.print()`
+- **Student ID Lookup** — Search any student ID to see all their exam entries and seat allocations across all exams
 - **Exam Schedule Page** — Program-grouped schedule view with filters and A3 print layout
 - **Print Outputs**:
   - Attendance Sheet (student list with signature column, sorted by seat)
@@ -31,44 +31,45 @@ A fully static exam scheduling and seat assignment tool built with vanilla HTML/
 
 ```
 exam-planner/
-├── frontend/                        # Static app (served by GitHub Pages or Express)
-│   ├── index.html                   # Exam entry form + exam list
-│   ├── students.html                # Student management per exam
-│   ├── schedule.html                # Exam schedule view
-│   ├── schedule-invigilators.html   # Invigilator assignment
-│   ├── shared-modules.html          # Shared module management
-│   ├── shared-venues.html           # Venue management + import
-│   ├── presentation-schedule.html   # Presentation slot entry + instructor dashboard
-│   ├── presentation-schedule-view.html  # Date-grouped view + A3 landscape PDF
-│   ├── attendance-print.html        # Printable attendance sheet
-│   ├── seating-print.html           # Printable seating plan
+├── frontend/                            # Static frontend app (served by Express / Railway)
+│   ├── index.html                       # Exam entry form + exam list
+│   ├── students.html                    # Student management per exam
+│   ├── schedule.html                    # Exam schedule view
+│   ├── schedule-invigilators.html       # Invigilator assignment
+│   ├── shared-modules.html              # Shared module management
+│   ├── shared-venues.html               # Venue management + import
+│   ├── presentation-schedule.html       # Presentation slot entry + instructor dashboard
+│   ├── student-data.html                # Student ID lookup across all exams
+│   ├── attendance-print.html            # Printable attendance sheet
+│   ├── seating-print.html               # Printable seating plan
 │   ├── css/
-│   │   ├── style.css                # Screen styles
-│   │   ├── sidebar.css              # Sidebar styles
-│   │   └── print.css                # Print-optimized styles
+│   │   ├── style.css                    # Screen styles
+│   │   ├── sidebar.css                  # Sidebar styles
+│   │   └── print.css                    # Print-optimized styles
 │   ├── js/
-│   │   ├── storage.js               # Data layer (localStorage + file sync)
-│   │   ├── main.js                  # Exam list page logic
-│   │   ├── students.js              # Student management logic
-│   │   ├── schedule.js              # Schedule page logic
-│   │   ├── schedule-invigilators.js # Invigilator page logic
-│   │   ├── shared-modules.js        # Shared modules page logic
-│   │   ├── shared-venues.js         # Shared venues page logic
-│   │   ├── presentation-schedule.js # Presentation CRUD + conflict detection
-│   │   └── presentation-schedule-view.js # Date-grouped view logic
+│   │   ├── storage.js                   # Data layer (localStorage + file sync)
+│   │   ├── main.js                      # Exam list page logic
+│   │   ├── students.js                  # Student management logic
+│   │   ├── schedule.js                  # Schedule page logic
+│   │   ├── schedule-invigilators.js     # Invigilator page logic
+│   │   ├── shared-modules.js            # Shared modules page logic
+│   │   ├── shared-venues.js             # Shared venues page logic
+│   │   ├── presentation-schedule.js     # Presentation CRUD + conflict detection
+│   │   └── student-data.js             # Student ID lookup logic
 │   ├── data/
-│   │   ├── exams.json               # Seed data (loaded on first visit if localStorage is empty)
-│   │   └── classrooms.json          # Venue/room definitions
+│   │   ├── exams.json                   # Seed data (loaded on first visit if localStorage is empty)
+│   │   ├── classrooms.json              # Venue/room definitions
+│   │   └── presentation_data.json       # Presentation seed data
 │   └── assets/
 │       ├── EAU_Logo.png
 │       └── EAU_Group_logo.png
 ├── backend/
 │   └── routes/
-│       ├── exams.js                 # REST API: exam CRUD
-│       └── classrooms.js            # REST API: classroom data
-├── server.js                        # Express server (local dev only)
+│       ├── exams.js                     # REST API: exam CRUD
+│       └── classrooms.js                # REST API: classroom data
+├── server.js                            # Express server (local dev only)
 ├── package.json
-└── CLAUDE.md                        # Claude Code context for AI-assisted development
+└── CLAUDE.md                            # Claude Code context for AI-assisted development
 ```
 
 ---
@@ -120,6 +121,10 @@ npm run dev      # auto-restarts on file changes (requires nodemon)
 - Navigate to the Student Management page for any of the shared exams
 - Click **"🔀 Optimise Seating for All Exams in This Venue"**
 - Students from different modules are interleaved column by column to reduce copying risk
+
+### Student ID Lookup
+- Navigate to **Student Data** from the sidebar
+- Enter a student ID to see all exams they are enrolled in and their assigned seat for each
 
 ### Printing
 1. Click **"🖨️ Print"** next to an exam on the main page
@@ -184,7 +189,7 @@ When multiple exams share a venue on the same date:
 
 - **Frontend**: Vanilla HTML5, CSS3, JavaScript (ES6+) — no framework, no build step
 - **Storage**: `localStorage` + File System Access API (optional file sync)
-- **Hosting**: GitHub Pages (static, no build step)
+- **Hosting**: Railway (or similar static host) — served by Express from the `frontend/` folder
 - **Print**: CSS `@media print`, `@page` rules (A3 landscape for schedule)
 - **Backend** (`server.js`): Express + Node.js — for local development only; not used by the deployed app
 

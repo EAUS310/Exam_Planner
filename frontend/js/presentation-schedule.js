@@ -18,16 +18,7 @@ const errorText      = document.getElementById('errorText');
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 (function init() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    try {
-      rows = JSON.parse(saved);
-      if (rows.length) render();
-    } catch (_) {
-      rows = [];
-    }
-  }
-
+  // Event listeners (registered before any async work)
   uploadState.addEventListener('dragover', e => { e.preventDefault(); uploadState.classList.add('drag-over'); });
   uploadState.addEventListener('dragleave', () => uploadState.classList.remove('drag-over'));
   uploadState.addEventListener('drop', e => {
@@ -45,7 +36,28 @@ const errorText      = document.getElementById('errorText');
   printBtn.addEventListener('click', () => window.print());
 
   if (typeof initStorageSidebar === 'function') initStorageSidebar();
+
+  // If a CSV override was uploaded, use it; otherwise always load the fixed JSON
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      rows = JSON.parse(saved);
+      if (rows.length) { render(); return; }
+    } catch (_) { rows = []; }
+  }
+  loadFixedJSON();
 })();
+
+function loadFixedJSON() {
+  fetch('data/presentation_data.json')
+    .then(r => r.json())
+    .then(data => {
+      rows = data;
+      if (rows.length) render();
+      else showUploadState();
+    })
+    .catch(() => showUploadState());
+}
 
 // ── CSV parsing ───────────────────────────────────────────────────────────────
 function parseCSV(text) {
@@ -193,8 +205,7 @@ function render() {
   document.getElementById('statModules').textContent     = allModules.size;
   document.getElementById('statDays').textContent        = allDates.size;
 
-  document.getElementById('printSubtitle').textContent =
-    `Presentation Schedule — ${rows.length} Groups · ${supervisors.length} Supervisors`;
+  document.getElementById('printSubtitle').textContent = 'Presentation Schedule';
 
   supervisorGrid.innerHTML = '';
 
@@ -286,6 +297,10 @@ function render() {
     const card = document.createElement('div');
     card.className = `supervisor-card ${colorClass}`;
     card.innerHTML = `
+      <div class="print-page-header">
+        <div class="print-page-header-title">Emirates Aviation University — Faculty of Engineering</div>
+        <div class="print-page-header-sub">Presentation Schedule</div>
+      </div>
       <div class="supervisor-card-header">
         <span class="supervisor-name">👤 ${esc(supervisor)}</span>
         <span class="supervisor-badge">${supervRows.length} group${supervRows.length !== 1 ? 's' : ''} · ${modules.length} module${modules.length !== 1 ? 's' : ''}</span>
@@ -340,11 +355,12 @@ function handleFile(file) {
 }
 
 function clearData() {
-  if (!confirm('Clear all presentation schedule data?')) return;
+  if (!confirm('Clear uploaded CSV and reload the fixed schedule?')) return;
   rows = [];
   localStorage.removeItem(STORAGE_KEY);
   supervisorGrid.innerHTML = '';
-  showUploadState();
+  fileNameLabel.textContent = '';
+  loadFixedJSON();
 }
 
 function esc(str) {

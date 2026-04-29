@@ -9,8 +9,8 @@ Live at: https://eaus310.github.io/Exam_Planner/
 ## Tech Stack
 
 - **Frontend**: Vanilla HTML5 / CSS3 / JavaScript (ES6+) — no framework, no build step
-- **Storage**: `localStorage` (primary) + optional File System Access API for live file sync to `docs/data/exams.json`
-- **Hosting**: GitHub Pages (fully static)
+- **Storage**: `localStorage` (primary) + optional File System Access API for live file sync to `frontend/data/exams.json`
+- **Hosting**: Railway (or similar) — Express serves the `frontend/` folder; GitHub Pages not used
 - **Print**: CSS `@media print` / `@page` rules (A3 landscape for schedule)
 - **Backend** (`server.js`): Express + Node.js server — present in the repo but not used by the deployed app; kept for local development or future API use
 
@@ -61,5 +61,5 @@ All data lives in `localStorage`. Key entries:
 - No npm build required for the frontend — open `index.html` directly or push to GitHub Pages
 - To run the Express backend locally: `npm start` (port 3000)
 - Chrome/Edge required for File System Access API (file sync feature)
-- `docs/data/exams.json` is the canonical data export; update it and push to seed a fresh browser
-- GitHub Pages is configured to serve from the `/docs` folder on the `main` branch
+- `frontend/data/exams.json` is the canonical data export; update it and push to seed a fresh browser
+- Hosted on Railway (or similar); GitHub Pages is not used — the `frontend/` folder name has no GitHub Pages constraints

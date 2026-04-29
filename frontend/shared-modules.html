@@ -90,7 +90,23 @@
     .shared-empty { text-align: center; padding: 60px 20px; color: #888; font-size: 14px; }
     .shared-empty-icon { font-size: 40px; margin-bottom: 12px; }
 
-    /* ── Download button ── */
+    /* ── Download buttons ── */
+    .btn-group { display: inline-flex; gap: 8px; }
+    .btn-download-csv {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #1e6e3c;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-download-csv:hover { background: #155c30; }
     .btn-download-pdf {
       display: inline-flex;
       align-items: center;
@@ -234,9 +250,14 @@
   <!-- Page action bar -->
   <div class="page-bar no-print">
     <span class="page-bar-info" id="moduleCount"></span>
-    <button class="btn-download-pdf" id="downloadPdfBtn">
-      ⬇️ Download as Excel
-    </button>
+    <div class="btn-group">
+      <button class="btn-download-csv" id="downloadCsvBtn">
+        ⬇️ Download as CSV
+      </button>
+      <button class="btn-download-pdf" id="downloadPdfBtn">
+        🖨️ Download as PDF
+      </button>
+    </div>
   </div>
 
   <!-- Table content -->

@@ -44,7 +44,7 @@ Reorganize the project layout as follows:
 |---|---|
 | Business/data logic | `/src/services/` |
 | UI components | `/src/components/` |
-| Production build output | `/docs/` (for GitHub Pages compatibility) |
+| Production build output | `/frontend/` |
 
 Move files incrementally and confirm each move before proceeding.
 
@@ -87,7 +87,7 @@ After restructuring, automatically audit and fix all `import` / `require` / `<sc
 - Verify the `base` path in any config file (e.g., `vite.config.js`, `package.json`, or equivalent) matches the GitHub repository name exactly for correct GitHub Pages routing
 
 **Final Build**
-- Run the build command to confirm the app is production-ready and outputs cleanly to `/docs/`
+- Run the build command to confirm the app is production-ready and outputs cleanly to `/frontend/`
 - Run a final check on the live or local URL to confirm all assets load without console errors
 
 ---

@@ -158,8 +158,8 @@ function renderTable() {
   tableBody.innerHTML = rowsHtml;
 }
 
-/* ── Excel (CSV) Download ────────────────────────────────── */
-document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+/* ── CSV Download ────────────────────────────────────────── */
+document.getElementById('downloadCsvBtn').addEventListener('click', () => {
   const shared = allExams.filter(isSharedModule);
   const merged = mergeSharedModules(shared);
 
@@ -201,6 +201,9 @@ document.getElementById('downloadPdfBtn').addEventListener('click', () => {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 });
+
+/* ── PDF Download ────────────────────────────────────────── */
+document.getElementById('downloadPdfBtn').addEventListener('click', () => window.print());
 
 /* ── Init ────────────────────────────────────────────────── */
 (function init() {

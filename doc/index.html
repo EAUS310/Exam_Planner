@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FOE Exam Planner — Documentation</title>
+  <link rel="stylesheet" href="./css/docs.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <span class="nav-brand">FOE Exam <span class="accent">Planner</span></span>
+    <div class="nav-divider"></div>
+    <span class="nav-context">Docs</span>
+    <div class="nav-links">
+      <a href="./index.html" class="active">Home</a>
+      <a href="./technical-architecture.html">Architecture</a>
+      <a href="https://eaus310.github.io/Exam_Planner/" class="nav-cta" target="_blank">Live App ↗</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">Emirates Aviation University &middot; Faculty of Engineering</div>
+    <h1>FOE <span class="accent">Exam Planner</span></h1>
+    <p class="hero-sub">A fully static exam scheduling and seat-assignment tool. No login, no installation — runs entirely in the browser.</p>
+    <div class="hero-actions">
+      <a href="https://eaus310.github.io/Exam_Planner/" class="btn btn-primary" target="_blank">Open Live App ↗</a>
+      <a href="./technical-architecture.html" class="btn btn-outline">Technical Architecture →</a>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <!-- Features -->
+    <section class="section" id="features">
+      <div class="eyebrow">What it does</div>
+      <h2>Features</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>Exam Management</h4>
+          <p>Create, edit, and delete exam entries with full multi-venue support.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Student Import</h4>
+          <p>Paste raw student data (ID + Name) and auto-parse it instantly.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Automatic Seat Assignment</h4>
+          <p>Alphabetical seat allocation across one or more venues, conflict-aware.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Manual Seat Editing</h4>
+          <p>Override any student's assigned seat with duplicate-conflict checking.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Seating Optimisation</h4>
+          <p>Interleaves students from different modules column-by-column to reduce copying risk.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Invigilator Scheduling</h4>
+          <p>Assign and track invigilators per exam entry.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Shared Modules</h4>
+          <p>Detect and manage modules that span multiple exams or venues.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Shared Venues</h4>
+          <p>Track venue usage, detect scheduling conflicts, and import venue data.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Presentation Schedule</h4>
+          <p>Log project presentation slots with per-instructor overlap detection.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Student ID Lookup</h4>
+          <p>Search any student ID to see all their exam entries and seat allocations.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Exam Schedule View</h4>
+          <p>Program-grouped schedule with filters and an A3 landscape print layout.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Print Outputs</h4>
+          <p>Attendance sheets (with signature column) and seating plans (grouped by venue).</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Project Structure -->
+    <section class="section" id="structure">
+      <div class="eyebrow">Repository</div>
+      <h2>Project Structure</h2>
+      <pre>exam-planner/
+├── <span style="color:#93c5fd">frontend/</span>                            <span style="color:#475569"># Static app (served by Express / Railway)</span>
+│   ├── index.html                       <span style="color:#475569"># Exam entry form + exam list</span>
+│   ├── students.html                    <span style="color:#475569"># Student management per exam</span>
+│   ├── schedule.html                    <span style="color:#475569"># Exam schedule view (A3 print)</span>
+│   ├── schedule-invigilators.html       <span style="color:#475569"># Invigilator assignment</span>
+│   ├── shared-modules.html              <span style="color:#475569"># Cross-exam module management</span>
+│   ├── shared-venues.html               <span style="color:#475569"># Venue tracking + conflict detection</span>
+│   ├── presentation-schedule.html       <span style="color:#475569"># Presentation slot entry</span>
+│   ├── student-data.html                <span style="color:#475569"># Student ID lookup</span>
+│   ├── attendance-print.html            <span style="color:#475569"># Printable attendance sheet</span>
+│   ├── seating-print.html               <span style="color:#475569"># Printable seating plan</span>
+│   ├── <span style="color:#93c5fd">css/</span>                             <span style="color:#475569"># style.css · sidebar.css · print.css</span>
+│   ├── <span style="color:#93c5fd">js/</span>                              <span style="color:#475569"># storage.js · main.js · students.js · …</span>
+│   ├── <span style="color:#93c5fd">data/</span>                            <span style="color:#475569"># exams.json · classrooms.json</span>
+│   └── <span style="color:#93c5fd">assets/</span>                          <span style="color:#475569"># EAU logos</span>
+├── <span style="color:#93c5fd">backend/</span>
+│   └── routes/
+│       ├── exams.js                     <span style="color:#475569"># REST API: exam CRUD</span>
+│       └── classrooms.js                <span style="color:#475569"># REST API: classroom data</span>
+├── <span style="color:#93c5fd">doc/</span>                                 <span style="color:#475569"># This documentation site</span>
+│   ├── index.html                       <span style="color:#475569"># You are here</span>
+│   ├── technical-architecture.html
+│   └── css/docs.css
+├── server.js                            <span style="color:#475569"># Express server (local dev + Railway)</span>
+└── package.json</pre>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Quick Start -->
+    <section class="section" id="quickstart">
+      <div class="eyebrow">Setup</div>
+      <h2>Quick Start</h2>
+
+      <h3>Option A — Live App (no setup)</h3>
+      <p>Open the deployed app directly in your browser:</p>
+      <p><a href="https://eaus310.github.io/Exam_Planner/" target="_blank">https://eaus310.github.io/Exam_Planner/</a></p>
+
+      <h3>Option B — Open the HTML file locally</h3>
+      <p>Open <code>frontend/index.html</code> directly in Chrome or Edge. All features work except file sync requires the Express server.</p>
+
+      <h3>Option C — Express dev server</h3>
+      <pre><span style="color:#86efac">npm</span> install
+<span style="color:#86efac">npm</span> start        <span style="color:#475569"># starts at http://localhost:3000</span>
+<span style="color:#86efac">npm</span> run dev      <span style="color:#475569"># same but auto-restarts on file changes</span></pre>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Usage -->
+    <section class="section" id="usage">
+      <div class="eyebrow">How to use</div>
+      <h2>Usage Guide</h2>
+
+      <h3>Creating an Exam</h3>
+      <ol class="steps">
+        <li>Click <strong>"+ Add Exam Entry"</strong> on the main page.</li>
+        <li>Fill in the details — module code, name, date, start/end time, instructor.</li>
+        <li>Select one or more venues from the checklist.</li>
+        <li>Click <strong>"Create Exam"</strong>.</li>
+      </ol>
+
+      <h3>Adding Students</h3>
+      <ol class="steps">
+        <li>Click <strong>"Students"</strong> next to any exam.</li>
+        <li>Paste student data in the textarea — one per line, ID and name separated by tab or spaces:
+<pre style="margin-top:.5rem">2024001    Ali Hassan Mohammed
+2024002    Fatima Al-Zahra Ahmed</pre>
+        </li>
+        <li>Click <strong>"Parse &amp; Preview"</strong> to review parsed data.</li>
+        <li>Click <strong>"Save Students &amp; Assign Seats"</strong> — seats are auto-assigned alphabetically by last name.</li>
+      </ol>
+
+      <h3>Editing a Seat</h3>
+      <ol class="steps">
+        <li>On the Student Management page, click <strong>"Edit Seat"</strong> next to a student.</li>
+        <li>Enter the new seat label (e.g. <code>B4</code>).</li>
+        <li>Click <strong>"Update Seat"</strong> — the system checks for duplicate seats before saving.</li>
+      </ol>
+
+      <h3>Seating Optimisation</h3>
+      <p>Available when multiple exams share the same venue and time slot:</p>
+      <ol class="steps">
+        <li>Open the Student Management page for any of the shared exams.</li>
+        <li>Click <strong>"Optimise Seating for All Exams in This Venue"</strong>.</li>
+        <li>Students from different modules are interleaved column-by-column so no two adjacent students share the same exam paper.</li>
+      </ol>
+
+      <h3>Printing</h3>
+      <ol class="steps">
+        <li>Click <strong>"Print"</strong> next to an exam on the main page.</li>
+        <li>Choose <strong>Attendance Sheet</strong> (sorted by seat, with signature column) or <strong>Seating Plan</strong> (grouped by venue).</li>
+        <li>Use <kbd>Ctrl+P</kbd> to print or save as PDF.</li>
+      </ol>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Data Storage -->
+    <section class="section" id="storage">
+      <div class="eyebrow">Data</div>
+      <h2>Data Storage</h2>
+      <p>All data is stored in the browser's <strong>localStorage</strong>. Nothing is sent to a server — all exam and student data stays on the device unless you explicitly export or sync it.</p>
+
+      <h3>File Sync (optional)</h3>
+      <p>Click <strong>"Connect exams.json"</strong> in the sidebar to link a local file. Once linked, every change is automatically written back to that file via the File System Access API.</p>
+      <div class="callout warn">
+        <strong>Browser requirement</strong>
+        File sync requires Chrome or Edge. Firefox and Safari fall back to manual Import / Export JSON buttons.
+      </div>
+
+      <h3>Venues &amp; Classrooms</h3>
+      <p>Venue definitions live in <code>frontend/data/classrooms.json</code> and are loaded at runtime by <code>storage.js → getClassrooms()</code>. Two formats are supported — uniform (same rows per column) and irregular (each column declares its own row list).</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Tech Stack -->
+    <section class="section" id="tech">
+      <div class="eyebrow">Technology</div>
+      <h2>Tech Stack</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Frontend</td>
+              <td>Vanilla HTML5 / CSS3 / JavaScript ES6+ — no framework, no build step</td>
+            </tr>
+            <tr>
+              <td>Storage</td>
+              <td>localStorage (primary) + IndexedDB (file handle) + File System Access API (live sync)</td>
+            </tr>
+            <tr>
+              <td>Backend</td>
+              <td>Node.js + Express — serves <code>frontend/</code> as static files; REST API at <code>/api/exams</code> and <code>/api/classrooms</code></td>
+            </tr>
+            <tr>
+              <td>Hosting</td>
+              <td>Railway (main app) / GitHub Pages (this documentation site)</td>
+            </tr>
+            <tr>
+              <td>Print</td>
+              <td>CSS <code>@media print</code> and <code>@page { size: A3 landscape }</code> rules</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pills">
+        <span class="pill">HTML5</span>
+        <span class="pill">CSS3</span>
+        <span class="pill">JavaScript ES6+</span>
+        <span class="pill">Node.js</span>
+        <span class="pill">Express</span>
+        <span class="pill">localStorage</span>
+        <span class="pill">IndexedDB</span>
+        <span class="pill">File System Access API</span>
+      </div>
+    </section>
+
+  </div><!-- /.content -->
+
+  <footer>
+    <p>FOE Exam Planner &middot; Emirates Aviation University &middot;
+      <a href="https://github.com/EAUS310/Exam_Planner" target="_blank">GitHub Repository</a>
+    </p>
+  </footer>
+
+</body>
+</html>

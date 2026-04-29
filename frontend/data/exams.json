@@ -3631,7 +3631,7 @@
     "semester": "Spring 2026",
     "date": "2026-05-18",
     "startTime": "11:30",
-    "endTime": "12:20",
+    "endTime": "12:25",
     "instructorName": "Mr. Manuel",
     "invigilatorName": "Mr. Khayatzadeh (G21), Mr. Uzair (G22)",
     "venueIds": [
@@ -5811,7 +5811,7 @@
     "semester": "Spring 2026",
     "date": "2026-05-19",
     "startTime": "10:00",
-    "endTime": "12:30",
+    "endTime": "23:30",
     "instructorName": "Mr. Thair",
     "invigilatorName": "Mr. Khader (G21), Mr. Shoubaki (G22)",
     "venueIds": [
@@ -5984,7 +5984,10 @@
         "venueId": "G22"
       }
     ],
-    "createdAt": "2026-04-12T13:11:37.236Z"
+    "createdAt": "2026-04-12T13:11:37.236Z",
+    "programs": [
+      "ABAME"
+    ]
   },
   {
     "id": "exam-a7c8cdd1-1e20-4547-a85f-b91205592b23",
@@ -5994,7 +5997,7 @@
     "semester": "Spring 2026",
     "date": "2026-05-19",
     "startTime": "10:00",
-    "endTime": "12:35",
+    "endTime": "23:40",
     "instructorName": "Mr. Thair",
     "invigilatorName": "Mr. Khader (G21), Mr. Shoubaki (G22)",
     "venueIds": [
@@ -6167,7 +6170,10 @@
         "venueId": "G22"
       }
     ],
-    "createdAt": "2026-04-12T13:12:35.265Z"
+    "createdAt": "2026-04-12T13:12:35.265Z",
+    "programs": [
+      "ABAME"
+    ]
   },
   {
     "id": "exam-f493be3a-a471-4aa3-8985-0fcd7e42bd61",
@@ -6177,7 +6183,7 @@
     "semester": "Spring 2026",
     "date": "2026-05-19",
     "startTime": "13:00",
-    "endTime": "15:00",
+    "endTime": "14:55",
     "instructorName": "Mr. Zuhair",
     "invigilatorName": "Mr. Basel(13:00 - 14:00), Mr. Khayatzadeh (14:00 - 15:00)",
     "venueIds": [
@@ -6277,7 +6283,10 @@
         "venueId": "G21"
       }
     ],
-    "createdAt": "2026-04-12T13:14:10.498Z"
+    "createdAt": "2026-04-12T13:14:10.498Z",
+    "programs": [
+      "ABAME"
+    ]
   },
   {
     "id": "exam-7ffba690-07d5-407e-aeb2-337408da488b",
@@ -6695,13 +6704,14 @@
     "instructorName": "Mr. Seyed & Dr. Yacob",
     "invigilatorName": "Ms. Shirley (Lab 03), Mr. Toms (Lab 04), Mr. Tarek (Lab 05), Mr. Uzair (Lab 06), Ms. Sreeja (Lab 07)",
     "venueIds": [
+      "Lab_02",
       "Lab_03",
       "Lab_04",
       "Lab_05",
       "Lab_06",
       "Lab_07"
     ],
-    "venueId": "Lab_03",
+    "venueId": "Lab_02",
     "program": "BSAE",
     "students": [
       {
@@ -8797,15 +8807,15 @@
     "moduleName": "Piston Engine",
     "examName": "Final",
     "semester": "Spring 2026",
-    "date": "2026-05-20",
-    "startTime": "11:30",
-    "endTime": "13:00",
+    "date": "2026-05-17",
+    "startTime": "12:30",
+    "endTime": "14:00",
     "instructorName": "Mr. Zuhair",
-    "invigilatorName": "Mr. Thair (45 mins), Ms. Renin (45 mins)",
+    "invigilatorName": "Mr. Basel",
     "venueIds": [
-      "G21"
+      "G22"
     ],
-    "venueId": "G21",
+    "venueId": "G22",
     "program": "ABAME",
     "students": [
       {
@@ -8899,7 +8909,10 @@
         "venueId": "G21"
       }
     ],
-    "createdAt": "2026-04-12T13:43:25.614Z"
+    "createdAt": "2026-04-12T13:43:25.614Z",
+    "programs": [
+      "ABAME"
+    ]
   },
   {
     "id": "exam-70b957dc-91a7-4f64-8930-ab9cb9ffc763",
@@ -12015,7 +12028,7 @@
     "moduleName": "Basic Thermodynamics",
     "examName": "Final",
     "semester": "Spring 2026",
-    "date": "2026-05-19",
+    "date": "2026-05-16",
     "startTime": "12:00",
     "endTime": "14:00",
     "instructorName": "Dr. Essen",
@@ -13270,7 +13283,7 @@
     "semester": "Spring 2026",
     "date": "2026-05-16",
     "startTime": "12:30",
-    "endTime": "12:55",
+    "endTime": "13:05",
     "instructorName": "Dr. Crystal",
     "invigilatorName": "Mr. Furqan (G20), Mr. Jawad (G21), Mr. Uzair (G22), Ms. Ninu (G23), Mr. Tarek (G24), Mr. Ashbar (G25)",
     "venueIds": [
@@ -14630,7 +14643,7 @@
     "startTime": "12:00",
     "endTime": "12:25",
     "instructorName": "Mr. Khader",
-    "invigilatorName": "Mr. Furqan (G19), Mr. Tarek (G20), Mr. Jawad (G21), Mr. Basel (G22), Mr. Fayyadh (G23), Mr. Ashbar (G24),",
+    "invigilatorName": "Mr. Furqan (G19), Mr. Tarek (G20), Mr. Jawad (G21), Mr. Basel (G22), Mr. Khayatzadeh (G23), Mr. Ala (G24), Mr. Uzair (G25)",
     "venueIds": [
       "G19",
       "G20",
@@ -16333,9 +16346,9 @@
     "moduleName": "Aircraft Design II",
     "examName": "Other",
     "semester": "Spring 2026",
-    "date": "2026-05-18",
-    "startTime": "12:00",
-    "endTime": "14:00",
+    "date": "2026-05-22",
+    "startTime": "09:00",
+    "endTime": "11:00",
     "instructorName": "Dr. Elham",
     "invigilatorName": "",
     "venueIds": [
@@ -16350,13 +16363,13 @@
   },
   {
     "id": "exam-db8ff84b-4d02-4c21-92f8-63b19b22c6c2",
-    "moduleCode": "EAE4065",
-    "moduleName": "Aerospace Project 2",
+    "moduleCode": "EAE4095",
+    "moduleName": "Aerospace Project II",
     "examName": "Other",
     "semester": "Spring 2026",
     "date": "2026-05-19",
     "startTime": "09:00",
-    "endTime": "11:00",
+    "endTime": "10:30",
     "instructorName": "Dr. Elham",
     "invigilatorName": "",
     "venueIds": [
@@ -16400,28 +16413,6 @@
     "date": "2026-05-20",
     "startTime": "09:00",
     "endTime": "12:00",
-    "instructorName": "Dr. Walid",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-6aaf6a46-771c-4722-92d5-74522418a06d",
-    "moduleCode": "302SEAV",
-    "moduleName": "Aerospace Application (AV) - Group 1",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "16:30",
-    "endTime": "17:00",
     "instructorName": "Dr. Walid",
     "invigilatorName": "",
     "venueIds": [
@@ -16944,12 +16935,12 @@
   {
     "id": "exam-b5f6ed92-1b11-49f3-a916-b13fd5017e4a",
     "moduleCode": "EA305MAA",
-    "moduleName": "Mechanical Application - Group 1",
+    "moduleName": "Mechanical Application - Group 1 to 5",
     "examName": "Other",
     "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "12:00",
-    "endTime": "12:30",
+    "date": "2026-05-04",
+    "startTime": "13:00",
+    "endTime": "15:30",
     "instructorName": "Dr. Afaq",
     "invigilatorName": "",
     "venueIds": [
@@ -16966,56 +16957,12 @@
   {
     "id": "exam-075b2df1-31de-4612-be5a-805957e398cb",
     "moduleCode": "EA305MAA",
-    "moduleName": "Mechanical Application - Group 2 to 3",
+    "moduleName": "Mechanical Application - Group 6 to 11",
     "examName": "Other",
     "semester": "Spring 2026",
-    "date": "2026-05-07",
-    "startTime": "10:30",
-    "endTime": "11:30",
-    "instructorName": "Dr. Afaq",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-9e800ea4-65d4-4519-8fce-de936934fc20",
-    "moduleCode": "EA305MAA",
-    "moduleName": "Mechanical Application - Group 4 to 7",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-11",
-    "startTime": "13:00",
-    "endTime": "15:00",
-    "instructorName": "Dr. Afaq",
-    "invigilatorName": "",
-    "venueIds": [
-      "MSTeam"
-    ],
-    "venueId": "MSTeam",
-    "program": "Project Presentation",
-    "students": [],
-    "createdAt": "2026-04-24T08:01:21.000Z",
-    "programs": [
-      "Project Presentation"
-    ]
-  },
-  {
-    "id": "exam-17417b88-3306-4e38-b71d-eaf5a395e9a0",
-    "moduleCode": "EA305MAA",
-    "moduleName": "Mechanical Application - Group 8 to 11",
-    "examName": "Other",
-    "semester": "Spring 2026",
-    "date": "2026-05-12",
+    "date": "2026-05-05",
     "startTime": "09:30",
-    "endTime": "11:30",
+    "endTime": "12:30",
     "instructorName": "Dr. Afaq",
     "invigilatorName": "",
     "venueIds": [
@@ -17189,9 +17136,9 @@
     "moduleName": "Mechanical Applications - Group 1 to 4",
     "examName": "Other",
     "semester": "Spring 2026",
-    "date": "2026-05-04",
-    "startTime": "13:00",
-    "endTime": "15:00",
+    "date": "2026-05-06",
+    "startTime": "09:00",
+    "endTime": "11:00",
     "instructorName": "Dr. Afaq",
     "invigilatorName": "",
     "venueIds": [
@@ -17211,9 +17158,9 @@
     "moduleName": "Mechanical Applications - Group 5 to 9",
     "examName": "Other",
     "semester": "Spring 2026",
-    "date": "2026-05-05",
-    "startTime": "09:30",
-    "endTime": "12:00",
+    "date": "2026-05-06",
+    "startTime": "11:00",
+    "endTime": "14:30",
     "instructorName": "Dr. Afaq",
     "invigilatorName": "",
     "venueIds": [
@@ -17223,6 +17170,162 @@
     "program": "Project Presentation",
     "students": [],
     "createdAt": "2026-04-24T08:01:21.000Z",
+    "programs": [
+      "Project Presentation"
+    ]
+  },
+  {
+    "id": "exam-48315392-f80a-4733-9fda-9393ce1c5aa3",
+    "moduleCode": "MOD16M_EASA",
+    "moduleName": "Piston Engine (EASA)",
+    "examName": "Final",
+    "semester": "Spring 2026",
+    "date": "2026-05-17",
+    "startTime": "12:30",
+    "endTime": "14:05",
+    "instructorName": "Mr. Zuhair",
+    "invigilatorName": "Mr. Basel",
+    "venueIds": [
+      "G22"
+    ],
+    "venueId": "G22",
+    "programs": [
+      "ABAME"
+    ],
+    "students": [
+      {
+        "studentId": "10186387",
+        "studentName": "Ahmed Saam Abdulla  Nafiz",
+        "seatAssigned": "A1",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10178899",
+        "studentName": "Alexey Markov",
+        "seatAssigned": "A2",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10100563",
+        "studentName": "Amro Khalid Khalafallah Elkhedir",
+        "seatAssigned": "A3",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10194801",
+        "studentName": "Daryll Daniel Muruppel",
+        "seatAssigned": "A4",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10164821",
+        "studentName": "Faisal Mohammed Abdullah Ali  Nasir",
+        "seatAssigned": "A5",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10186271",
+        "studentName": "Hassan Nabhan Nazim",
+        "seatAssigned": "C1",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10173081",
+        "studentName": "Hussein Ali Nasser Obad",
+        "seatAssigned": "C2",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10185836",
+        "studentName": "Kenneth Suubi Kimbowa",
+        "seatAssigned": "C3",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10162615",
+        "studentName": "Mani Alireza Dousti",
+        "seatAssigned": "C4",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10205900",
+        "studentName": "Mohamed Adil Hassan Mohamed Shemel",
+        "seatAssigned": "C5",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10163891",
+        "studentName": "Mohamed Hamad Mohamed  Tahir",
+        "seatAssigned": "E1",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10164499",
+        "studentName": "Mohamed Taha Abdelbari Abubakir Alzubaidi",
+        "seatAssigned": "E2",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10168541",
+        "studentName": "Mohammed Majid Mohammed Al Harrasi",
+        "seatAssigned": "E3",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10154787",
+        "studentName": "Mumen Bella S A Elkuba",
+        "seatAssigned": "E4",
+        "venueId": "G22"
+      },
+      {
+        "studentId": "10116508",
+        "studentName": "SABIR IBRAHIM SOMOW",
+        "seatAssigned": "E5",
+        "venueId": "G22"
+      }
+    ],
+    "createdAt": "2026-04-28T12:17:42.642Z"
+  },
+  {
+    "id": "exam-1a2b3c4d-5e6f-7890-abcd-ef0123456789",
+    "moduleCode": "EG118AE",
+    "moduleName": "Aerospace Application (AE) - Group 1",
+    "examName": "Other",
+    "semester": "Spring 2026",
+    "date": "2026-05-05",
+    "startTime": "16:30",
+    "endTime": "17:00",
+    "instructorName": "Dr. Walid",
+    "invigilatorName": "",
+    "venueIds": [
+      "MSTeam"
+    ],
+    "venueId": "MSTeam",
+    "program": "Project Presentation",
+    "students": [],
+    "createdAt": "2026-04-28T12:17:42.642Z",
+    "programs": [
+      "Project Presentation"
+    ]
+  },
+  {
+    "id": "exam-9f8e7d6c-5b4a-3928-1706-fedcba987654",
+    "moduleCode": "EG118AV",
+    "moduleName": "Aerospace Application (AV) - Group 1 to 10",
+    "examName": "Other",
+    "semester": "Spring 2026",
+    "date": "2026-05-14",
+    "startTime": "09:00",
+    "endTime": "15:00",
+    "instructorName": "Dr. Anju",
+    "invigilatorName": "",
+    "venueIds": [
+      "MSTeam"
+    ],
+    "venueId": "MSTeam",
+    "program": "Project Presentation",
+    "students": [],
+    "createdAt": "2026-04-28T12:17:42.642Z",
     "programs": [
       "Project Presentation"
     ]

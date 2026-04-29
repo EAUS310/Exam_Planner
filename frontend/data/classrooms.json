@@ -179,51 +179,51 @@
   {
     "id": "Lab_02",
     "name": "Lab 02",
-    "totalSeats": 24,
+    "totalSeats": 20,
     "columns": ["A","C","F","H"],
-    "rows": [1,2,3,4,5,6]
+    "rows": [1,2,3,4,5]
   },
   {
     "id": "Lab_03",
     "name": "Lab 03",
-    "totalSeats": 24,
+    "totalSeats": 20,
     "columns": ["A","C","F","H"],
-    "rows": [1,2,3,4,5,6]
+    "rows": [1,2,3,4,5]
   },
   {
     "id": "Lab_04",
     "name": "Lab 04",
-    "totalSeats": 24,
+    "totalSeats": 20,
     "columns": ["A","C","F","H"],
-    "rows": [1,2,3,4,5,6]
+    "rows": [1,2,3,4,5]
   },
   {
     "id": "Lab_05",
     "name": "Lab 05",
-    "totalSeats": 24,
+    "totalSeats": 20,
     "columns": ["A","C","F","H"],
-    "rows": [1,2,3,4,5,6]
+    "rows": [1,2,3,4,5]
   },
   {
     "id": "Lab_06",
     "name": "Lab 06",
-    "totalSeats": 24,
+    "totalSeats": 20,
     "columns": ["A","C","F","H"],
-    "rows": [1,2,3,4,5,6]
+    "rows": [1,2,3,4,5]
   },
   {
     "id": "Lab_07",
     "name": "Lab 07",
-    "totalSeats": 24,
+    "totalSeats": 20,
     "columns": ["A","C","F","H"],
-    "rows": [1,2,3,4,5,6]
+    "rows": [1,2,3,4,5]
   },
   {
     "id": "Lab_08",
     "name": "Lab 08",
-    "totalSeats": 24,
+    "totalSeats": 20,
     "columns": ["A","C","F","H"],
-    "rows": [1,2,3,4,5,6]
+    "rows": [1,2,3,4,5]
   },
   {
     "id": "F101",

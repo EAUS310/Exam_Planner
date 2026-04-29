@@ -187,6 +187,9 @@ document.getElementById('downloadExcelBtn').addEventListener('click', () => {
   XLSX.writeFile(wb, `Shared_Venues_${dateStr}.xlsx`);
 });
 
+/* ── PDF Download ────────────────────────────────────────── */
+document.getElementById('downloadPdfBtn').addEventListener('click', () => window.print());
+
 /* ── Init ────────────────────────────────────────────────── */
 (function init() {
   setupFileUI(
