@@ -127,14 +127,14 @@
     const headerHtml = `
       <div class="print-header">
         <div class="print-header-left">
+          <div class="print-module-name">${escHtml(exam.moduleCode)} &mdash; ${escHtml(exam.moduleName)}</div>
+          <div class="print-module-info">
+            Instructor: ${escHtml(exam.instructorName)}
+            ${pageNum > 1 ? `&nbsp;&nbsp;|&nbsp;&nbsp; <em>(Page ${pageNum} of ${totalPages})</em>` : ''}
+          </div>
           <div class="print-uni-name">Emirates Aviation University &mdash; Faculty of Engineering</div>
           <div class="print-doc-title">
             ${escHtml(exam.semester)} &mdash; ${escHtml(exam.examName)} &mdash; SEATING PLAN
-          </div>
-          <div class="print-module-info">
-            <strong>${escHtml(exam.moduleCode)}</strong> &mdash; ${escHtml(exam.moduleName)}
-            &nbsp;&nbsp;|&nbsp;&nbsp; Instructor: ${escHtml(exam.instructorName)}
-            ${pageNum > 1 ? `&nbsp;&nbsp;|&nbsp;&nbsp; <em>(Page ${pageNum} of ${totalPages})</em>` : ''}
           </div>
         </div>
         <img src="assets/EAU_Group_logo.png" alt="EAU Logo" class="print-logo">

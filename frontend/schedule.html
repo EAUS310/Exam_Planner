@@ -196,16 +196,21 @@
 
       .schedule-grid { display: block; padding: 0; }
 
+      /* Remove overflow clipping so table content is never cut off */
+      .schedule-card > div { overflow: visible !important; }
+
       .schedule-card {
         width: 100%;
         box-shadow: none;
         border: 1.5px solid #7aadd6;
         border-radius: 4px;
-        break-inside: avoid;
         break-after: page;
         margin-bottom: 0;
       }
       .schedule-card:last-child { break-after: auto; }
+
+      /* Repeat column headers when a table flows across pages */
+      .schedule-table thead { display: table-header-group; }
 
       .schedule-card-header {
         background: #1a3a5c !important;
@@ -298,6 +303,9 @@
     </a>
     <a href="shared-venues.html" class="sidebar-link">
       <span class="nav-icon">🏛️</span> Shared Venues
+    </a>
+    <a href="venue-details.html" class="sidebar-link">
+      <span class="nav-icon">🗺️</span> Venue Details
     </a>
     <a href="student-data.html" class="sidebar-link">
       <span class="nav-icon">👤</span> Student Data

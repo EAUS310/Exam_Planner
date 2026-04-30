@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venue Details — FOE Exam Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <style>
+    /* ── Page bar ── */
+    .page-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: #fff;
+      border-bottom: 1px dashed #e9ecef;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .page-bar-stats { display: flex; gap: 20px; align-items: center; }
+    .stat-chip {
+      font-size: 12px;
+      color: #555;
+      background: #f0f4f8;
+      border: 1px solid #dce8f4;
+      border-radius: 20px;
+      padding: 4px 12px;
+    }
+    .stat-chip strong { color: #1a3a5c; }
+
+    /* ── Content wrapper ── */
+    .vd-content { padding: 28px 28px 60px; }
+
+    /* ── Shared card shell ── */
+    .vd-card {
+      background: #fff;
+      border-radius: 5px;
+      border: 1px solid #d6e4f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 4px 6px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .vd-card-header {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 13px 18px;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Summary table ── */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .summary-table thead tr { background: #2c5f8a; color: #fff; }
+    .summary-table th {
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+      border: 1px solid #1a4a72;
+      white-space: nowrap;
+    }
+    .summary-table td {
+      padding: 5px 10px;
+      border: 1px solid #dce8f4;
+      vertical-align: middle;
+      color: #1a3a5c;
+    }
+    .summary-table tbody tr { cursor: pointer; }
+    .summary-table tbody tr:nth-child(even) { background: #f5f9fd; }
+    .summary-table tbody tr:hover { background: #eef4fb; }
+    .summary-table tbody tr.selected { background: #c9dff5 !important; }
+    .summary-table .num-cell { text-align: center; font-weight: 600; }
+    .summary-table .seats-cell { text-align: center; font-weight: 700; color: #1a3a5c; }
+    .summary-table .col-list-cell { font-family: 'Courier New', monospace; font-size: 12px; color: #2c5f8a; }
+    .summary-table .row-info-cell { font-size: 12px; color: #444; }
+    .summary-table .venue-link { color: #1a3a5c; text-decoration: none; font-weight: 700; }
+    .summary-table .venue-link:hover { text-decoration: underline; color: #2c5f8a; }
+
+    /* ── Layout badges ── */
+    .layout-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .layout-regular   { background: #d4edda; color: #155724; border: 1px solid #b5d6bc; }
+    .layout-irregular { background: #fff3cd; color: #856404; border: 1px solid #f0d98e; }
+    .layout-virtual   { background: #e2e3e5; color: #383d41; border: 1px solid #ccc; }
+
+    /* ── Split panel layout ── */
+    .vd-split {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .vd-left {
+      flex: 0 0 70%;
+      min-width: 0;
+      overflow-x: auto;
+    }
+    .vd-right {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ── Layout panel (right side) ── */
+    .layout-panel-body {
+      padding: 16px;
+      overflow-x: auto;
+    }
+    .select-prompt {
+      color: #999;
+      font-size: 13px;
+      font-style: italic;
+      margin: 0;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    /* ── Per-column breakdown (irregular venues) ── */
+    .col-breakdown {
+      margin-bottom: 12px;
+      font-size: 11.5px;
+      color: #444;
+    }
+    .col-breakdown strong { color: #1a3a5c; font-size: 12px; }
+    .col-breakdown-table {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .col-breakdown-item {
+      background: #f0f4f8;
+      border: 1px solid #d0e0f0;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-family: 'Courier New', monospace;
+      color: #1a3a5c;
+      white-space: nowrap;
+    }
+    .col-breakdown-item span { color: #666; }
+
+    /* ── Seat grid ── */
+    .seat-grid {
+      display: inline-grid;
+      gap: 2px;
+    }
+    .grid-corner {
+      width: 24px;
+      height: 20px;
+    }
+    .col-header {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #1a3a5c;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .row-header {
+      width: 24px;
+      text-align: right;
+      font-size: 10px;
+      font-weight: 700;
+      color: #1a3a5c;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 4px;
+    }
+    .seat-cell {
+      width: 28px;
+      height: 22px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8.5px;
+      font-family: 'Courier New', monospace;
+      cursor: default;
+      transition: opacity 0.1s;
+    }
+    .seat-cell.seat-sm {
+      width: 22px;
+      height: 18px;
+      font-size: 0;
+    }
+    .seat-available {
+      background: #c5daf5;
+      border: 1px solid #7aabdb;
+      color: #1a3a5c;
+    }
+    .seat-available:hover { background: #a8c7ed; opacity: 1; }
+    .seat-gap {
+      background: #f0f0f0;
+      border: 1px dashed #ccc;
+    }
+    .no-seats-msg {
+      color: #888;
+      font-size: 13px;
+      font-style: italic;
+      padding: 12px 0;
+      margin: 0;
+    }
+
+    /* ── Print ── */
+    @media print {
+      @page { size: A4 portrait; margin: 12mm 14mm; }
+      .sidebar, .topbar, .page-bar, .no-print { display: none !important; }
+      .main-content { margin-left: 0 !important; }
+      .vd-content { padding: 0; }
+      .vd-card, .venue-card { box-shadow: none; break-inside: avoid; }
+      .venue-card:hover { transform: none; box-shadow: none; }
+      .venue-cards-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/EAU_Logo.png" alt="EAU Logo" class="sidebar-logo">
+    <div>
+      <div class="sidebar-uni-name">Emirates Aviation University</div>
+      <div class="sidebar-app-name">FOE Exam Planner</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-label">Main Menu</div>
+
+  <nav class="sidebar-nav">
+    <a href="index.html" class="sidebar-link">
+      <span class="nav-icon">📋</span> Exam Module Entry
+    </a>
+    <a href="schedule.html" class="sidebar-link">
+      <span class="nav-icon">📅</span> Exam Schedule
+    </a>
+    <a href="schedule-invigilators.html" class="sidebar-link">
+      <span class="nav-icon">👁️</span> Schedule (with Invigilators)
+    </a>
+    <a href="shared-modules.html" class="sidebar-link">
+      <span class="nav-icon">🔗</span> Shared Modules
+    </a>
+    <a href="shared-venues.html" class="sidebar-link">
+      <span class="nav-icon">🏛️</span> Shared Venues
+    </a>
+    <a href="venue-details.html" class="sidebar-link active">
+      <span class="nav-icon">🗺️</span> Venue Details
+    </a>
+    <a href="student-data.html" class="sidebar-link">
+      <span class="nav-icon">👤</span> Student Data
+    </a>
+    <a href="presentation-schedule.html" class="sidebar-link">
+      <span class="nav-icon">🎤</span> Presentation Schedule
+    </a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Data File</div>
+  <div class="sidebar-file-status">
+    <span class="file-dot" id="fileStatusDot"></span>
+    <span id="fileStatusText" style="font-size:11px; color:rgba(255,255,255,0.5);">Not connected</span>
+  </div>
+  <div class="sidebar-file-btns">
+    <button class="sidebar-file-btn" id="connectFileBtn">📂 Connect exams.json</button>
+    <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
+  </div>
+
+  <div class="sidebar-footer">
+    &copy; 2026 Mohammed Khateeb
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════════════ -->
+<div class="main-content">
+
+  <!-- Top bar -->
+  <div class="topbar no-print">
+    <span class="topbar-title">🗺️ Venue Details</span>
+  </div>
+
+  <!-- Page stats bar -->
+  <div class="page-bar no-print">
+    <div class="page-bar-stats">
+      <span class="stat-chip">Venues: <strong id="totalVenuesCount">—</strong></span>
+      <span class="stat-chip">Total Seats: <strong id="totalSeatsCount">—</strong></span>
+    </div>
+  </div>
+
+  <div class="vd-content">
+    <div class="vd-split">
+
+      <!-- ── Left: Summary table ───────────────────────────── -->
+      <div class="vd-left">
+        <div class="vd-card">
+          <div class="vd-card-header">All Venues — Summary</div>
+          <div style="overflow-x:auto; overflow-y:auto; max-height:calc(100vh - 170px);">
+            <table class="summary-table">
+              <thead>
+                <tr>
+                  <th>Venue</th>
+                  <th>Layout</th>
+                  <th>Columns</th>
+                  <th>Rows</th>
+                  <th style="text-align:center;">Seats</th>
+                </tr>
+              </thead>
+              <tbody id="summaryTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Right: Layout preview panel ──────────────────── -->
+      <div class="vd-right">
+        <div class="vd-card">
+          <div class="vd-card-header" id="layoutPanelHeader">Venue Seating Layout</div>
+          <div class="layout-panel-body" id="layoutPanelBody">
+            <p class="select-prompt">← Click a venue row to view its seating layout.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /main-content -->
+
+<script src="js/storage.js"></script>
+<script src="js/venue-details.js"></script>
+</body>
+</html>

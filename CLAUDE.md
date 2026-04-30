@@ -56,6 +56,12 @@ All data lives in `localStorage`. Key entries:
 - Co-exam matching requires same date **and** same start/end time (not just same date)
 - **Optimise Seating**: assigns students to alternate columns (unless venue is in `_NO_ALTERNATE_VENUES`); when multiple modules share the venue, students are interleaved across modules
 
+## Claude Workflow Rules (ALWAYS follow these)
+
+1. **TODO list**: When given a set of tasks to implement, ALWAYS create a numbered TODO list in chat before starting. Show it immediately. Mark each item with `[ ]` pending, `[x]` done as you complete them. Update the list in chat as tasks are completed.
+2. **No code previews in chat**: NEVER show code diffs, code blocks, or code change previews in chat responses. Make changes silently using tools. Only report what was done in plain text (e.g. "Added X to file Y").
+3. **No tool narration**: NEVER mention or describe tool operations in chat responses. Do not say things like "Reading file...", "Writing to...", "I'll use the Edit tool to...", etc. Just make the changes silently and report the outcome only.
+
 ## Development Notes
 
 - No npm build required for the frontend — open `index.html` directly or push to GitHub Pages
