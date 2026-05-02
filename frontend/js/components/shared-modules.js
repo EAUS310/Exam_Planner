@@ -9,6 +9,7 @@
 let allExams      = [];
 let allClassrooms = [];
 let classroomMap  = new Map();   // id → classroom, built once at init
+let lastMerged    = [];           // cached result of last mergeSharedModules() call
 
 const tableBody   = document.getElementById('sharedTableBody');
 const emptyState  = document.getElementById('sharedEmpty');
@@ -112,6 +113,7 @@ function mergeSharedModules(exams) {
 function renderTable() {
   const shared = allExams.filter(isSharedModule);
   const merged = mergeSharedModules(shared);
+  lastMerged = merged;
 
   moduleCount.textContent = `${merged.length} module${merged.length !== 1 ? 's' : ''} shown`;
 
@@ -160,8 +162,7 @@ function renderTable() {
 
 /* ── CSV Download ────────────────────────────────────────── */
 document.getElementById('downloadCsvBtn').addEventListener('click', () => {
-  const shared = allExams.filter(isSharedModule);
-  const merged = mergeSharedModules(shared);
+  const merged = lastMerged.length ? lastMerged : mergeSharedModules(allExams.filter(isSharedModule));
 
   const csvEscape = val => {
     const s = String(val ?? '');

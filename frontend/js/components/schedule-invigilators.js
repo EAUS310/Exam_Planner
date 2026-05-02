@@ -14,6 +14,7 @@ const PROGRAM_CONFIG = [
 
 let allExams      = [];
 let allClassrooms = [];
+let classroomMap  = new Map();
 
 const scheduleGrid   = document.getElementById('scheduleGrid');
 const filterExamType = document.getElementById('filterExamType');
@@ -47,7 +48,7 @@ function getVenueNames(exam) {
   const ids = exam.venueIds && exam.venueIds.length > 0
     ? exam.venueIds : (exam.venueId ? [exam.venueId] : []);
   return ids.map(id => {
-    const room = allClassrooms.find(c => c.id === id);
+    const room = classroomMap.get(id);
     return room ? room.name : id;
   }).join(', ') || '—';
 }
@@ -207,6 +208,7 @@ function populateSemesterFilter() {
   });
 
   allClassrooms = getClassrooms();
+  classroomMap  = new Map(allClassrooms.map(c => [c.id, c]));
   allExams      = getExams();
   populateSemesterFilter();
   renderSchedule();

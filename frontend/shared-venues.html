@@ -6,6 +6,7 @@
   <title>Shared Venues — FOE Exam Planner</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/sidebar.css">
+  <script src="js/services/theme.js"></script>
   <style>
     /* ── Page header bar ── */
     .page-bar {
@@ -250,6 +251,12 @@
     <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
   </div>
 
+  <div class="sidebar-icon-bar">
+    <button id="confettiBtn" class="sidebar-icon-btn" title="Celebrate!">🎉</button>
+    <button id="leavesBtn" class="sidebar-icon-btn" title="Autumn Leaves!">🍁</button>
+    <button id="themeBtn" class="sidebar-icon-btn" title="Switch to Dark Mode">🌙</button>
+  </div>
+
   <div class="sidebar-footer">
     &copy; 2026 Mohammed Khateeb
   </div>
@@ -315,7 +322,8 @@
 
 <!-- SheetJS for Excel export -->
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/shared-venues.js"></script>
+<script src="js/services/storage.js"></script>
+<script src="js/components/shared-venues.js"></script>
+<script src="js/components/confetti-handler.js"></script>
 </body>
 </html>

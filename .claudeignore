@@ -6,6 +6,9 @@ dist/
 build/
 .cache/
 
+# Environment / secrets
+.env
+
 # Binary / generated files
 *.xlsx
 *.pdf

@@ -6,6 +6,7 @@
   <title>Venue Details — FOE Exam Planner</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/sidebar.css">
+  <script src="js/services/theme.js"></script>
   <style>
     /* ── Page bar ── */
     .page-bar {
@@ -286,6 +287,12 @@
     <button class="sidebar-file-btn" id="exportFileBtn">⬇️ Export JSON backup</button>
   </div>
 
+  <div class="sidebar-icon-bar">
+    <button id="confettiBtn" class="sidebar-icon-btn" title="Celebrate!">🎉</button>
+    <button id="leavesBtn" class="sidebar-icon-btn" title="Autumn Leaves!">🍁</button>
+    <button id="themeBtn" class="sidebar-icon-btn" title="Switch to Dark Mode">🌙</button>
+  </div>
+
   <div class="sidebar-footer">
     &copy; 2026 Mohammed Khateeb
   </div>
@@ -347,7 +354,8 @@
   </div>
 </div><!-- /main-content -->
 
-<script src="js/storage.js"></script>
-<script src="js/venue-details.js"></script>
+<script src="js/services/storage.js"></script>
+<script src="js/components/venue-details.js"></script>
+<script src="js/components/confetti-handler.js"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@
 let exam           = null;
 let allExams       = [];
 let allClassrooms  = [];
+let classroomMap   = new Map();
 let parsedStudents = [];
 
 // ── DOM Refs ──────────────────────────────────────────────
@@ -73,7 +74,7 @@ function formatTime(t) {
 }
 
 function getVenueName(venueId) {
-  const room = allClassrooms.find(c => c.id === venueId);
+  const room = classroomMap.get(venueId);
   return room ? `${room.name} (${room.totalSeats} seats)` : venueId;
 }
 
@@ -99,7 +100,7 @@ function getCoExams() {
 
 function getTotalCapacity(e) {
   return getExamVenueIds(e).reduce((sum, id) => {
-    const room = allClassrooms.find(c => c.id === id);
+    const room = classroomMap.get(id);
     return sum + (room ? room.totalSeats : 0);
   }, 0);
 }
@@ -127,6 +128,7 @@ if (!examId) {
 function loadAll() {
   try {
     allClassrooms = getClassrooms();
+    classroomMap  = new Map(allClassrooms.map(c => [c.id, c]));
     allExams      = getExams();
     exam          = allExams.find(e => e.id === examId) || null;
 

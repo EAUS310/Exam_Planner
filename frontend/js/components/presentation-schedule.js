@@ -35,8 +35,6 @@ const errorText      = document.getElementById('errorText');
   clearDataBtn.addEventListener('click', clearData);
   printBtn.addEventListener('click', () => window.print());
 
-  if (typeof initStorageSidebar === 'function') initStorageSidebar();
-
   // If a CSV override was uploaded, use it; otherwise always load the fixed JSON
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) {

@@ -18,18 +18,21 @@ Live at: https://eaus310.github.io/Exam_Planner/
 
 | File | Purpose |
 |---|---|
-| `index.html` / `js/main.js` | Exam list + add/edit/delete exam form |
-| `students.html` / `js/students.js` | Student import, seat assignment, seat editing, optimise seating |
-| `schedule.html` / `js/schedule.js` | Program-grouped schedule view, filters, A3 print |
-| `schedule-invigilators.html` / `js/schedule-invigilators.js` | Invigilator assignment per exam |
-| `shared-modules.html` / `js/shared-modules.js` | Modules spanning multiple exams |
-| `shared-venues.html` / `js/shared-venues.js` | Venue tracking, conflict detection, import |
-| `presentation-schedule.html` / `js/presentation-schedule.js` | Manual presentation slot entry, instructor dashboard, timing conflict detection |
-| `presentation-schedule-view.html` / `js/presentation-schedule-view.js` | Read-only date-grouped presentation view; A3 landscape PDF output |
-| `student-data.html` / `js/student-data.js` | Student ID lookup — shows all exam entries and seat allocations for a given student |
+| `index.html` / `js/components/main.js` | Exam list + add/edit/delete exam form |
+| `students.html` / `js/components/students.js` | Student import, seat assignment, seat editing, optimise seating |
+| `schedule.html` / `js/components/schedule.js` | Program-grouped schedule view, filters, A3 print |
+| `schedule-invigilators.html` / `js/components/schedule-invigilators.js` | Invigilator assignment per exam |
+| `shared-modules.html` / `js/components/shared-modules.js` | Modules spanning multiple exams |
+| `shared-venues.html` / `js/components/shared-venues.js` | Venue tracking, conflict detection, import |
+| `presentation-schedule.html` / `js/components/presentation-schedule.js` | Manual presentation slot entry, instructor dashboard, timing conflict detection |
+| `presentation-schedule-view.html` / `js/components/presentation-schedule-view.js` | Read-only date-grouped presentation view; A3 landscape PDF output |
+| `student-data.html` / `js/components/student-data.js` | Student ID lookup — shows all exam entries and seat allocations for a given student |
+| `venue-details.html` / `js/components/venue-details.js` | Per-venue seat map view with occupancy details |
 | `attendance-print.html` | Printable attendance sheet (signature column, sorted by seat) |
 | `seating-print.html` | Printable seating plan (grouped by venue) |
-| `js/storage.js` | Data layer — all localStorage reads/writes and file sync logic |
+| `js/services/storage.js` | Data layer — all localStorage reads/writes and file sync logic |
+| `js/services/theme.js` | Theme toggle utility (dark/light mode) |
+| `js/components/confetti-handler.js` | Confetti celebration effect on key actions |
 | `data/exams.json` | Seed data loaded on first visit if localStorage is empty |
 | `data/classrooms.json` | Venue/room definitions |
 | `css/style.css` | Screen styles |
@@ -43,9 +46,9 @@ All data lives in `localStorage`. Key entries:
 - `eau_presentations_v1` — array of presentation objects (id, date, day, moduleCode, groupNumber, instructor, timing, juryNames)
 - Each student has: `studentId`, `studentName`, `seatAssigned` (e.g. `"B4"`), `venueId`
 - `programs` is an array of program codes (e.g. `["BSAE","EDAE"]`); legacy data may use the singular `program` string — all read paths handle both
-- Venues defined in `js/storage.js` → `getClassrooms()` — supports uniform and irregular column layouts
+- Venues defined in `js/services/storage.js` → `getClassrooms()` — supports uniform and irregular column layouts
 - Rooms G19–G26 use full columns A–E but alternate-column stride is suppressed via `_NO_ALTERNATE_VENUES` set in storage.js
-- Presentations CRUD: `getPresentations()`, `createPresentation()`, `updatePresentation()`, `deletePresentation()` in `js/storage.js`
+- Presentations CRUD: `getPresentations()`, `createPresentation()`, `updatePresentation()`, `deletePresentation()` in `js/services/storage.js`
 
 ## Seat Assignment Logic
 
